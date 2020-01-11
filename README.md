@@ -9,7 +9,7 @@
 [![Total Downloads][ico-downloads]][link-downloads]
 -->
 
-Enables GraphQL for PoP to process the GraphQL query using the standard syntax
+GraphQL server, implemented through PoP
 
 ## Install
 
