@@ -9,7 +9,7 @@
 [![Total Downloads][ico-downloads]][link-downloads]
 -->
 
-GraphQL server, implemented through PoP
+GraphQL server in PHP, implemented through the PoP API
 
 ## Install
 
