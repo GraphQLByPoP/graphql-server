@@ -1,24 +1,22 @@
 <?php
 namespace PoP\GraphQL\TypeDataLoaders;
 
-use PoP\ComponentModel\Facades\Container\ObjectDictionaryFacade;
-use PoP\ComponentModel\TypeDataLoaders\AbstractTypeDataLoader;
 use PoP\GraphQL\ObjectModels\Schema;
 use PoP\GraphQL\TypeResolvers\SchemaTypeResolver;
+use PoP\ComponentModel\TypeDataLoaders\AbstractTypeDataLoader;
+use PoP\ComponentModel\TypeDataLoaders\UseObjectDictionaryTypeDataLoaderTrait;
 
 class SchemaTypeDataLoader extends AbstractTypeDataLoader
 {
-    public function getObjects(array $ids): array
+    use UseObjectDictionaryTypeDataLoaderTrait;
+
+    protected function getTypeResolverClass(): string
     {
-        $objectDictionary = ObjectDictionaryFacade::getInstance();
-        $ret = [];
-        foreach ($ids as $id) {
-            if (!$objectDictionary->has(SchemaTypeResolver::class, $id)) {
-                $schema = new Schema($id);
-                $objectDictionary->set(SchemaTypeResolver::class, $id, $schema);
-            }
-            $ret[] = $objectDictionary->get(SchemaTypeResolver::class, $id);
-        }
-        return $ret;
+        return SchemaTypeResolver::class;
+    }
+
+    protected function getTypeNewInstance($id): object
+    {
+        return new Schema($id);
     }
 }
