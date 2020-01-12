@@ -14,7 +14,11 @@ class ObjectType extends AbstractType implements HasFieldsTypeInterface
         // Extract all the properties from the typeRegistry
         $typeRegistry = TypeRegistryFacade::getInstance();
         $typeDefinition = $typeRegistry->getTypeDefinition($name);
-        $this->fields = array_keys($typeDefinition[SchemaDefinition::ARGNAME_FIELDS]);
+        // Include the global fields and the ones specific to this type
+        $this->fields = array_merge(
+            $typeRegistry->getGlobalFields(),
+            array_keys($typeDefinition[SchemaDefinition::ARGNAME_FIELDS])
+        );
     }
 
     public function getKind()

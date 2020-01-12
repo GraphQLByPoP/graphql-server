@@ -57,8 +57,17 @@ class Schema
                 $options
             );
 
-            // Register all the types in the TypeRegistry
+            // Register all the fields/directives/types in the TypeRegistry
             $typeRegistry = TypeRegistryFacade::getInstance();
+            $typeRegistry->setGlobalFields(
+                array_merge(
+                    array_keys($this->fullSchema[SchemaDefinition::ARGNAME_GLOBAL_FIELDS]),
+                    array_keys($this->fullSchema[SchemaDefinition::ARGNAME_GLOBAL_CONNECTIONS])
+                )
+            );
+            $typeRegistry->setGlobalDirectives(
+                array_keys($this->fullSchema[SchemaDefinition::ARGNAME_GLOBAL_DIRECTIVES]))
+            ;
             foreach ($this->fullSchema[SchemaDefinition::ARGNAME_TYPES] as $typeResolverClass => $typeDefinition) {
                 $typeName = $typeDefinition[SchemaDefinition::ARGNAME_NAME];
                 $typeRegistry->registerType($typeName, $typeResolverClass, $typeDefinition);

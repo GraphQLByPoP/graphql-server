@@ -5,8 +5,27 @@ use PoP\ComponentModel\Facades\Instances\InstanceManagerFacade;
 
 class TypeRegistry implements TypeRegistryInterface {
 
+    protected $globalFields;
+    protected $globalDirectives;
     protected $registryNameClasses;
     protected $registryNameDefinitions;
+
+    function setGlobalFields(array $fields): void
+    {
+        $this->globalFields = $fields;
+    }
+    function setGlobalDirectives(array $directives): void
+    {
+        $this->globalDirectives = $directives;
+    }
+    function getGlobalFields(): array
+    {
+        return $this->globalFields;
+    }
+    function getGlobalDirectives(): array
+    {
+        return $this->globalDirectives;
+    }
 
     function registerType(string $name, string $typeResolverClass, array $typeDefinition): void
     {

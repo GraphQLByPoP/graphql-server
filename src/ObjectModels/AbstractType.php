@@ -1,6 +1,7 @@
 <?php
 namespace PoP\GraphQL\ObjectModels;
 
+use PoP\API\Schema\SchemaDefinition;
 use PoP\GraphQL\Facades\Registries\TypeRegistryFacade;
 
 // use PoP\ComponentModel\Facades\Instances\InstanceManagerFacade;
@@ -13,10 +14,10 @@ abstract class AbstractType
     {
         $this->name = $name;
 
-        // Extract all the properties from the typeResolverClass
+        // Extract all the properties from the typeRegistry
         $typeRegistry = TypeRegistryFacade::getInstance();
-        $typeResolver = $typeRegistry->getTypeResolverInstance($name);
-        $this->description = $typeResolver->getSchemaTypeDescription();
+        $typeDefinition = $typeRegistry->getTypeDefinition($name);
+        $this->description = $typeDefinition[SchemaDefinition::ARGNAME_DESCRIPTION];
     }
     public function getID() {
         return $this->name;
