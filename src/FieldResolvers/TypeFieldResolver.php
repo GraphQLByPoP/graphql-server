@@ -18,6 +18,7 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
     {
         return [
             'name',
+            'description',
         ];
     }
 
@@ -25,6 +26,7 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
     {
         $types = [
             'name' => SchemaDefinition::TYPE_STRING,
+            'description' => SchemaDefinition::TYPE_STRING,
         ];
         return $types[$fieldName] ?? parent::getSchemaFieldType($typeResolver, $fieldName);
     }
@@ -34,6 +36,7 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
         $translationAPI = TranslationAPIFacade::getInstance();
         $descriptions = [
             'name' => $translationAPI->__('Type\'s name', 'graphql'),
+            'description' => $translationAPI->__('Type\'s description', 'graphql'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($typeResolver, $fieldName);
     }
@@ -44,6 +47,8 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
         switch ($fieldName) {
             case 'name':
                 return $type->getName();
+            case 'description':
+                return $type->getDescription();
         }
 
         return parent::resolveValue($typeResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);

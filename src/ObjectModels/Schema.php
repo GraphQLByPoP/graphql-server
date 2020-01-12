@@ -4,6 +4,7 @@ namespace PoP\GraphQL\ObjectModels;
 use PoP\API\Schema\SchemaDefinition;
 use PoP\API\ObjectFacades\RootObjectFacade;
 use PoP\API\TypeResolvers\RootTypeResolver;
+use PoP\GraphQL\Facades\Registries\TypeRegistryFacade;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\Facades\Instances\InstanceManagerFacade;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
@@ -45,10 +46,23 @@ class Schema
                 'typeAsSDL' => false,
                 'readable' => true,
             ];
+            $options = [
+                'include-type-resolver-classname' => true,
+            ];
             $this->fullSchema = $rootTypeResolver->resolveValue(
                 $root,
-                $fieldQueryInterpreter->getField('__fullSchema', $fieldArgs)
+                $fieldQueryInterpreter->getField('__fullSchema', $fieldArgs),
+                null,
+                null,
+                $options
             );
+
+            // Register all the types in the TypeRegistry
+            $typeRegistry = TypeRegistryFacade::getInstance();
+            foreach ($this->fullSchema[SchemaDefinition::ARGNAME_TYPES] as $typeName => $typeDefinition) {
+                $typeResolverClass = $typeDefinition[SchemaDefinition::OPTIONNAME_CLASS];
+                $typeRegistry->registerType($typeName, $typeResolverClass);
+            }
         }
     }
     public function getTypes()
@@ -56,8 +70,11 @@ class Schema
         // Lazy init the fullSchema
         $this->maybeInitializeFullSchema();
 
-        // Extract the types from the fullSchema
-        return array_keys($this->fullSchema[SchemaDefinition::ARGNAME_TYPES]);
+        $typeRegistry = TypeRegistryFacade::getInstance();
+        return $typeRegistry->getTypeNames();
+
+        // // Extract the types from the fullSchema
+        // return array_keys($this->fullSchema[SchemaDefinition::ARGNAME_TYPES]);
     }
     public function getDirectives()
     {
