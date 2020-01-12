@@ -1,7 +1,6 @@
 <?php
 namespace PoP\GraphQL\FieldResolvers;
 
-use PoP\API\ObjectModels\Root;
 use PoP\API\Schema\SchemaDefinition;
 use PoP\GraphQL\TypeResolvers\TypeTypeResolver;
 use PoP\GraphQL\TypeResolvers\SchemaTypeResolver;
@@ -51,9 +50,16 @@ class SchemaFieldResolver extends AbstractDBDataFieldResolver
         $schema = $resultItem;
         switch ($fieldName) {
             case 'queryType':
-                return Root::ID;
+                return $schema->getQueryTypeResolverInstance()->getTypeName();
             case 'mutationType':
+                if ($typeResolverInstance = $schema->getMutationTypeResolverInstance()) {
+                    return $typeResolverInstance->getTypeName();
+                }
+                return null;
             case 'subscriptionType':
+                if ($typeResolverInstance = $schema->getSubscriptionTypeResolverInstance()) {
+                    return $typeResolverInstance->getTypeName();
+                }
                 return null;
         }
 

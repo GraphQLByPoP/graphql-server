@@ -6,10 +6,6 @@ services:
     #         PoP\ComponentModel\Schema\FeedbackMessageStoreInterface: '@feedback_message_store'
     #         PoP\QueryParsing\QueryParserInterface: '@query_parser'
 
-    schema_object:
-        class: \PoP\GraphQL\ObjectModels\Schema
-        public: true
-
     PoP\GraphQL\FieldResolvers\:
         resource: '../src/FieldResolvers/*'
         public: true

@@ -6,9 +6,7 @@ use PoP\API\TypeResolvers\RootTypeResolver;
 use PoP\GraphQL\TypeResolvers\SchemaTypeResolver;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
-use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 use PoP\ComponentModel\FieldResolvers\AbstractDBDataFieldResolver;
-use PoP\GraphQL\ObjectModels\Schema;
 
 class RootFieldResolver extends AbstractDBDataFieldResolver
 {
@@ -46,7 +44,7 @@ class RootFieldResolver extends AbstractDBDataFieldResolver
         $root = $resultItem;
         switch ($fieldName) {
             case '__schema':
-                return Schema::ID;
+                return 'schema';
         }
 
         return parent::resolveValue($typeResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
