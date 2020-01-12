@@ -27,7 +27,7 @@ class ObjectType extends AbstractType implements HasFieldsTypeInterface
         $this->fields = [];
         foreach ($fieldDefinitions as $field => $fieldDefinition) {
             $fieldRegistry->registerField($this, $field, $fieldDefinition);
-            $this->fields[] = FieldUtils::getID($this, $field);
+            $this->fields[FieldUtils::getID($this, $field)] = $fieldDefinition;
         }
 
         // var_dump('fields', $this->fields);
@@ -40,6 +40,18 @@ class ObjectType extends AbstractType implements HasFieldsTypeInterface
 
     public function getFields(bool $includeDeprecated = false): array
     {
-        return $this->fields;
+        if ($includeDeprecated) {
+            // Include all fields
+            $fields = $this->fields;
+        } else {
+            // Filter out the deprecated fields
+            $fields = array_filter(
+                $this->fields,
+                function($fieldDefinition) {
+                    return !$fieldDefinition[SchemaDefinition::ARGNAME_DEPRECATED];
+                }
+            );
+        }
+        return array_keys($fields);
     }
 }
