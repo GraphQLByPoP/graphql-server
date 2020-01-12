@@ -20,6 +20,8 @@ class SchemaFieldResolver extends AbstractDBDataFieldResolver
     {
         return [
             'queryType',
+            'mutationType',
+            'subscriptionType',
         ];
     }
 
@@ -27,6 +29,8 @@ class SchemaFieldResolver extends AbstractDBDataFieldResolver
     {
         $types = [
             'queryType' => SchemaDefinition::TYPE_ID,
+            'mutationType' => SchemaDefinition::TYPE_ID,
+            'subscriptionType' => SchemaDefinition::TYPE_ID,
         ];
         return $types[$fieldName] ?? parent::getSchemaFieldType($typeResolver, $fieldName);
     }
@@ -35,7 +39,9 @@ class SchemaFieldResolver extends AbstractDBDataFieldResolver
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         $descriptions = [
-            'queryType' => $translationAPI->__('The type that resolves queries', 'graphql'),
+            'queryType' => $translationAPI->__('The type, accessible from the root, that resolves queries', 'graphql'),
+            'mutationType' => $translationAPI->__('The type, accessible from the root, that resolves mutations', 'graphql'),
+            'subscriptionType' => $translationAPI->__('The type, accessible from the root, that resolves subscriptions', 'graphql'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($typeResolver, $fieldName);
     }
@@ -46,6 +52,9 @@ class SchemaFieldResolver extends AbstractDBDataFieldResolver
         switch ($fieldName) {
             case 'queryType':
                 return Root::ID;
+            case 'mutationType':
+            case 'subscriptionType':
+                return null;
         }
 
         return parent::resolveValue($typeResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
@@ -55,6 +64,8 @@ class SchemaFieldResolver extends AbstractDBDataFieldResolver
     {
         switch ($fieldName) {
             case 'queryType':
+            case 'mutationType':
+            case 'subscriptionType':
                 return TypeTypeResolver::class;
         }
 
