@@ -66,8 +66,8 @@ class Schema
                 )
             );
             $typeRegistry->setGlobalDirectives(
-                array_keys($this->fullSchema[SchemaDefinition::ARGNAME_GLOBAL_DIRECTIVES]))
-            ;
+                array_keys($this->fullSchema[SchemaDefinition::ARGNAME_GLOBAL_DIRECTIVES])
+            );
             foreach ($this->fullSchema[SchemaDefinition::ARGNAME_TYPES] as $typeResolverClass => $typeDefinition) {
                 $typeName = $typeDefinition[SchemaDefinition::ARGNAME_NAME];
                 $typeRegistry->registerType($typeName, $typeResolverClass, $typeDefinition);
