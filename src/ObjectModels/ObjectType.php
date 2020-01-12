@@ -2,6 +2,7 @@
 namespace PoP\GraphQL\ObjectModels;
 
 use PoP\API\Schema\SchemaDefinition;
+use PoP\GraphQL\ObjectModels\AbstractType;
 use PoP\GraphQL\Facades\Registries\TypeRegistryFacade;
 use PoP\GraphQL\Facades\Registries\FieldRegistryFacade;
 
