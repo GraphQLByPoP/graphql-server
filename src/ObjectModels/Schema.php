@@ -59,4 +59,12 @@ class Schema
         // Extract the types from the fullSchema
         return array_keys($this->fullSchema[SchemaDefinition::ARGNAME_TYPES]);
     }
+    public function getDirectives()
+    {
+        // Lazy init the fullSchema
+        $this->maybeInitializeFullSchema();
+
+        // Extract the types from the fullSchema
+        return array_keys($this->fullSchema[SchemaDefinition::ARGNAME_GLOBAL_DIRECTIVES]);
+    }
 }

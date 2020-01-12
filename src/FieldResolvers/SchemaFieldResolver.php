@@ -2,6 +2,7 @@
 namespace PoP\GraphQL\FieldResolvers;
 
 use PoP\API\Schema\SchemaDefinition;
+use PoP\GraphQL\TypeResolvers\DirectiveTypeResolver;
 use PoP\GraphQL\TypeResolvers\TypeTypeResolver;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\GraphQL\TypeResolvers\SchemaTypeResolver;
@@ -23,6 +24,7 @@ class SchemaFieldResolver extends AbstractDBDataFieldResolver
             'mutationType',
             'subscriptionType',
             'types',
+            'directives',
         ];
     }
 
@@ -33,6 +35,7 @@ class SchemaFieldResolver extends AbstractDBDataFieldResolver
             'mutationType' => SchemaDefinition::TYPE_ID,
             'subscriptionType' => SchemaDefinition::TYPE_ID,
             'types' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_ID),
+            'directives' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_ID),
         ];
         return $types[$fieldName] ?? parent::getSchemaFieldType($typeResolver, $fieldName);
     }
@@ -45,6 +48,7 @@ class SchemaFieldResolver extends AbstractDBDataFieldResolver
             'mutationType' => $translationAPI->__('The type, accessible from the root, that resolves mutations', 'graphql'),
             'subscriptionType' => $translationAPI->__('The type, accessible from the root, that resolves subscriptions', 'graphql'),
             'types' => $translationAPI->__('All types registered in the data graph', 'graphql'),
+            'directives' => $translationAPI->__('All directives registered in the data graph', 'graphql'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($typeResolver, $fieldName);
     }
@@ -67,6 +71,8 @@ class SchemaFieldResolver extends AbstractDBDataFieldResolver
                 return null;
             case 'types':
                 return $schema->getTypes();
+            case 'directives':
+                return $schema->getDirectives();
         }
 
         return parent::resolveValue($typeResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
@@ -80,6 +86,8 @@ class SchemaFieldResolver extends AbstractDBDataFieldResolver
             case 'subscriptionType':
             case 'types':
                 return TypeTypeResolver::class;
+            case 'directives':
+                return DirectiveTypeResolver::class;
         }
 
         return parent::resolveFieldTypeResolverClass($typeResolver, $fieldName, $fieldArgs);
