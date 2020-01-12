@@ -5,15 +5,13 @@ use PoP\GraphQL\Facades\Registries\TypeRegistryFacade;
 
 // use PoP\ComponentModel\Facades\Instances\InstanceManagerFacade;
 
-class Type
+abstract class AbstractType
 {
-    protected $kind;
     protected $name;
     protected $description;
     public function __construct(string $name)
     {
         $this->name = $name;
-        $this->kind = TypeKinds::OBJECT;
 
         // Extract all the properties from the typeResolverClass
         $typeRegistry = TypeRegistryFacade::getInstance();
@@ -23,13 +21,11 @@ class Type
     public function getID() {
         return $this->name;
     }
-    public function getKind() {
-        return $this->kind;
-    }
     public function getName() {
         return $this->name;
     }
     public function getDescription() {
         return $this->description;
     }
+    abstract public function getKind();
 }
