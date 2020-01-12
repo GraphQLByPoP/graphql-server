@@ -47,7 +47,7 @@ class Schema
                 'readable' => true,
             ];
             $options = [
-                'include-type-resolver-classname' => true,
+                'use-type-resolver-class-as-schema-key' => true,
             ];
             $this->fullSchema = $rootTypeResolver->resolveValue(
                 $root,
@@ -59,8 +59,8 @@ class Schema
 
             // Register all the types in the TypeRegistry
             $typeRegistry = TypeRegistryFacade::getInstance();
-            foreach ($this->fullSchema[SchemaDefinition::ARGNAME_TYPES] as $typeName => $typeDefinition) {
-                $typeResolverClass = $typeDefinition[SchemaDefinition::OPTIONNAME_CLASS];
+            foreach ($this->fullSchema[SchemaDefinition::ARGNAME_TYPES] as $typeResolverClass => $typeDefinition) {
+                $typeName = $typeDefinition[SchemaDefinition::ARGNAME_NAME];
                 $typeRegistry->registerType($typeName, $typeResolverClass);
             }
         }
@@ -72,9 +72,6 @@ class Schema
 
         $typeRegistry = TypeRegistryFacade::getInstance();
         return $typeRegistry->getTypeNames();
-
-        // // Extract the types from the fullSchema
-        // return array_keys($this->fullSchema[SchemaDefinition::ARGNAME_TYPES]);
     }
     public function getDirectives()
     {
