@@ -54,7 +54,7 @@ class FieldFieldResolver extends AbstractDBDataFieldResolver
             case 'description':
                 return $field->getDescription();
             case 'type':
-                return $field->getType();
+                return $field->getType()->getName();
         }
 
         return parent::resolveValue($typeResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
