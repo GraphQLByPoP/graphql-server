@@ -1,11 +1,11 @@
 <?php
 namespace PoP\GraphQL\FieldResolvers;
 
+use PoP\API\ObjectModels\Root;
 use PoP\API\Schema\SchemaDefinition;
+use PoP\GraphQL\TypeResolvers\TypeTypeResolver;
 use PoP\GraphQL\TypeResolvers\SchemaTypeResolver;
 use PoP\Translation\Facades\TranslationAPIFacade;
-use PoP\API\ObjectModels\Root;
-use PoP\API\TypeResolvers\RootTypeResolver;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\FieldResolvers\AbstractDBDataFieldResolver;
 
@@ -55,7 +55,7 @@ class SchemaFieldResolver extends AbstractDBDataFieldResolver
     {
         switch ($fieldName) {
             case 'queryType':
-                return RootTypeResolver::class;
+                return TypeTypeResolver::class;
         }
 
         return parent::resolveFieldTypeResolverClass($typeResolver, $fieldName, $fieldArgs);

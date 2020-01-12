@@ -5,13 +5,13 @@ use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\ComponentModel\FieldResolvers\AbstractDBDataFieldResolver;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
-use PoP\API\TypeResolvers\SiteTypeResolver;
+use PoP\GraphQL\TypeResolvers\TypeTypeResolver;
 
 class TypeFieldResolver extends AbstractDBDataFieldResolver
 {
     public static function getClassesToAttachTo(): array
     {
-        return array(SiteTypeResolver::class);
+        return array(TypeTypeResolver::class);
     }
 
     public static function getFieldNamesToResolve(): array
