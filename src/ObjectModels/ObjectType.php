@@ -3,6 +3,7 @@ namespace PoP\GraphQL\ObjectModels;
 
 use PoP\API\Schema\SchemaDefinition;
 use PoP\GraphQL\Facades\Registries\TypeRegistryFacade;
+use PoP\GraphQL\Facades\Registries\FieldRegistryFacade;
 
 class ObjectType extends AbstractType implements HasFieldsTypeInterface
 {
@@ -15,10 +16,20 @@ class ObjectType extends AbstractType implements HasFieldsTypeInterface
         $typeRegistry = TypeRegistryFacade::getInstance();
         $typeDefinition = $typeRegistry->getTypeDefinition($name);
         // Include the global fields and the ones specific to this type
-        $this->fields = array_merge(
+        $fieldDefinitions = array_merge(
             $typeRegistry->getGlobalFields(),
-            array_keys($typeDefinition[SchemaDefinition::ARGNAME_FIELDS])
+            $typeDefinition[SchemaDefinition::ARGNAME_FIELDS]
         );
+
+        // Add the type as part of the ID, and register them in the fieldRegistry
+        $fieldRegistry = FieldRegistryFacade::getInstance();
+        $this->fields = [];
+        foreach ($fieldDefinitions as $field => $fieldDefinition) {
+            $fieldRegistry->registerField($this, $field, $fieldDefinition);
+            $this->fields[] = FieldUtils::getID($this, $field);
+        }
+
+        // var_dump('fields', $this->fields);
     }
 
     public function getKind()

@@ -4,6 +4,7 @@ namespace PoP\GraphQL\FieldResolvers;
 use PoP\GraphQL\ObjectModels\TypeKinds;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\GraphQL\TypeResolvers\TypeTypeResolver;
+use PoP\GraphQL\TypeResolvers\FieldTypeResolver;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\GraphQL\ObjectModels\HasFieldsTypeInterface;
@@ -110,5 +111,14 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
         }
 
         return parent::resolveValue($typeResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
+    }
+
+    public function resolveFieldTypeResolverClass(TypeResolverInterface $typeResolver, string $fieldName, array $fieldArgs = []): ?string
+    {
+        switch ($fieldName) {
+            case 'fields':
+                return FieldTypeResolver::class;
+        }
+        return parent::resolveFieldTypeResolverClass($typeResolver, $fieldName, $fieldArgs);
     }
 }

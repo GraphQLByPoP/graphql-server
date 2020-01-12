@@ -19,13 +19,16 @@ abstract class AbstractType
         $typeDefinition = $typeRegistry->getTypeDefinition($name);
         $this->description = $typeDefinition[SchemaDefinition::ARGNAME_DESCRIPTION];
     }
-    public function getID() {
+    public function getID()
+    {
         return $this->name;
     }
-    public function getName() {
+    public function getName(): string
+    {
         return $this->name;
     }
-    public function getDescription() {
+    public function getDescription(): string
+    {
         return $this->description;
     }
     abstract public function getKind();

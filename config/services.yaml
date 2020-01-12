@@ -10,6 +10,10 @@ services:
         class: \PoP\GraphQL\Registries\TypeRegistry
         public: true
 
+    field_registry:
+        class: \PoP\GraphQL\Registries\FieldRegistry
+        public: true
+
     PoP\GraphQL\FieldResolvers\:
         resource: '../src/FieldResolvers/*'
         public: true
