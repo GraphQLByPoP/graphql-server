@@ -3,6 +3,7 @@ namespace PoP\GraphQL\FieldResolvers;
 
 use PoP\API\Schema\SchemaDefinition;
 use PoP\GraphQL\TypeResolvers\TypeTypeResolver;
+use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\GraphQL\TypeResolvers\SchemaTypeResolver;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
@@ -21,6 +22,7 @@ class SchemaFieldResolver extends AbstractDBDataFieldResolver
             'queryType',
             'mutationType',
             'subscriptionType',
+            'types',
         ];
     }
 
@@ -30,6 +32,7 @@ class SchemaFieldResolver extends AbstractDBDataFieldResolver
             'queryType' => SchemaDefinition::TYPE_ID,
             'mutationType' => SchemaDefinition::TYPE_ID,
             'subscriptionType' => SchemaDefinition::TYPE_ID,
+            'types' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_ID),
         ];
         return $types[$fieldName] ?? parent::getSchemaFieldType($typeResolver, $fieldName);
     }
@@ -41,6 +44,7 @@ class SchemaFieldResolver extends AbstractDBDataFieldResolver
             'queryType' => $translationAPI->__('The type, accessible from the root, that resolves queries', 'graphql'),
             'mutationType' => $translationAPI->__('The type, accessible from the root, that resolves mutations', 'graphql'),
             'subscriptionType' => $translationAPI->__('The type, accessible from the root, that resolves subscriptions', 'graphql'),
+            'types' => $translationAPI->__('All types registered in the data graph', 'graphql'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($typeResolver, $fieldName);
     }
@@ -61,6 +65,8 @@ class SchemaFieldResolver extends AbstractDBDataFieldResolver
                     return $typeResolverInstance->getTypeName();
                 }
                 return null;
+            case 'types':
+                return $schema->getTypes();
         }
 
         return parent::resolveValue($typeResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
@@ -72,6 +78,7 @@ class SchemaFieldResolver extends AbstractDBDataFieldResolver
             case 'queryType':
             case 'mutationType':
             case 'subscriptionType':
+            case 'types':
                 return TypeTypeResolver::class;
         }
 
