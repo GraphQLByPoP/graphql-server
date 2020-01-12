@@ -1,7 +1,7 @@
 <?php
 namespace PoP\GraphQL\ObjectModels;
 
-class TypeKind
+class TypeKinds
 {
     public const SCALAR = 'SCALAR';
     public const OBJECT = 'OBJECT';
