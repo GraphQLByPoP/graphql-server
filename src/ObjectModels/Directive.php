@@ -10,7 +10,7 @@ class Directive
     }
     public function getID()
     {
-        return $this->getName();
+        return $this->name;
     }
     public function getName(): string
     {
