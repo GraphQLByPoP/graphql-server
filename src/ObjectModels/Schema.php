@@ -61,7 +61,7 @@ class Schema
             $typeRegistry = TypeRegistryFacade::getInstance();
             foreach ($this->fullSchema[SchemaDefinition::ARGNAME_TYPES] as $typeResolverClass => $typeDefinition) {
                 $typeName = $typeDefinition[SchemaDefinition::ARGNAME_NAME];
-                $typeRegistry->registerType($typeName, $typeResolverClass);
+                $typeRegistry->registerType($typeName, $typeResolverClass, $typeDefinition);
             }
         }
     }

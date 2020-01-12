@@ -5,25 +5,31 @@ use PoP\ComponentModel\Facades\Instances\InstanceManagerFacade;
 
 class TypeRegistry implements TypeRegistryInterface {
 
-    protected $registry;
+    protected $registryNameClasses;
+    protected $registryNameDefinitions;
 
-    function registerType($name, $typeResolverClass): void
+    function registerType(string $name, string $typeResolverClass, array $typeDefinition): void
     {
-        $this->registry[$name] = $typeResolverClass;
+        $this->registryNameClasses[$name] = $typeResolverClass;
+        $this->registryNameDefinitions[$name] = $typeDefinition;
     }
-    function getTypeResolverClass($name): string
+    function getTypeResolverClass(string $name): string
     {
-        return $this->registry[$name];
+        return $this->registryNameClasses[$name];
     }
-    function getTypeResolverInstance($name): object
+    function getTypeResolverInstance(string $name): object
     {
         $instanceManager = InstanceManagerFacade::getInstance();
         $typeResolverClass = $this->getTypeResolverClass($name);
         return $instanceManager->getInstance($typeResolverClass);
     }
+    function getTypeDefinition(string $name): array
+    {
+        return $this->registryNameDefinitions[$name];
+    }
     function getTypeNames(): array
     {
-        return array_keys($this->registry);
+        return array_keys($this->registryNameClasses);
     }
     function getTypeResolverInstances(): array
     {
