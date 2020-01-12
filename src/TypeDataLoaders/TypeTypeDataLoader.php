@@ -2,17 +2,21 @@
 namespace PoP\GraphQL\TypeDataLoaders;
 
 use PoP\GraphQL\ObjectModels\Type;
+use PoP\GraphQL\TypeResolvers\TypeTypeResolver;
 use PoP\ComponentModel\TypeDataLoaders\AbstractTypeDataLoader;
+use PoP\ComponentModel\TypeDataLoaders\UseObjectDictionaryTypeDataLoaderTrait;
 
 class TypeTypeDataLoader extends AbstractTypeDataLoader
 {
-    public function getObjects(array $ids): array
+    use UseObjectDictionaryTypeDataLoaderTrait;
+
+    protected function getTypeResolverClass(): string
     {
-        // Currently it deals only with the current site and nothing else
-        $ret = [];
-        foreach ($ids as $id) {
-            $ret[] = new Type($id);
-        }
-        return $ret;
+        return TypeTypeResolver::class;
+    }
+
+    protected function getTypeNewInstance($id): object
+    {
+        return new Type($id);
     }
 }
