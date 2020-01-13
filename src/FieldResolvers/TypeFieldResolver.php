@@ -141,13 +141,7 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
                 // From GraphQL spec (https://graphql.github.io/graphql-spec/draft/#sel-FAJbLACxCCCzCA_9R):
                 // "should be non-null for INTERFACE and UNION only, always null for the others"
                 if ($type instanceof HasPossibleTypesTypeInterface) {
-                    // Return the interfaces through their ID representation: Kind + Name
-                    return array_map(
-                        function($typeName) {
-                            return TypeUtils::getResolvableTypeID(TypeKinds::OBJECT, $typeName);
-                        },
-                        $type->getPossibleTypes()
-                    );
+                    return $type->getPossibleTypeIDs();
                 }
                 return null;
         }
