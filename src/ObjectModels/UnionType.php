@@ -17,7 +17,7 @@ class UnionType extends AbstractResolvableType implements HasPossibleTypesTypeIn
         $this->initPossibleTypes($name);
     }
 
-    public function getKind()
+    public function getKind(): string
     {
         return TypeKinds::UNION;
     }

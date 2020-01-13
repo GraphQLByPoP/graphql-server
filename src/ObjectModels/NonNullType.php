@@ -5,7 +5,7 @@ use PoP\GraphQL\ObjectModels\AbstractNestableTypesType;
 
 class NonNullType extends AbstractNestableTypesType
 {
-    public function getKind()
+    public function getKind(): string
     {
         return TypeKinds::NON_NULL;
     }

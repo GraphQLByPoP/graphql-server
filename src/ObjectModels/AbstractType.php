@@ -7,5 +7,5 @@ abstract class AbstractType
     {
         return $this->getKind();
     }
-    abstract public function getKind();
+    abstract public function getKind(): string;
 }

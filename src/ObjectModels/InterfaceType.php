@@ -27,7 +27,7 @@ class InterfaceType extends AbstractResolvableType implements HasFieldsTypeInter
         return $typeDefinition[SchemaDefinition::ARGNAME_FIELDS];
     }
 
-    public function getKind()
+    public function getKind(): string
     {
         return TypeKinds::INTERFACE;
     }

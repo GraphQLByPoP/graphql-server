@@ -15,6 +15,7 @@ use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\GraphQL\ObjectModels\HasPossibleTypesTypeInterface;
 use PoP\ComponentModel\FieldResolvers\AbstractDBDataFieldResolver;
 use PoP\ComponentModel\FieldResolvers\EnumTypeSchemaDefinitionResolverTrait;
+use PoP\GraphQL\ObjectModels\EnumType;
 
 class TypeFieldResolver extends AbstractDBDataFieldResolver
 {
@@ -34,6 +35,7 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
             'fields',
             'interfaces',
             'possibleTypes',
+            'enumValues',
         ];
     }
 
@@ -46,6 +48,7 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
             'fields' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_ID),
             'interfaces' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_ID),
             'possibleTypes' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_ID),
+            'enumValues' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_ID),
         ];
         return $types[$fieldName] ?? parent::getSchemaFieldType($typeResolver, $fieldName);
     }
@@ -78,6 +81,7 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
             'fields' => $translationAPI->__('Type\'s fields (available for Object and Interface types only) as defined by the GraphQL spec (https://graphql.github.io/graphql-spec/draft/#sel-FAJbLAC3BBCnCA8pY)', 'graphql'),
             'interfaces' => $translationAPI->__('Type\'s interfaces (available for Object type only) as defined by the GraphQL spec (https://graphql.github.io/graphql-spec/draft/#sel-FAJbLACpCBCxCA7tB)', 'graphql'),
             'possibleTypes' => $translationAPI->__('Type\'s possible types (available for Interface and Union types only) as defined by the GraphQL spec (https://graphql.github.io/graphql-spec/draft/#sel-FAJbLACzCBC7CA0vN)', 'graphql'),
+            'enuValues' => $translationAPI->__('Type\'s enum values (available for Enum type only) as defined by the GraphQL spec (https://graphql.github.io/graphql-spec/draft/#sel-FAJbLAC9CDD_CAA2lB)', 'graphql'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($typeResolver, $fieldName);
     }
@@ -87,6 +91,7 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
         $translationAPI = TranslationAPIFacade::getInstance();
         switch ($fieldName) {
             case 'fields':
+            case 'enumValues':
                 return [
                     [
                         SchemaDefinition::ARGNAME_NAME => 'includeDeprecated',
@@ -144,6 +149,14 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
                     return $type->getPossibleTypeIDs();
                 }
                 return null;
+            case 'enumValues':
+                // From GraphQL spec (https://graphql.github.io/graphql-spec/draft/#sel-FAJbLAC7CCC9CA2nT):
+                // "should be non-null for ENUM only, must be null for the others"
+                if ($type instanceof EnumType) {
+                    $includeDeprecated = $fieldArgs['includeDeprecated'] ?? false;
+                    return $type->getEnumValues($includeDeprecated);
+                }
+                return null;
         }
 
         return parent::resolveValue($typeResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
@@ -157,6 +170,8 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
             case 'interfaces':
             case 'possibleTypes':
                 return TypeTypeResolver::class;
+            // case 'enumValues':
+            //     return EnumValueTypeResolver::class;
         }
         return parent::resolveFieldTypeResolverClass($typeResolver, $fieldName, $fieldArgs);
     }

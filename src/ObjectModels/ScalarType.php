@@ -5,7 +5,7 @@ use PoP\GraphQL\ObjectModels\AbstractType;
 
 class ScalarType extends AbstractType
 {
-    public function getKind()
+    public function getKind(): string
     {
         return TypeKinds::SCALAR;
     }

@@ -51,7 +51,7 @@ class ObjectType extends AbstractResolvableType implements HasFieldsTypeInterfac
         );
     }
 
-    public function getKind()
+    public function getKind(): string
     {
         return TypeKinds::OBJECT;
     }
