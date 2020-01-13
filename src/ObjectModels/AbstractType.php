@@ -2,34 +2,29 @@
 namespace PoP\GraphQL\ObjectModels;
 
 use PoP\API\Schema\SchemaDefinition;
-use PoP\GraphQL\Facades\Registries\TypeRegistryFacade;
-
-// use PoP\ComponentModel\Facades\Instances\InstanceManagerFacade;
 
 abstract class AbstractType
 {
     protected $name;
-    protected $description;
     public function __construct(string $name)
     {
         $this->name = $name;
 
-        // Extract all the properties from the typeRegistry
-        $typeRegistry = TypeRegistryFacade::getInstance();
-        $typeDefinition = $typeRegistry->getTypeDefinition($name);
-        $this->description = $typeDefinition[SchemaDefinition::ARGNAME_DESCRIPTION];
+        // Extract properties (such as description) from the typeRegistry
+        $this->typeDefinition = $this->getTypeDefinition($name);
     }
     public function getID()
     {
-        return $this->name;
+        return TypeUtils::getID($this->getKind(), $this->name);
     }
     public function getName(): string
     {
         return $this->name;
     }
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
-        return $this->description;
+        return $this->typeDefinition[SchemaDefinition::ARGNAME_DESCRIPTION];
     }
     abstract public function getKind();
+    abstract public function getTypeDefinition(string $name): array;
 }

@@ -33,7 +33,7 @@ class Field
     {
         return $this->type;
     }
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }

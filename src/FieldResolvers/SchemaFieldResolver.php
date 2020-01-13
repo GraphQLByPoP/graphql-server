@@ -2,11 +2,13 @@
 namespace PoP\GraphQL\FieldResolvers;
 
 use PoP\API\Schema\SchemaDefinition;
-use PoP\GraphQL\TypeResolvers\DirectiveTypeResolver;
+use PoP\GraphQL\ObjectModels\TypeKinds;
+use PoP\GraphQL\ObjectModels\TypeUtils;
 use PoP\GraphQL\TypeResolvers\TypeTypeResolver;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\GraphQL\TypeResolvers\SchemaTypeResolver;
 use PoP\Translation\Facades\TranslationAPIFacade;
+use PoP\GraphQL\TypeResolvers\DirectiveTypeResolver;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\FieldResolvers\AbstractDBDataFieldResolver;
 
@@ -58,19 +60,25 @@ class SchemaFieldResolver extends AbstractDBDataFieldResolver
         $schema = $resultItem;
         switch ($fieldName) {
             case 'queryType':
-                return $schema->getQueryTypeResolverInstance()->getTypeName();
+                return TypeUtils::getID(TypeKinds::OBJECT, $schema->getQueryTypeResolverInstance()->getTypeName());
             case 'mutationType':
                 if ($typeResolverInstance = $schema->getMutationTypeResolverInstance()) {
-                    return $typeResolverInstance->getTypeName();
+                    return TypeUtils::getID(TypeKinds::OBJECT, $typeResolverInstance->getTypeName());
                 }
                 return null;
             case 'subscriptionType':
                 if ($typeResolverInstance = $schema->getSubscriptionTypeResolverInstance()) {
-                    return $typeResolverInstance->getTypeName();
+                    return TypeUtils::getID(TypeKinds::OBJECT, $typeResolverInstance->getTypeName());
                 }
                 return null;
             case 'types':
-                return $schema->getTypes();
+                // Return the interfaces through their ID representation: Kind + Name
+                return array_map(
+                    function($typeName) {
+                        return TypeUtils::getID(TypeKinds::OBJECT, $typeName);
+                    },
+                    $schema->getTypes()
+                );
             case 'directives':
                 return $schema->getDirectives();
         }

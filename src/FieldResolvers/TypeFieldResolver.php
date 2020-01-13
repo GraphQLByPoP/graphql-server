@@ -12,6 +12,7 @@ use PoP\GraphQL\ObjectModels\HasInterfacesTypeInterface;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\FieldResolvers\AbstractDBDataFieldResolver;
 use PoP\ComponentModel\FieldResolvers\EnumTypeSchemaDefinitionResolverTrait;
+use PoP\GraphQL\ObjectModels\TypeUtils;
 
 class TypeFieldResolver extends AbstractDBDataFieldResolver
 {
@@ -116,7 +117,13 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
                 // From GraphQL spec (https://graphql.github.io/graphql-spec/draft/#sel-FAJbLACnCCCpCA4yV):
                 // "should be non-null for OBJECT only, must be null for the others"
                 if ($type instanceof HasInterfacesTypeInterface) {
-                    return $type->getInterfaces();
+                    // Return the interfaces through their ID representation: Kind + Name
+                    return array_map(
+                        function($interfaceName) {
+                            return TypeUtils::getID(TypeKinds::INTERFACE, $interfaceName);
+                        },
+                        $type->getInterfaces()
+                    );
                 }
                 return null;
         }

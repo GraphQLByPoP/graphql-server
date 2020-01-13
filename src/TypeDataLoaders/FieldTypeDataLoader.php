@@ -19,7 +19,6 @@ class FieldTypeDataLoader extends AbstractTypeDataLoader
     protected function getTypeNewInstance($id): object
     {
         // From the ID and the typeRegistry we obtain the type
-        // var_dump('id', $id);
         list(
             $type,
             $field
