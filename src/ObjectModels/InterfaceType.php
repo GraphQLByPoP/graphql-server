@@ -6,8 +6,9 @@ use PoP\GraphQL\ObjectModels\AbstractType;
 use PoP\GraphQL\ObjectModels\HasFieldsTypeTrait;
 use PoP\GraphQL\ObjectModels\HasFieldsTypeInterface;
 use PoP\GraphQL\Facades\Registries\InterfaceRegistryFacade;
+use PoP\GraphQL\ObjectModels\HasPossibleTypesTypeInterface;
 
-class InterfaceType extends AbstractType implements HasFieldsTypeInterface
+class InterfaceType extends AbstractType implements HasFieldsTypeInterface, HasPossibleTypesTypeInterface
 {
     use HasFieldsTypeTrait;
 
@@ -33,5 +34,10 @@ class InterfaceType extends AbstractType implements HasFieldsTypeInterface
     {
         $interfaceRegistry = InterfaceRegistryFacade::getInstance();
         return $interfaceRegistry->getInterfaceDefinition($name);
+    }
+
+    public function getPossibleTypes(): array
+    {
+        return [];
     }
 }

@@ -2,6 +2,7 @@
 namespace PoP\GraphQL\FieldResolvers;
 
 use PoP\GraphQL\ObjectModels\TypeKinds;
+use PoP\GraphQL\ObjectModels\TypeUtils;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\GraphQL\TypeResolvers\TypeTypeResolver;
 use PoP\GraphQL\TypeResolvers\FieldTypeResolver;
@@ -10,9 +11,9 @@ use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\GraphQL\ObjectModels\HasFieldsTypeInterface;
 use PoP\GraphQL\ObjectModels\HasInterfacesTypeInterface;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
+use PoP\GraphQL\ObjectModels\HasPossibleTypesTypeInterface;
 use PoP\ComponentModel\FieldResolvers\AbstractDBDataFieldResolver;
 use PoP\ComponentModel\FieldResolvers\EnumTypeSchemaDefinitionResolverTrait;
-use PoP\GraphQL\ObjectModels\TypeUtils;
 
 class TypeFieldResolver extends AbstractDBDataFieldResolver
 {
@@ -31,6 +32,7 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
             'description',
             'fields',
             'interfaces',
+            'possibleTypes',
         ];
     }
 
@@ -42,6 +44,7 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
             'description' => SchemaDefinition::TYPE_STRING,
             'fields' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_ID),
             'interfaces' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_ID),
+            'possibleTypes' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_ID),
         ];
         return $types[$fieldName] ?? parent::getSchemaFieldType($typeResolver, $fieldName);
     }
@@ -68,11 +71,12 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         $descriptions = [
-            'kind' => $translationAPI->__('Type\'s kind', 'graphql'),
-            'name' => $translationAPI->__('Type\'s name', 'graphql'),
-            'description' => $translationAPI->__('Type\'s description', 'graphql'),
-            'fields' => $translationAPI->__('Type\'s fields', 'graphql'),
-            'interfaces' => $translationAPI->__('Type\'s interfaces', 'graphql'),
+            'kind' => $translationAPI->__('Type\'s kind as defined by the GraphQL spec (https://graphql.github.io/graphql-spec/draft/#sel-FAJbLACqBBCvBAtrC)', 'graphql'),
+            'name' => $translationAPI->__('Type\'s name as defined by the GraphQL spec (https://graphql.github.io/graphql-spec/draft/#sel-FAJbLACvBBCyBH6rd)', 'graphql'),
+            'description' => $translationAPI->__('Type\'s description', 'graphqlas defined by the GraphQL spec (https://graphql.github.io/graphql-spec/draft/#sel-FAJbLACyBIC1BHnjL)'),
+            'fields' => $translationAPI->__('Type\'s fields (available for Object and Interface types only) as defined by the GraphQL spec (https://graphql.github.io/graphql-spec/draft/#sel-FAJbLAC3BBCnCA8pY)', 'graphql'),
+            'interfaces' => $translationAPI->__('Type\'s interfaces (available for Object type only) as defined by the GraphQL spec (https://graphql.github.io/graphql-spec/draft/#sel-FAJbLACpCBCxCA7tB)', 'graphql'),
+            'possibleTypes' => $translationAPI->__('Type\'s possible types (available for Interface and Union types only) as defined by the GraphQL spec (https://graphql.github.io/graphql-spec/draft/#sel-FAJbLACzCBC7CA0vN)', 'graphql'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($typeResolver, $fieldName);
     }
@@ -126,6 +130,19 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
                     );
                 }
                 return null;
+            case 'possibleTypes':
+                // From GraphQL spec (https://graphql.github.io/graphql-spec/draft/#sel-FAJbLACxCCCzCA_9R):
+                // "should be non-null for INTERFACE and UNION only, always null for the others"
+                if ($type instanceof HasPossibleTypesTypeInterface) {
+                    // Return the interfaces through their ID representation: Kind + Name
+                    return array_map(
+                        function($typeName) {
+                            return TypeUtils::getID(TypeKinds::OBJECT, $typeName);
+                        },
+                        $type->getPossibleTypes()
+                    );
+                }
+                return null;
         }
 
         return parent::resolveValue($typeResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
@@ -137,6 +154,7 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
             case 'fields':
                 return FieldTypeResolver::class;
             case 'interfaces':
+            case 'possibleTypes':
                 return TypeTypeResolver::class;
         }
         return parent::resolveFieldTypeResolverClass($typeResolver, $fieldName, $fieldArgs);
