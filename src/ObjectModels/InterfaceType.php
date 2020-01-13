@@ -5,12 +5,13 @@ use PoP\API\Schema\SchemaDefinition;
 use PoP\GraphQL\ObjectModels\AbstractType;
 use PoP\GraphQL\ObjectModels\HasFieldsTypeTrait;
 use PoP\GraphQL\ObjectModels\HasFieldsTypeInterface;
+use PoP\GraphQL\ObjectModels\HasPossibleTypesTypeTrait;
 use PoP\GraphQL\Facades\Registries\InterfaceRegistryFacade;
 use PoP\GraphQL\ObjectModels\HasPossibleTypesTypeInterface;
 
 class InterfaceType extends AbstractType implements HasFieldsTypeInterface, HasPossibleTypesTypeInterface
 {
-    use HasFieldsTypeTrait;
+    use HasFieldsTypeTrait, HasPossibleTypesTypeTrait;
 
     protected $possibleTypes;
 
@@ -37,16 +38,5 @@ class InterfaceType extends AbstractType implements HasFieldsTypeInterface, HasP
     {
         $interfaceRegistry = InterfaceRegistryFacade::getInstance();
         return $interfaceRegistry->getInterfaceDefinition($name);
-    }
-
-    protected function initPossibleTypes(string $name): void
-    {
-        $typeDefinition = $this->getTypeDefinition($name);
-        $this->possibleTypes = $typeDefinition[SchemaDefinition::ARGNAME_POSSIBLE_TYPES];
-    }
-
-    public function getPossibleTypes(): array
-    {
-        return $this->possibleTypes;
     }
 }
