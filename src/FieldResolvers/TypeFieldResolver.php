@@ -8,6 +8,7 @@ use PoP\GraphQL\TypeResolvers\FieldTypeResolver;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\GraphQL\ObjectModels\HasFieldsTypeInterface;
+use PoP\GraphQL\ObjectModels\HasInterfacesTypeInterface;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\FieldResolvers\AbstractDBDataFieldResolver;
 use PoP\ComponentModel\FieldResolvers\EnumTypeSchemaDefinitionResolverTrait;
@@ -28,6 +29,7 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
             'name',
             'description',
             'fields',
+            'interfaces',
         ];
     }
 
@@ -38,6 +40,7 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
             'name' => SchemaDefinition::TYPE_STRING,
             'description' => SchemaDefinition::TYPE_STRING,
             'fields' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_ID),
+            'interfaces' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_ID),
         ];
         return $types[$fieldName] ?? parent::getSchemaFieldType($typeResolver, $fieldName);
     }
@@ -68,6 +71,7 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
             'name' => $translationAPI->__('Type\'s name', 'graphql'),
             'description' => $translationAPI->__('Type\'s description', 'graphql'),
             'fields' => $translationAPI->__('Type\'s fields', 'graphql'),
+            'interfaces' => $translationAPI->__('Type\'s interfaces', 'graphql'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($typeResolver, $fieldName);
     }
@@ -108,6 +112,13 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
                     return $type->getFields($includeDeprecated);
                 }
                 return null;
+            case 'interfaces':
+                // From GraphQL spec (https://graphql.github.io/graphql-spec/draft/#sel-FAJbLACnCCCpCA4yV):
+                // "should be non-null for OBJECT only, must be null for the others"
+                if ($type instanceof HasInterfacesTypeInterface) {
+                    return $type->getInterfaces();
+                }
+                return null;
         }
 
         return parent::resolveValue($typeResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
@@ -118,6 +129,8 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
         switch ($fieldName) {
             case 'fields':
                 return FieldTypeResolver::class;
+            case 'interfaces':
+                return TypeTypeResolver::class;
         }
         return parent::resolveFieldTypeResolverClass($typeResolver, $fieldName, $fieldArgs);
     }

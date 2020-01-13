@@ -3,10 +3,12 @@ namespace PoP\GraphQL\ObjectModels;
 
 use PoP\API\Schema\SchemaDefinition;
 use PoP\GraphQL\ObjectModels\AbstractType;
+use PoP\GraphQL\ObjectModels\HasFieldsTypeInterface;
 use PoP\GraphQL\Facades\Registries\TypeRegistryFacade;
 use PoP\GraphQL\Facades\Registries\FieldRegistryFacade;
+use PoP\GraphQL\ObjectModels\HasInterfacesTypeInterface;
 
-class ObjectType extends AbstractType implements HasFieldsTypeInterface
+class ObjectType extends AbstractType implements HasFieldsTypeInterface, HasInterfacesTypeInterface
 {
     protected $fields;
     public function __construct(string $name)
@@ -53,5 +55,10 @@ class ObjectType extends AbstractType implements HasFieldsTypeInterface
             );
         }
         return array_keys($fields);
+    }
+
+    public function getInterfaces(): array
+    {
+        return [];
     }
 }
