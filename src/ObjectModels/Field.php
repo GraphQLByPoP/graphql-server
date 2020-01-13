@@ -8,6 +8,7 @@ use PoP\GraphQL\ObjectModels\NonNullType;
 use PoP\GraphQL\ObjectModels\AbstractType;
 use PoP\GraphQL\ObjectModels\AbstractResolvableType;
 use PoP\GraphQL\Facades\Registries\FieldRegistryFacade;
+use PoP\GraphQL\Facades\Registries\TypeRegistryFacade;
 
 class Field
 {
@@ -93,8 +94,10 @@ class Field
             return new ScalarType($type);
         }
 
-        // Otherwise, it's either a Union or an Object
-        if ($this->fieldDefinition[SchemaDefinition::ARGNAME_IS_UNION]) {
+        // Otherwise, it's either a Union or an Object. Find out from the TypeRegistry
+        $typeRegistry = TypeRegistryFacade::getInstance();
+        $typeDefinition = $typeRegistry->getTypeDefinition($type);
+        if ($typeDefinition[SchemaDefinition::ARGNAME_IS_UNION]) {
             return new UnionType($type);
         }
         return new ObjectType($type);
