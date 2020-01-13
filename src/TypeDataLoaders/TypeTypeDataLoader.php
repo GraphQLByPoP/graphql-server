@@ -2,9 +2,14 @@
 namespace PoP\GraphQL\TypeDataLoaders;
 
 use InvalidArgumentException;
+use PoP\GraphQL\ObjectModels\EnumType;
+use PoP\GraphQL\ObjectModels\ListType;
 use PoP\GraphQL\ObjectModels\TypeKinds;
 use PoP\GraphQL\ObjectModels\TypeUtils;
+use PoP\GraphQL\ObjectModels\UnionType;
 use PoP\GraphQL\ObjectModels\ObjectType;
+use PoP\GraphQL\ObjectModels\ScalarType;
+use PoP\GraphQL\ObjectModels\NonNullType;
 use PoP\GraphQL\ObjectModels\InterfaceType;
 use PoP\GraphQL\TypeResolvers\TypeTypeResolver;
 use PoP\Translation\Facades\TranslationAPIFacade;
@@ -22,15 +27,29 @@ class TypeTypeDataLoader extends AbstractTypeDataLoader
 
     protected function getTypeNewInstance($id): object
     {
-        list(
-            $kind,
-            $name
-        ) = TypeUtils::getKindAndName($id);
+        $kind = TypeUtils::extractKindFromID($id);
         switch ($kind) {
             case TypeKinds::OBJECT:
+                $name = TypeUtils::extractNameFromID($id);
                 return new ObjectType($name);
             case TypeKinds::INTERFACE:
+                $name = TypeUtils::extractNameFromID($id);
                 return new InterfaceType($name);
+            case TypeKinds::UNION:
+                $name = TypeUtils::extractNameFromID($id);
+                return new UnionType($name);
+            case TypeKinds::SCALAR:
+                return new ScalarType();
+            case TypeKinds::ENUM:
+                return new EnumType();
+            // case TypeKinds::INPUT_OBJECT:
+            //     return new InputObjectType();
+            case TypeKinds::LIST:
+                $nestedTypes = TypeUtils::extractNestedTypesFromID($id);
+                return new ListType($nestedTypes);
+            case TypeKinds::NON_NULL:
+                $nestedTypes = TypeUtils::extractNestedTypesFromID($id);
+                return new NonNullType($nestedTypes);
         }
 
         $translationAPI = TranslationAPIFacade::getInstance();
@@ -41,7 +60,13 @@ class TypeTypeDataLoader extends AbstractTypeDataLoader
                 $id,
                 implode($translationAPI->__('\', \''), [
                     TypeKinds::OBJECT,
-                    TypeKinds::INTERFACE
+                    TypeKinds::INTERFACE,
+                    TypeKinds::UNION,
+                    TypeKinds::SCALAR,
+                    TypeKinds::ENUM,
+                    // TypeKinds::INPUT_OBJECT,
+                    TypeKinds::LIST,
+                    TypeKinds::NON_NULL,
                 ])
             )
         );

@@ -8,7 +8,7 @@ class TypeRegistry implements TypeRegistryInterface {
     protected $globalFields;
     protected $globalConnections;
     protected $globalDirectives;
-    protected $registryNameClasses;
+    protected $registryNameResolverClasses;
     protected $registryNameDefinitions;
 
     function setGlobalFields(array $fields): void
@@ -38,12 +38,12 @@ class TypeRegistry implements TypeRegistryInterface {
 
     function registerType(string $name, string $typeResolverClass, array $typeDefinition): void
     {
-        $this->registryNameClasses[$name] = $typeResolverClass;
+        $this->registryNameResolverClasses[$name] = $typeResolverClass;
         $this->registryNameDefinitions[$name] = $typeDefinition;
     }
     function getTypeResolverClass(string $name): string
     {
-        return $this->registryNameClasses[$name];
+        return $this->registryNameResolverClasses[$name];
     }
     function getTypeResolverInstance(string $name): object
     {
@@ -55,9 +55,17 @@ class TypeRegistry implements TypeRegistryInterface {
     {
         return $this->registryNameDefinitions[$name];
     }
+    function getTypeNameResolverClasses(): array
+    {
+        return $this->registryNameResolverClasses;
+    }
+    function getTypeNameDefinitions(): array
+    {
+        return $this->registryNameDefinitions;
+    }
     function getTypeNames(): array
     {
-        return array_keys($this->registryNameClasses);
+        return array_keys($this->registryNameResolverClasses);
     }
     function getTypeResolverInstances(): array
     {

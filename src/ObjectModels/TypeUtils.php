@@ -1,16 +1,27 @@
 <?php
 namespace PoP\GraphQL\ObjectModels;
 
-use PoP\GraphQL\ObjectModels\AbstractType;
-
 class TypeUtils
 {
     public const ID_SEPARATOR = '|';
 
-    public static function getID(string $kind, string $name) {
+    public static function getResolvableTypeID(string $kind, string $name) {
         return $kind.self::ID_SEPARATOR.$name;
     }
-    public static function getKindAndName(string $id) {
-        return explode(self::ID_SEPARATOR, $id);
+    public static function getNestableTypeID(string $kind, string $name) {
+        return $kind.self::ID_SEPARATOR.$name;
+    }
+    public static function extractKindFromID(string $id) {
+        // The kind is always the first element before "|", or the whole ID if it doesn't require any extra information
+        $components = explode(self::ID_SEPARATOR, $id);
+        return $components[0];
+    }
+    public static function extractNameFromID(string $id) {
+        $components = explode(self::ID_SEPARATOR, $id);
+        return $components[1];
+    }
+    public static function extractNestedTypesFromID(string $id) {
+        $components = explode(self::ID_SEPARATOR, $id);
+        return $components[1];
     }
 }

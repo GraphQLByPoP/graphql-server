@@ -8,6 +8,7 @@ use PoP\GraphQL\TypeResolvers\TypeTypeResolver;
 use PoP\GraphQL\TypeResolvers\FieldTypeResolver;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
+use PoP\GraphQL\ObjectModels\AbstractResolvableType;
 use PoP\GraphQL\ObjectModels\HasFieldsTypeInterface;
 use PoP\GraphQL\ObjectModels\HasInterfacesTypeInterface;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
@@ -106,9 +107,15 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
             case 'kind':
                 return $type->getKind();
             case 'name':
-                return $type->getName();
+                if ($type instanceof AbstractResolvableType) {
+                    return $type->getName();
+                }
+                return null;
             case 'description':
-                return $type->getDescription();
+                if ($type instanceof AbstractResolvableType) {
+                    return $type->getDescription();
+                }
+                return null;
             case 'fields':
                 // From GraphQL spec (https://graphql.github.io/graphql-spec/draft/#sel-FAJbLAC1BJC3BAn6e):
                 // "should be non-null for OBJECT and INTERFACE only, must be null for the others"
@@ -124,7 +131,7 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
                     // Return the interfaces through their ID representation: Kind + Name
                     return array_map(
                         function($interfaceName) {
-                            return TypeUtils::getID(TypeKinds::INTERFACE, $interfaceName);
+                            return TypeUtils::getResolvableTypeID(TypeKinds::INTERFACE, $interfaceName);
                         },
                         $type->getInterfaces()
                     );
@@ -137,7 +144,7 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
                     // Return the interfaces through their ID representation: Kind + Name
                     return array_map(
                         function($typeName) {
-                            return TypeUtils::getID(TypeKinds::OBJECT, $typeName);
+                            return TypeUtils::getResolvableTypeID(TypeKinds::OBJECT, $typeName);
                         },
                         $type->getPossibleTypes()
                     );

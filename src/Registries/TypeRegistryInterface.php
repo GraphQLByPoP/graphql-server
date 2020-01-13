@@ -14,4 +14,6 @@ interface TypeRegistryInterface {
     function getTypeDefinition(string $name): array;
     function getTypeNames(): array;
     function getTypeResolverInstances(): array;
+    function getTypeNameDefinitions(): array;
+    function getTypeNameResolverClasses(): array;
 }

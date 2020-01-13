@@ -2,14 +2,14 @@
 namespace PoP\GraphQL\ObjectModels;
 
 use PoP\API\Schema\SchemaDefinition;
-use PoP\GraphQL\ObjectModels\AbstractType;
+use PoP\GraphQL\ObjectModels\AbstractResolvableType;
 use PoP\GraphQL\ObjectModels\HasFieldsTypeTrait;
 use PoP\GraphQL\ObjectModels\HasFieldsTypeInterface;
 use PoP\GraphQL\Facades\Registries\TypeRegistryFacade;
 use PoP\GraphQL\ObjectModels\HasInterfacesTypeInterface;
 use PoP\GraphQL\Facades\Registries\InterfaceRegistryFacade;
 
-class ObjectType extends AbstractType implements HasFieldsTypeInterface, HasInterfacesTypeInterface
+class ObjectType extends AbstractResolvableType implements HasFieldsTypeInterface, HasInterfacesTypeInterface
 {
     use HasFieldsTypeTrait;
 
@@ -46,7 +46,8 @@ class ObjectType extends AbstractType implements HasFieldsTypeInterface, HasInte
             $typeRegistry->getGlobalFields(),
             $typeRegistry->getGlobalConnections(),
             $typeDefinition[SchemaDefinition::ARGNAME_FIELDS],
-            $typeDefinition[SchemaDefinition::ARGNAME_CONNECTIONS]
+            // Connections can be null
+            $typeDefinition[SchemaDefinition::ARGNAME_CONNECTIONS] ?? []
         );
     }
 

@@ -43,7 +43,7 @@ class Schema
                 'deep' => true,
                 'shape' => SchemaDefinition::ARGVALUE_SCHEMA_SHAPE_FLAT,
                 'compressed' => true,
-                'typeAsSDL' => false,
+                'typeAsSDL' => true,
                 'readable' => true,
             ];
             $options = [
@@ -81,6 +81,26 @@ class Schema
 
         $typeRegistry = TypeRegistryFacade::getInstance();
         return $typeRegistry->getTypeNames();
+    }
+    /**
+     * Return the types through their ID representation: Kind + Name
+     *
+     * @return void
+     */
+    public function getTypeIDs()
+    {
+        // Lazy init the fullSchema
+        $this->maybeInitializeFullSchema();
+
+        $typeRegistry = TypeRegistryFacade::getInstance();
+        $typeIDs = [];
+        foreach ($typeRegistry->getTypeNameDefinitions() as $typeName => $typeDefinition) {
+            $typeKind = $typeDefinition[SchemaDefinition::ARGNAME_IS_UNION] ?
+                TypeKinds::UNION :
+                TypeKinds::OBJECT;
+            $typeIDs[] = TypeUtils::getResolvableTypeID($typeKind, $typeName);
+        }
+        return $typeIDs;
     }
     public function getDirectives()
     {

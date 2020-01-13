@@ -60,25 +60,19 @@ class SchemaFieldResolver extends AbstractDBDataFieldResolver
         $schema = $resultItem;
         switch ($fieldName) {
             case 'queryType':
-                return TypeUtils::getID(TypeKinds::OBJECT, $schema->getQueryTypeResolverInstance()->getTypeName());
+                return TypeUtils::getResolvableTypeID(TypeKinds::OBJECT, $schema->getQueryTypeResolverInstance()->getTypeName());
             case 'mutationType':
                 if ($typeResolverInstance = $schema->getMutationTypeResolverInstance()) {
-                    return TypeUtils::getID(TypeKinds::OBJECT, $typeResolverInstance->getTypeName());
+                    return TypeUtils::getResolvableTypeID(TypeKinds::OBJECT, $typeResolverInstance->getTypeName());
                 }
                 return null;
             case 'subscriptionType':
                 if ($typeResolverInstance = $schema->getSubscriptionTypeResolverInstance()) {
-                    return TypeUtils::getID(TypeKinds::OBJECT, $typeResolverInstance->getTypeName());
+                    return TypeUtils::getResolvableTypeID(TypeKinds::OBJECT, $typeResolverInstance->getTypeName());
                 }
                 return null;
             case 'types':
-                // Return the interfaces through their ID representation: Kind + Name
-                return array_map(
-                    function($typeName) {
-                        return TypeUtils::getID(TypeKinds::OBJECT, $typeName);
-                    },
-                    $schema->getTypes()
-                );
+                return $schema->getTypeIDs();
             case 'directives':
                 return $schema->getDirectives();
         }
