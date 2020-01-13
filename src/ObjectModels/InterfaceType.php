@@ -12,11 +12,14 @@ class InterfaceType extends AbstractType implements HasFieldsTypeInterface, HasP
 {
     use HasFieldsTypeTrait;
 
+    protected $possibleTypes;
+
     public function __construct(string $name)
     {
         parent::__construct($name);
 
         $this->initFields($name);
+        $this->initPossibleTypes($name);
     }
 
     protected function getFieldDefinitions(string $name)
@@ -36,8 +39,14 @@ class InterfaceType extends AbstractType implements HasFieldsTypeInterface, HasP
         return $interfaceRegistry->getInterfaceDefinition($name);
     }
 
+    protected function initPossibleTypes(string $name): void
+    {
+        $typeDefinition = $this->getTypeDefinition($name);
+        $this->possibleTypes = $typeDefinition[SchemaDefinition::ARGNAME_POSSIBLE_TYPES];
+    }
+
     public function getPossibleTypes(): array
     {
-        return [];
+        return $this->possibleTypes;
     }
 }
