@@ -13,8 +13,8 @@ class ObjectType extends AbstractType implements HasFieldsTypeInterface, HasInte
 {
     use HasFieldsTypeTrait;
 
-    protected $fields;
     protected $interfaces;
+
     public function __construct(string $name)
     {
         parent::__construct($name);
@@ -40,7 +40,7 @@ class ObjectType extends AbstractType implements HasFieldsTypeInterface, HasInte
     {
         // Extract all the properties from the typeRegistry
         $typeRegistry = TypeRegistryFacade::getInstance();
-        $typeDefinition = $typeRegistry->getTypeDefinition($name);
+        $typeDefinition = $this->getTypeDefinition($name);
         // Include the global fields and the ones specific to this type
         return array_merge(
             $typeRegistry->getGlobalFields(),
@@ -57,23 +57,6 @@ class ObjectType extends AbstractType implements HasFieldsTypeInterface, HasInte
     {
         $typeRegistry = TypeRegistryFacade::getInstance();
         return $typeRegistry->getTypeDefinition($name);
-    }
-
-    public function getFields(bool $includeDeprecated = false): array
-    {
-        if ($includeDeprecated) {
-            // Include all fields
-            $fields = $this->fields;
-        } else {
-            // Filter out the deprecated fields
-            $fields = array_filter(
-                $this->fields,
-                function($fieldDefinition) {
-                    return !$fieldDefinition[SchemaDefinition::ARGNAME_DEPRECATED];
-                }
-            );
-        }
-        return array_keys($fields);
     }
 
     public function getInterfaces(): array
