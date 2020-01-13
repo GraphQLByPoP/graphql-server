@@ -3,13 +3,11 @@ namespace PoP\GraphQL\ObjectModels;
 
 use PoP\API\Schema\SchemaDefinition;
 use PoP\GraphQL\ObjectModels\AbstractType;
-use PoP\GraphQL\ObjectModels\InterfaceType;
 use PoP\GraphQL\ObjectModels\HasFieldsTypeInterface;
 use PoP\GraphQL\Facades\Registries\TypeRegistryFacade;
 use PoP\GraphQL\Facades\Registries\FieldRegistryFacade;
 use PoP\GraphQL\ObjectModels\HasInterfacesTypeInterface;
 use PoP\GraphQL\Facades\Registries\InterfaceRegistryFacade;
-use PoP\ComponentModel\Facades\Container\ObjectDictionaryFacade;
 
 class ObjectType extends AbstractType implements HasFieldsTypeInterface, HasInterfacesTypeInterface
 {
@@ -38,16 +36,10 @@ class ObjectType extends AbstractType implements HasFieldsTypeInterface, HasInte
 
         // Register the interfaces in the registry
         $interfaceRegistry = InterfaceRegistryFacade::getInstance();
-        // $objectDictionary = ObjectDictionaryFacade::getInstance();
         $interfaceDefinitions = $typeDefinition[SchemaDefinition::ARGNAME_INTERFACES];
         $this->interfaces = [];
         foreach ($interfaceDefinitions as $interfaceResolverClass => $interfaceDefinition) {
             $interfaceName = $interfaceDefinition[SchemaDefinition::ARGNAME_NAME];
-            // if (!$objectDictionary->has(InterfaceType::class, $interfaceName)) {
-            //     $objectDictionary->set(InterfaceType::class, $interfaceName, new InterfaceType($interfaceName));
-            // }
-            // $interfaceTypeObject = $objectDictionary->get(InterfaceType::class, $interfaceName);
-            // $interfaceRegistry->registerInterface($interfaceTypeObject, $interfaceName, $interfaceDefinition);
             $interfaceRegistry->registerType($interfaceName, $interfaceResolverClass, $interfaceDefinition);
             $this->interfaces[$interfaceName] = $interfaceDefinition;
         }
@@ -85,17 +77,4 @@ class ObjectType extends AbstractType implements HasFieldsTypeInterface, HasInte
     {
         return array_keys($this->interfaces);
     }
-    // public function getInterfaces(): array
-    // {
-    //     $interfaces = [];
-    //     // For each interface name, create a new InterfaceType object, if it doesn't already exist
-    //     $objectDictionary = ObjectDictionaryFacade::getInstance();
-    //     foreach ($this->typeDefinition[SchemaDefinition::ARGNAME_INTERFACES] as $interfaceName => $interfaceDefinition) {
-    //         if (!$objectDictionary->has(InterfaceType::class, $interfaceName)) {
-    //             $objectDictionary->set(InterfaceType::class, $interfaceName, new InterfaceType($interfaceName));
-    //         }
-    //         $interfaces[] = $objectDictionary->get(InterfaceType::class, $interfaceName);
-    //     }
-    //     return $interfaces;
-    // }
 }
