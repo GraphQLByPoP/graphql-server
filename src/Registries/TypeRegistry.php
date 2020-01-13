@@ -6,6 +6,7 @@ use PoP\ComponentModel\Facades\Instances\InstanceManagerFacade;
 class TypeRegistry implements TypeRegistryInterface {
 
     protected $globalFields;
+    protected $globalConnections;
     protected $globalDirectives;
     protected $registryNameClasses;
     protected $registryNameDefinitions;
@@ -14,6 +15,10 @@ class TypeRegistry implements TypeRegistryInterface {
     {
         $this->globalFields = $fields;
     }
+    function setGlobalConnections(array $connections): void
+    {
+        $this->globalConnections = $connections;
+    }
     function setGlobalDirectives(array $directives): void
     {
         $this->globalDirectives = $directives;
@@ -21,6 +26,10 @@ class TypeRegistry implements TypeRegistryInterface {
     function getGlobalFields(): array
     {
         return $this->globalFields;
+    }
+    function getGlobalConnections(): array
+    {
+        return $this->globalConnections;
     }
     function getGlobalDirectives(): array
     {

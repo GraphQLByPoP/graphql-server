@@ -44,7 +44,9 @@ class ObjectType extends AbstractType implements HasFieldsTypeInterface, HasInte
         // Include the global fields and the ones specific to this type
         return array_merge(
             $typeRegistry->getGlobalFields(),
-            $typeDefinition[SchemaDefinition::ARGNAME_FIELDS]
+            $typeRegistry->getGlobalConnections(),
+            $typeDefinition[SchemaDefinition::ARGNAME_FIELDS],
+            $typeDefinition[SchemaDefinition::ARGNAME_CONNECTIONS]
         );
     }
 

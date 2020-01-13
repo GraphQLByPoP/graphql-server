@@ -60,10 +60,10 @@ class Schema
             // Register all the fields/directives/types in the TypeRegistry
             $typeRegistry = TypeRegistryFacade::getInstance();
             $typeRegistry->setGlobalFields(
-                array_merge(
-                    $this->fullSchema[SchemaDefinition::ARGNAME_GLOBAL_FIELDS],
-                    $this->fullSchema[SchemaDefinition::ARGNAME_GLOBAL_CONNECTIONS]
-                )
+                $this->fullSchema[SchemaDefinition::ARGNAME_GLOBAL_FIELDS]
+            );
+            $typeRegistry->setGlobalConnections(
+                $this->fullSchema[SchemaDefinition::ARGNAME_GLOBAL_CONNECTIONS]
             );
             $typeRegistry->setGlobalDirectives(
                 $this->fullSchema[SchemaDefinition::ARGNAME_GLOBAL_DIRECTIVES]
