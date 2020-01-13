@@ -13,8 +13,6 @@ class InterfaceType extends AbstractType implements HasFieldsTypeInterface, HasP
 {
     use HasFieldsTypeTrait, HasPossibleTypesTypeTrait;
 
-    protected $possibleTypes;
-
     public function __construct(string $name)
     {
         parent::__construct($name);
