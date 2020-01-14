@@ -66,4 +66,19 @@ class ObjectType extends AbstractResolvableType implements HasFieldsTypeInterfac
     {
         return array_keys($this->interfaces);
     }
+
+    /**
+     * Return the interfaces through their ID representation: Kind + Name
+     *
+     * @return array
+     */
+    public function getInterfaceIDs(): array
+    {
+        return array_map(
+            function($interfaceName) {
+                return TypeUtils::getResolvableTypeID(TypeKinds::INTERFACE, $interfaceName);
+            },
+            $this->getInterfaces()
+        );
+    }
 }
