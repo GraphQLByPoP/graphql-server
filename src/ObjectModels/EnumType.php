@@ -3,6 +3,7 @@ namespace PoP\GraphQL\ObjectModels;
 
 use PoP\GraphQL\ObjectModels\AbstractType;
 use PoP\ComponentModel\Schema\SchemaDefinition;
+use PoP\ComponentModel\Schema\SchemaHelpers;
 use PoP\GraphQL\Facades\Registries\FieldRegistryFacade;
 
 class EnumType extends AbstractType
@@ -30,6 +31,10 @@ class EnumType extends AbstractType
             $fieldRegistry = FieldRegistryFacade::getInstance();
             $fieldDefinition = $fieldRegistry->getFieldDefinition($this->fieldID);
             $this->enumValues = $fieldDefinition[SchemaDefinition::ARGNAME_ENUMVALUES];
+        }
+        // Filter deprecated
+        if (!$includeDeprecated) {
+            return SchemaHelpers::removeDeprecatedEnumValuesFromSchemaDefinition($this->enumValues);
         }
         return $this->enumValues;
     }
