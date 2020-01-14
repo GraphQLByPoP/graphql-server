@@ -20,7 +20,7 @@ class EnumValueFieldResolver extends AbstractDBDataFieldResolver
             'name',
             'description',
             'isDeprecated',
-            'deprecationReason',
+            'deprecatedReason',
         ];
     }
 
@@ -30,7 +30,7 @@ class EnumValueFieldResolver extends AbstractDBDataFieldResolver
             'name' => SchemaDefinition::TYPE_STRING,
             'description' => SchemaDefinition::TYPE_STRING,
             'isDeprecated' => SchemaDefinition::TYPE_BOOL,
-            'deprecationReason' => SchemaDefinition::TYPE_STRING,
+            'deprecatedReason' => SchemaDefinition::TYPE_STRING,
         ];
         return $types[$fieldName] ?? parent::getSchemaFieldType($typeResolver, $fieldName);
     }
@@ -42,7 +42,7 @@ class EnumValueFieldResolver extends AbstractDBDataFieldResolver
             'name' => $translationAPI->__('Enum value\'s name as defined by the GraphQL spec (https://graphql.github.io/graphql-spec/draft/#sel-FAJbLACvBBCyBH6rd)', 'graphql'),
             'description' => $translationAPI->__('Enum value\'s description', 'graphqlas defined by the GraphQL spec (https://graphql.github.io/graphql-spec/draft/#sel-FAJbLACyBIC1BHnjL)'),
             'isDeprecated' => $translationAPI->__('Is the enum value deprecated?', 'graphql'),
-            'deprecationReason' => $translationAPI->__('Why was the enum value deprecated?', 'graphql'),
+            'deprecatedReason' => $translationAPI->__('Why was the enum value deprecated?', 'graphql'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($typeResolver, $fieldName);
     }

@@ -1,19 +1,36 @@
 <?php
 namespace PoP\GraphQL\ObjectModels;
 
+use PoP\ComponentModel\Schema\SchemaDefinition;
+use PoP\GraphQL\Facades\Registries\FieldRegistryFacade;
+
 class EnumValueType {
+
+    protected $fieldID;
     protected $value;
-    public function __construct($value)
+    protected $enumValueDefinition;
+    public function __construct(string $fieldID, $value)
     {
+        $this->fieldID = $fieldID;
         $this->value = $value;
     }
     public function getID()
     {
-        return $this->getName();
+        return TypeUtils::getEnumValueID($this->fieldID, $this->value);
     }
     public function getValue()
     {
         return $this->value;
+    }
+
+    protected function maybeInitEnumValueDefinition(): void
+    {
+        if (is_null($this->enumValueDefinition)) {
+            // Extract all the properties from the fieldRegistry
+            $fieldRegistry = FieldRegistryFacade::getInstance();
+            $fieldDefinition = $fieldRegistry->getFieldDefinition($this->fieldID);
+            $this->enumValueDefinition = $fieldDefinition[SchemaDefinition::ARGNAME_ENUMVALUES][$this->getName()];
+        }
     }
     public function getName(): string
     {
@@ -21,14 +38,17 @@ class EnumValueType {
     }
     public function getDescription(): ?string
     {
-        return null;
+        $this->maybeInitEnumValueDefinition();
+        return $this->enumValueDefinition[SchemaDefinition::ARGNAME_DESCRIPTION];
     }
     public function isDeprecated(): bool
     {
-        return false;
+        $this->maybeInitEnumValueDefinition();
+        return $this->enumValueDefinition[SchemaDefinition::ARGNAME_DEPRECATED] ?? false;
     }
     public function getDeprecatedReason(): ?string
     {
-        return null;
+        $this->maybeInitEnumValueDefinition();
+        return $this->enumValueDefinition[SchemaDefinition::ARGNAME_DEPRECATIONDESCRIPTION];
     }
 }

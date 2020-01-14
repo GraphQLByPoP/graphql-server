@@ -5,6 +5,7 @@ use PoP\GraphQL\ObjectModels\EnumValueType;
 use PoP\GraphQL\TypeResolvers\EnumValueTypeResolver;
 use PoP\ComponentModel\TypeDataLoaders\AbstractTypeDataLoader;
 use PoP\ComponentModel\TypeDataLoaders\UseObjectDictionaryTypeDataLoaderTrait;
+use PoP\GraphQL\ObjectModels\TypeUtils;
 
 class EnumValueTypeDataLoader extends AbstractTypeDataLoader
 {
@@ -17,6 +18,10 @@ class EnumValueTypeDataLoader extends AbstractTypeDataLoader
 
     protected function getTypeNewInstance($id): object
     {
-        return new EnumValueType($id);
+        list(
+            $fieldID,
+            $value
+        ) = TypeUtils::extractFieldIDAndEnumValueFromID($id);
+        return new EnumValueType($fieldID, $value);
     }
 }

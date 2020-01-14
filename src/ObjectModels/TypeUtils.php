@@ -15,6 +15,10 @@ class TypeUtils
         // Add $fieldID at the end!!! Because it itself also contains "|", and we can't control it
         return $kind./*self::ID_SEPARATOR.$enumName.*/self::ID_SEPARATOR.$fieldID;
     }
+    public static function getEnumValueID(string $fieldID, string $value) {
+        // Add $fieldID at the end!!! Because it itself also contains "|", and we can't control it
+        return $value.self::ID_SEPARATOR.$fieldID;
+    }
     public static function extractKindFromID(string $id) {
         // The kind is always the first element before "|", or the whole ID if it doesn't require any extra information
         $components = explode(self::ID_SEPARATOR, $id);
@@ -42,5 +46,15 @@ class TypeUtils
         // $fieldID also contains "|", hence recalculate it as everything else after the enumName
         $components = explode(self::ID_SEPARATOR, $id);
         return substr($id, strlen($components[0])+strlen(self::ID_SEPARATOR));
+    }
+    public static function extractFieldIDAndEnumValueFromID(string $id) {
+        // $fieldID also contains "|", hence recalculate it as everything else after the enumName
+        $components = explode(self::ID_SEPARATOR, $id);
+        $value = $components[0];
+        $fieldID = substr($id, strlen($value)+strlen(self::ID_SEPARATOR));
+        return [
+            $fieldID,
+            $value
+        ];
     }
 }

@@ -35,6 +35,11 @@ class EnumType extends AbstractType
     }
     public function getEnumValueIDs(bool $includeDeprecated = false): array
     {
-        return array_keys($this->getEnumValues($includeDeprecated));
+        return array_map(
+            function($enumValue) {
+                return TypeUtils::getEnumValueID($this->fieldID, $enumValue);
+            },
+            array_keys($this->getEnumValues($includeDeprecated))
+        );
     }
 }
