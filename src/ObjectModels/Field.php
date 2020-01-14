@@ -35,7 +35,7 @@ class Field
         $this->type = $type;
         $this->name = $name;
 
-        // Extract all the properties from the typeRegistry
+        // Extract all the properties from the fieldRegistry
         $fieldRegistry = FieldRegistryFacade::getInstance();
         $id = $this->getID();
         $this->fieldDefinition = $fieldRegistry->getFieldDefinition($id);
@@ -71,8 +71,8 @@ class Field
 
         // Check if it is an enum type
         if ($type == SchemaDefinition::TYPE_ENUM) {
-            $enumValues = $this->fieldDefinition[SchemaDefinition::ARGNAME_ENUMVALUES];
-            return new EnumType($enumValues);
+            // $name = $this->fieldDefinition[SchemaDefinition::ARGNAME_NAME];
+            return new EnumType($this->getID()/*, $name*/);
         }
 
         // Check if it is any scalar

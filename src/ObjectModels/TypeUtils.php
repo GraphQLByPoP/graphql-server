@@ -11,8 +11,9 @@ class TypeUtils
     public static function getNestableTypeID(string $kind, string $name) {
         return $kind.self::ID_SEPARATOR.$name;
     }
-    public static function getEnumTypeID(string $kind, array $enumValues) {
-        return $kind.self::ID_SEPARATOR.serialize($enumValues);
+    public static function getEnumTypeID(string $kind, string $fieldID/*, string $enumName*/) {
+        // Add $fieldID at the end!!! Because it itself also contains "|", and we can't control it
+        return $kind./*self::ID_SEPARATOR.$enumName.*/self::ID_SEPARATOR.$fieldID;
     }
     public static function extractKindFromID(string $id) {
         // The kind is always the first element before "|", or the whole ID if it doesn't require any extra information
@@ -27,8 +28,19 @@ class TypeUtils
         $components = explode(self::ID_SEPARATOR, $id);
         return $components[1];
     }
-    public static function extractEnumValuesFromID(string $id) {
+    // public static function extractFieldIDAndEnumNameFromID(string $id) {
+    //     // $fieldID also contains "|", hence recalculate it as everything else after the enumName
+    //     $components = explode(self::ID_SEPARATOR, $id);
+    //     $enumName = $components[1];
+    //     $fieldID = substr($id, strlen($components[0])+strlen($components[1])+2*strlen(self::ID_SEPARATOR));
+    //     return [
+    //         $fieldID,
+    //         $enumName
+    //     ];
+    // }
+    public static function extractFieldIDFromID(string $id) {
+        // $fieldID also contains "|", hence recalculate it as everything else after the enumName
         $components = explode(self::ID_SEPARATOR, $id);
-        return unserialize($components[1]);
+        return substr($id, strlen($components[0])+strlen(self::ID_SEPARATOR));
     }
 }

@@ -41,8 +41,12 @@ class TypeTypeDataLoader extends AbstractTypeDataLoader
             case TypeKinds::SCALAR:
                 return new ScalarType();
             case TypeKinds::ENUM:
-                $enumValues = TypeUtils::extractEnumValuesFromID($id);
-                return new EnumType($enumValues);
+                // list(
+                //     $fieldID,
+                //     $enumName
+                // ) = TypeUtils::extractFieldIDAndEnumNameFromID($id);
+                $fieldID = TypeUtils::extractFieldIDFromID($id);
+                return new EnumType($fieldID/*, $enumName*/);
             // case TypeKinds::INPUT_OBJECT:
             //     return new InputObjectType();
             case TypeKinds::LIST:

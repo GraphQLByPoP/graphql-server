@@ -165,8 +165,8 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
             case 'interfaces':
             case 'possibleTypes':
                 return TypeTypeResolver::class;
-            case 'enumValues':
-                return EnumValueTypeResolver::class;
+            // case 'enumValues':
+            //     return EnumValueTypeResolver::class;
         }
         return parent::resolveFieldTypeResolverClass($typeResolver, $fieldName, $fieldArgs);
     }

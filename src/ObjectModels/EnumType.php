@@ -2,17 +2,22 @@
 namespace PoP\GraphQL\ObjectModels;
 
 use PoP\GraphQL\ObjectModels\AbstractType;
+use PoP\ComponentModel\Schema\SchemaDefinition;
+use PoP\GraphQL\Facades\Registries\FieldRegistryFacade;
 
 class EnumType extends AbstractType
 {
+    protected $fieldID;
+    // protected $name;
     protected $enumValues;
-    function __construct(array $enumValues)
+    function __construct(string $fieldID/*, string $name*/)
     {
-        $this->enumValues = $enumValues;
+        $this->fieldID = $fieldID;
+        // $this->name = $name;
     }
     public function getID()
     {
-        return TypeUtils::getEnumTypeID($this->getKind(), $this->enumValues);
+        return TypeUtils::getEnumTypeID($this->getKind(), $this->fieldID/*, $this->name*/);
     }
     public function getKind(): string
     {
@@ -20,15 +25,16 @@ class EnumType extends AbstractType
     }
     public function getEnumValues(bool $includeDeprecated = false): array
     {
+        if (is_null($this->enumValues)) {
+            // Extract all the properties from the fieldRegistry
+            $fieldRegistry = FieldRegistryFacade::getInstance();
+            $fieldDefinition = $fieldRegistry->getFieldDefinition($this->fieldID);
+            $this->enumValues = $fieldDefinition[SchemaDefinition::ARGNAME_ENUMVALUES];
+        }
         return $this->enumValues;
     }
     public function getEnumValueIDs(bool $includeDeprecated = false): array
     {
-        return array_map(
-            function($enumValueDefinition) {
-                return TypeUtils::getEnumTypeID(TypeKinds::ENUM, $enumValueDefinition);
-            },
-            $this->getEnumValues($includeDeprecated)
-        );
+        return array_keys($this->getEnumValues($includeDeprecated));
     }
 }
