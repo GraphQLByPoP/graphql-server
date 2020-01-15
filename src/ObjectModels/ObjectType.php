@@ -31,6 +31,7 @@ class ObjectType extends AbstractResolvableType implements HasFieldsTypeInterfac
         $this->interfaces = [];
         foreach ($interfaceDefinitions as $interfaceResolverClass => $interfaceDefinition) {
             $interfaceName = $interfaceDefinition[SchemaDefinition::ARGNAME_NAME];
+            // This same interface may have been registered already. It doesn't matter: re-registering it doesn't cause any side effect
             $interfaceRegistry->registerType($interfaceName, $interfaceResolverClass, $interfaceDefinition);
             $this->interfaces[$interfaceName] = $interfaceDefinition;
         }
