@@ -60,7 +60,7 @@ class TypeTypeDataLoader extends AbstractTypeDataLoader
         $translationAPI = TranslationAPIFacade::getInstance();
         throw new InvalidArgumentException(
             sprintf(
-            $translationAPI->__('Can\'t create a new \'type\' object, since kind \'%s\' is unsupported (as coming from ID \'%s\'). Only supported kinds are: \'%s\''),
+                $translationAPI->__('Can\'t create a new \'type\' object, since kind \'%s\' is unsupported (as coming from ID \'%s\'). Only supported kinds are: \'%s\''),
                 $kind,
                 $id,
                 implode($translationAPI->__('\', \''), [

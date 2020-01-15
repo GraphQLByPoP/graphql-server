@@ -4,6 +4,7 @@ namespace PoP\GraphQL\FieldResolvers;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\GraphQL\TypeResolvers\TypeTypeResolver;
 use PoP\GraphQL\TypeResolvers\FieldTypeResolver;
+use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\FieldResolvers\AbstractDBDataFieldResolver;
@@ -21,6 +22,7 @@ class FieldFieldResolver extends AbstractDBDataFieldResolver
             'name',
             'description',
             'type',
+            'args',
         ];
     }
 
@@ -30,6 +32,7 @@ class FieldFieldResolver extends AbstractDBDataFieldResolver
             'name' => SchemaDefinition::TYPE_STRING,
             'description' => SchemaDefinition::TYPE_STRING,
             'type' => SchemaDefinition::TYPE_STRING,
+            'args' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_ID),
         ];
         return $types[$fieldName] ?? parent::getSchemaFieldType($typeResolver, $fieldName);
     }
@@ -41,6 +44,7 @@ class FieldFieldResolver extends AbstractDBDataFieldResolver
             'name' => $translationAPI->__('Field\'s name', 'graphql'),
             'description' => $translationAPI->__('Field\'s description', 'graphql'),
             'type' => $translationAPI->__('Type to which the field belongs', 'graphql'),
+            'args' => $translationAPI->__('Field arguments', 'graphql'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($typeResolver, $fieldName);
     }
@@ -55,6 +59,8 @@ class FieldFieldResolver extends AbstractDBDataFieldResolver
                 return $field->getDescription();
             case 'type':
                 return $field->getType()->getID();
+            case 'args':
+                return $field->getArgIDs();
         }
 
         return parent::resolveValue($typeResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
@@ -65,6 +71,8 @@ class FieldFieldResolver extends AbstractDBDataFieldResolver
         switch ($fieldName) {
             case 'type':
                 return TypeTypeResolver::class;
+            // case 'args':
+            //     return InputObjectTypeResolver::class;
         }
         return parent::resolveFieldTypeResolverClass($typeResolver, $fieldName, $fieldArgs);
     }

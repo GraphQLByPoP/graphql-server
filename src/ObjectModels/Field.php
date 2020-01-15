@@ -12,6 +12,20 @@ use PoP\GraphQL\Facades\Registries\TypeRegistryFacade;
 
 class Field
 {
+    public const SCALAR_TYPES = [
+        SchemaDefinition::TYPE_OBJECT,
+        SchemaDefinition::TYPE_MIXED,
+        SchemaDefinition::TYPE_STRING,
+        SchemaDefinition::TYPE_INT,
+        SchemaDefinition::TYPE_FLOAT,
+        SchemaDefinition::TYPE_BOOL,
+        SchemaDefinition::TYPE_DATE,
+        SchemaDefinition::TYPE_TIME,
+        SchemaDefinition::TYPE_URL,
+        SchemaDefinition::TYPE_EMAIL,
+        SchemaDefinition::TYPE_IP,
+
+    ];
     /**
      * The type to which the field belongs
      *
@@ -30,6 +44,12 @@ class Field
      * @var array
      */
     protected $fieldDefinition;
+    /**
+     * Field arguments
+     *
+     * @var array
+     */
+    protected $args;
     public function __construct(AbstractResolvableType $type, string $name)
     {
         $this->type = $type;
@@ -57,53 +77,77 @@ class Field
     public function getType(): AbstractType
     {
         // The type to which the field resolves to
-        $type = $this->fieldDefinition[SchemaDefinition::ARGNAME_TYPE];
-
+        $typeName = $this->fieldDefinition[SchemaDefinition::ARGNAME_TYPE];
+        return $this->getTypeFromTypeName($typeName);
+    }
+    protected function getTypeFromTypeName(string $typeName): AbstractType
+    {
         // Check if it is non-null
-        if (SyntaxHelpers::isNonNullType($type)) {
-            return new NonNullType(SyntaxHelpers::getNonNullTypeNestedTypes($type));
+        if (SyntaxHelpers::isNonNullType($typeName)) {
+            return new NonNullType(SyntaxHelpers::getNonNullTypeNestedTypes($typeName));
         }
 
         // Check if it is an array
-        if (SyntaxHelpers::isListType($type)) {
-            return new ListType(SyntaxHelpers::getListTypeNestedTypes($type));
+        if (SyntaxHelpers::isListType($typeName)) {
+            return new ListType(SyntaxHelpers::getListTypeNestedTypes($typeName));
         }
 
         // Check if it is an enum type
-        if ($type == SchemaDefinition::TYPE_ENUM) {
+        if ($typeName == SchemaDefinition::TYPE_ENUM) {
             // $name = $this->fieldDefinition[SchemaDefinition::ARGNAME_NAME];
             return new EnumType($this->getID()/*, $name*/);
         }
 
         // Check if it is any scalar
-        $scalarTypes = [
-            SchemaDefinition::TYPE_OBJECT,
-            SchemaDefinition::TYPE_MIXED,
-            SchemaDefinition::TYPE_STRING,
-            SchemaDefinition::TYPE_INT,
-            SchemaDefinition::TYPE_FLOAT,
-            SchemaDefinition::TYPE_BOOL,
-            SchemaDefinition::TYPE_DATE,
-            SchemaDefinition::TYPE_TIME,
-            SchemaDefinition::TYPE_URL,
-            SchemaDefinition::TYPE_EMAIL,
-            SchemaDefinition::TYPE_IP,
-
-        ];
-        if (in_array($type, $scalarTypes)) {
-            return new ScalarType($type);
+        if (in_array($typeName, self::SCALAR_TYPES)) {
+            return new ScalarType($typeName);
         }
 
         // Otherwise, it's either a Union or an Object. Find out from the TypeRegistry
         $typeRegistry = TypeRegistryFacade::getInstance();
-        $typeDefinition = $typeRegistry->getTypeDefinition($type);
+        $typeDefinition = $typeRegistry->getTypeDefinition($typeName);
         if ($typeDefinition[SchemaDefinition::ARGNAME_IS_UNION]) {
-            return new UnionType($type);
+            return new UnionType($typeName);
         }
-        return new ObjectType($type);
+        return new ObjectType($typeName);
     }
     public function getDescription(): ?string
     {
         return $this->fieldDefinition[SchemaDefinition::ARGNAME_DESCRIPTION];
+    }
+    /**
+     * Implementation of "args" field from the Field object (https://graphql.github.io/graphql-spec/draft/#sel-FAJbLACsEIDuEAA-vb)
+     *
+     * @return array of InputValue type
+     */
+    public function getArgs(): array
+    {
+        if (is_null($this->args)) {
+            $this->initArgs();
+        }
+        return $this->args;
+    }
+    protected function initArgs(): void
+    {
+        $this->args = [];
+        $inputObjectFieldArgs = $this->fieldDefinition[SchemaDefinition::ARGNAME_ARGS] ?? [];
+        foreach ($inputObjectFieldArgs as $fieldArgName => $fieldArgDefinition) {
+            // The type to which the field resolves to
+            $typeName = $fieldArgDefinition[SchemaDefinition::ARGNAME_TYPE];
+            $description = $fieldArgDefinition[SchemaDefinition::ARGNAME_DESCRIPTION];
+            $defaultValue = $fieldArgDefinition[SchemaDefinition::ARGNAME_DEFAULT_VALUE];
+            $typeName = $fieldArgDefinition[SchemaDefinition::ARGNAME_TYPE];
+            $type = $this->getTypeFromTypeName($typeName);
+            $this->args[] = new InputObject($type, $this->name, $fieldArgName, $description, $defaultValue);
+        }
+    }
+    public function getArgIDs(): array
+    {
+        return array_map(
+            function($inputObject) {
+                return FieldUtils::getInputObjectID($inputObject->getType(), $inputObject->getField(), $inputObject->getName());
+            },
+            $this->getArgs()
+        );
     }
 }
