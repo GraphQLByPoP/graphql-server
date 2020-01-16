@@ -14,10 +14,6 @@ services:
         class: \PoP\GraphQL\Registries\FieldRegistry
         public: true
 
-    input_object_registry:
-        class: \PoP\GraphQL\Registries\InputObjectRegistry
-        public: true
-
     interface_registry:
         class: \PoP\GraphQL\Registries\InterfaceRegistry
         public: true
