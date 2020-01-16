@@ -11,6 +11,7 @@ use PoP\GraphQL\ObjectModels\ObjectType;
 use PoP\GraphQL\ObjectModels\ScalarType;
 use PoP\GraphQL\ObjectModels\NonNullType;
 use PoP\GraphQL\ObjectModels\InterfaceType;
+use PoP\GraphQL\ObjectModels\InputObjectType;
 use PoP\GraphQL\TypeResolvers\TypeTypeResolver;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeDataLoaders\AbstractTypeDataLoader;
@@ -47,8 +48,8 @@ class TypeTypeDataLoader extends AbstractTypeDataLoader
                 // ) = TypeUtils::extractFieldIDAndEnumNameFromID($id);
                 $fieldID = TypeUtils::extractFieldIDFromID($id);
                 return new EnumType($fieldID/*, $enumName*/);
-            // case TypeKinds::INPUT_OBJECT:
-            //     return new InputObjectType();
+            case TypeKinds::INPUT_OBJECT:
+                return new InputObjectType();
             case TypeKinds::LIST:
                 $nestedTypes = TypeUtils::extractNestedTypesFromID($id);
                 return new ListType($nestedTypes);
@@ -69,7 +70,7 @@ class TypeTypeDataLoader extends AbstractTypeDataLoader
                     TypeKinds::UNION,
                     TypeKinds::SCALAR,
                     TypeKinds::ENUM,
-                    // TypeKinds::INPUT_OBJECT,
+                    TypeKinds::INPUT_OBJECT,
                     TypeKinds::LIST,
                     TypeKinds::NON_NULL,
                 ])
