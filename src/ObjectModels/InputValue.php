@@ -6,7 +6,7 @@ use PoP\GraphQL\ObjectModels\AbstractType;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\GraphQL\Facades\Registries\FieldRegistryFacade;
 
-class InputObject
+class InputValue
 {
     protected $field;
     protected $name;
@@ -23,7 +23,7 @@ class InputObject
     }
     public function getID()
     {
-        return FieldUtils::getInputObjectID($this->field, $this->name);
+        return FieldUtils::getInputValueID($this->field, $this->name);
     }
     public function getField(): Field
     {

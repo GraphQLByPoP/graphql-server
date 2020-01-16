@@ -4,15 +4,15 @@ namespace PoP\GraphQL\FieldResolvers;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\GraphQL\TypeResolvers\TypeTypeResolver;
 use PoP\Translation\Facades\TranslationAPIFacade;
-use PoP\GraphQL\TypeResolvers\InputObjectTypeResolver;
+use PoP\GraphQL\TypeResolvers\InputValueTypeResolver;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\FieldResolvers\AbstractDBDataFieldResolver;
 
-class InputObjectFieldResolver extends AbstractDBDataFieldResolver
+class InputValueFieldResolver extends AbstractDBDataFieldResolver
 {
     public static function getClassesToAttachTo(): array
     {
-        return array(InputObjectTypeResolver::class);
+        return array(InputValueTypeResolver::class);
     }
 
     public static function getFieldNamesToResolve(): array

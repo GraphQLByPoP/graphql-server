@@ -130,20 +130,15 @@ class Field
     protected function initArgs(): void
     {
         $this->args = [];
-        $inputObjectFieldArgs = $this->fieldDefinition[SchemaDefinition::ARGNAME_ARGS] ?? [];
-        foreach ($inputObjectFieldArgs as $fieldArgName => $fieldArgDefinition) {
-            // The type to which the field resolves to
-            $typeName = $fieldArgDefinition[SchemaDefinition::ARGNAME_TYPE];
-            $typeName = $fieldArgDefinition[SchemaDefinition::ARGNAME_TYPE];
-            $type = $this->getTypeFromTypeName($typeName);
-            $this->args[] = new InputObject($this, $fieldArgName);
+        foreach (array_keys($this->fieldDefinition[SchemaDefinition::ARGNAME_ARGS] ?? []) as $fieldArgName) {
+            $this->args[] = new InputValue($this, $fieldArgName);
         }
     }
     public function getArgIDs(): array
     {
         return array_map(
-            function($inputObject) {
-                return FieldUtils::getInputObjectID($inputObject->getField(), $inputObject->getName());
+            function($inputValue) {
+                return FieldUtils::getInputValueID($inputValue->getField(), $inputValue->getName());
             },
             $this->getArgs()
         );

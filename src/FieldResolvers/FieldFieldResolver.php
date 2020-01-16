@@ -4,7 +4,7 @@ namespace PoP\GraphQL\FieldResolvers;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\GraphQL\TypeResolvers\TypeTypeResolver;
 use PoP\GraphQL\TypeResolvers\FieldTypeResolver;
-use PoP\GraphQL\TypeResolvers\InputObjectTypeResolver;
+use PoP\GraphQL\TypeResolvers\InputValueTypeResolver;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
@@ -73,7 +73,7 @@ class FieldFieldResolver extends AbstractDBDataFieldResolver
             case 'type':
                 return TypeTypeResolver::class;
             case 'args':
-                return InputObjectTypeResolver::class;
+                return InputValueTypeResolver::class;
         }
         return parent::resolveFieldTypeResolverClass($typeResolver, $fieldName, $fieldArgs);
     }

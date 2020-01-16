@@ -1,13 +1,13 @@
 <?php
 namespace PoP\GraphQL\TypeResolvers;
 
-use PoP\GraphQL\TypeDataLoaders\InputObjectTypeDataLoader;
+use PoP\GraphQL\TypeDataLoaders\InputValueTypeDataLoader;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\AbstractTypeResolver;
 
-class InputObjectTypeResolver extends AbstractTypeResolver
+class InputValueTypeResolver extends AbstractTypeResolver
 {
-    public const NAME = '__InputObject';
+    public const NAME = '__InputValue';
 
     public function getTypeName(): string
     {
@@ -22,13 +22,13 @@ class InputObjectTypeResolver extends AbstractTypeResolver
 
     public function getID($resultItem)
     {
-        $inputObject = $resultItem;
-        return $inputObject->getID();
+        $inputValue = $resultItem;
+        return $inputValue->getID();
     }
 
     public function getTypeDataLoaderClass(): string
     {
-        return InputObjectTypeDataLoader::class;
+        return InputValueTypeDataLoader::class;
     }
 }
 
