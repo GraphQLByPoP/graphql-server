@@ -38,10 +38,10 @@ trait HasFieldsTypeTrait
         //         return false;
         //     }
         // )) {
-        $inputObjectRegistry = InputObjectRegistryFacade::getInstance();
-        foreach ($inputObjectFieldArgs as $fieldArgName => $fieldArgDefinition) {
-            $inputObjectRegistry->registerInputObject($this, $field, $fieldArgName, $fieldArgDefinition);
-        }
+        // $inputObjectRegistry = InputObjectRegistryFacade::getInstance();
+        // foreach ($inputObjectFieldArgs as $fieldArgName => $fieldArgDefinition) {
+        //     $inputObjectRegistry->registerInputObject($this, $field, $fieldArgName, $fieldArgDefinition);
+        // }
         // }
     }
 

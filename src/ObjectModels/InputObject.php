@@ -1,32 +1,31 @@
 <?php
 namespace PoP\GraphQL\ObjectModels;
 
+use PoP\GraphQL\ObjectModels\Field;
 use PoP\GraphQL\ObjectModels\AbstractType;
+use PoP\ComponentModel\Schema\SchemaDefinition;
+use PoP\GraphQL\Facades\Registries\FieldRegistryFacade;
 
 class InputObject
 {
-    protected $type;
     protected $field;
     protected $name;
-    protected $description;
-    protected $defaultValue;
-    public function __construct(AbstractType $type, string $field, string $name, ?string $description = null, ?string $defaultValue = null)
+    protected $fieldArgDefinition;
+    public function __construct(Field $field, string $name)
     {
-        $this->type = $type;
         $this->field = $field;
         $this->name = $name;
-        $this->description = $description;
-        $this->defaultValue = $defaultValue;
+        // Extract all the properties from the fieldRegistry
+        $fieldRegistry = FieldRegistryFacade::getInstance();
+        $fieldID = $field->getID();
+        $fieldDefinition = $fieldRegistry->getFieldDefinition($fieldID);
+        $this->fieldArgDefinition = $fieldDefinition[SchemaDefinition::ARGNAME_ARGS][$name];
     }
     public function getID()
     {
-        return FieldUtils::getInputObjectID($this->type, $this->field, $this->name);
+        return FieldUtils::getInputObjectID($this->field, $this->name);
     }
-    public function getType(): AbstractType
-    {
-        return $this->type;
-    }
-    public function getField(): string
+    public function getField(): Field
     {
         return $this->field;
     }
@@ -34,12 +33,17 @@ class InputObject
     {
         return $this->name;
     }
+    public function getType(): AbstractType
+    {
+        $type = $this->fieldArgDefinition[SchemaDefinition::ARGNAME_TYPE];
+        return $this->field->getTypeFromTypeName($type);
+    }
     public function getDescription(): ?string
     {
-        return $this->description;
+        return $this->fieldArgDefinition[SchemaDefinition::ARGNAME_DESCRIPTION];
     }
     public function getDefaultValue(): ?string
     {
-        return $this->defaultValue;
+        return $this->fieldArgDefinition[SchemaDefinition::ARGNAME_DEFAULT_VALUE];
     }
 }

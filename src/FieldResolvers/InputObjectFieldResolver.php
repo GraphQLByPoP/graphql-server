@@ -3,18 +3,16 @@ namespace PoP\GraphQL\FieldResolvers;
 
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\GraphQL\TypeResolvers\TypeTypeResolver;
-use PoP\GraphQL\TypeResolvers\FieldTypeResolver;
-use PoP\GraphQL\TypeResolvers\InputObjectTypeResolver;
-use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
+use PoP\GraphQL\TypeResolvers\InputObjectTypeResolver;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\FieldResolvers\AbstractDBDataFieldResolver;
 
-class FieldFieldResolver extends AbstractDBDataFieldResolver
+class InputObjectFieldResolver extends AbstractDBDataFieldResolver
 {
     public static function getClassesToAttachTo(): array
     {
-        return array(FieldTypeResolver::class);
+        return array(InputObjectTypeResolver::class);
     }
 
     public static function getFieldNamesToResolve(): array
@@ -23,7 +21,7 @@ class FieldFieldResolver extends AbstractDBDataFieldResolver
             'name',
             'description',
             'type',
-            'args',
+            'defaultValue',
         ];
     }
 
@@ -32,8 +30,8 @@ class FieldFieldResolver extends AbstractDBDataFieldResolver
         $types = [
             'name' => SchemaDefinition::TYPE_STRING,
             'description' => SchemaDefinition::TYPE_STRING,
-            'type' => SchemaDefinition::TYPE_STRING,
-            'args' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_ID),
+            'type' => SchemaDefinition::TYPE_ID,
+            'defaultValue' => SchemaDefinition::TYPE_STRING,
         ];
         return $types[$fieldName] ?? parent::getSchemaFieldType($typeResolver, $fieldName);
     }
@@ -42,26 +40,26 @@ class FieldFieldResolver extends AbstractDBDataFieldResolver
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         $descriptions = [
-            'name' => $translationAPI->__('Field\'s name', 'graphql'),
-            'description' => $translationAPI->__('Field\'s description', 'graphql'),
-            'type' => $translationAPI->__('Type to which the field belongs', 'graphql'),
-            'args' => $translationAPI->__('Field arguments', 'graphql'),
+            'name' => $translationAPI->__('Input value\'s name as defined by the GraphQL spec', 'graphql'),
+            'description' => $translationAPI->__('Input value\'s description', 'graphql'),
+            'type' => $translationAPI->__('Type of the input value', 'graphql'),
+            'defaultValue' => $translationAPI->__('Default value of the input value', 'graphql'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($typeResolver, $fieldName);
     }
 
     public function resolveValue(TypeResolverInterface $typeResolver, $resultItem, string $fieldName, array $fieldArgs = [], ?array $variables = null, ?array $expressions = null, array $options = [])
     {
-        $field = $resultItem;
+        $inputValue = $resultItem;
         switch ($fieldName) {
             case 'name':
-                return $field->getName();
+                return $inputValue->getName();
             case 'description':
-                return $field->getDescription();
+                return $inputValue->getDescription();
             case 'type':
-                return $field->getType()->getID();
-            case 'args':
-                return $field->getArgIDs();
+                return $inputValue->getType()->getID();
+            case 'defaultValue':
+                return $inputValue->getDefaultValue();
         }
 
         return parent::resolveValue($typeResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
@@ -72,8 +70,6 @@ class FieldFieldResolver extends AbstractDBDataFieldResolver
         switch ($fieldName) {
             case 'type':
                 return TypeTypeResolver::class;
-            case 'args':
-                return InputObjectTypeResolver::class;
         }
         return parent::resolveFieldTypeResolverClass($typeResolver, $fieldName, $fieldArgs);
     }

@@ -11,9 +11,9 @@ class InputObjectRegistry implements InputObjectRegistryInterface {
 
     function registerInputObject(AbstractType $type, string $field, string $inputObjectName, array $fieldDefinition): void
     {
-        $id = FieldUtils::getInputObjectID($type, $field, $inputObjectName);
-        $this->inputObjectNameTypes[$id] = $type;
-        $this->inputObjectNameDefinitions[$id] = $fieldDefinition;
+        // $id = FieldUtils::getInputObjectID($type, $field, $inputObjectName);
+        // $this->inputObjectNameTypes[$id] = $type;
+        // $this->inputObjectNameDefinitions[$id] = $fieldDefinition;
     }
     function getType(string $id): AbstractType
     {

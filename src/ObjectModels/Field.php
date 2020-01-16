@@ -80,7 +80,7 @@ class Field
         $typeName = $this->fieldDefinition[SchemaDefinition::ARGNAME_TYPE];
         return $this->getTypeFromTypeName($typeName);
     }
-    protected function getTypeFromTypeName(string $typeName): AbstractType
+    public function getTypeFromTypeName(string $typeName): AbstractType
     {
         // Check if it is non-null
         if (SyntaxHelpers::isNonNullType($typeName)) {
@@ -134,18 +134,16 @@ class Field
         foreach ($inputObjectFieldArgs as $fieldArgName => $fieldArgDefinition) {
             // The type to which the field resolves to
             $typeName = $fieldArgDefinition[SchemaDefinition::ARGNAME_TYPE];
-            $description = $fieldArgDefinition[SchemaDefinition::ARGNAME_DESCRIPTION];
-            $defaultValue = $fieldArgDefinition[SchemaDefinition::ARGNAME_DEFAULT_VALUE];
             $typeName = $fieldArgDefinition[SchemaDefinition::ARGNAME_TYPE];
             $type = $this->getTypeFromTypeName($typeName);
-            $this->args[] = new InputObject($type, $this->name, $fieldArgName, $description, $defaultValue);
+            $this->args[] = new InputObject($this, $fieldArgName);
         }
     }
     public function getArgIDs(): array
     {
         return array_map(
             function($inputObject) {
-                return FieldUtils::getInputObjectID($inputObject->getType(), $inputObject->getField(), $inputObject->getName());
+                return FieldUtils::getInputObjectID($inputObject->getField(), $inputObject->getName());
             },
             $this->getArgs()
         );

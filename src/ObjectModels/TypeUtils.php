@@ -1,6 +1,9 @@
 <?php
 namespace PoP\GraphQL\ObjectModels;
 
+use PoP\GraphQL\Syntax\SyntaxHelpers;
+use PoP\ComponentModel\Schema\SchemaDefinition;
+
 class TypeUtils
 {
     public const ID_SEPARATOR = '|';
@@ -57,4 +60,36 @@ class TypeUtils
             $value
         ];
     }
+
+    // public static function getTypeFromTypeName(string $typeName): AbstractType
+    // {
+    //     // Check if it is non-null
+    //     if (SyntaxHelpers::isNonNullType($typeName)) {
+    //         return new NonNullType(SyntaxHelpers::getNonNullTypeNestedTypes($typeName));
+    //     }
+
+    //     // Check if it is an array
+    //     if (SyntaxHelpers::isListType($typeName)) {
+    //         return new ListType(SyntaxHelpers::getListTypeNestedTypes($typeName));
+    //     }
+
+    //     // Check if it is an enum type
+    //     if ($typeName == SchemaDefinition::TYPE_ENUM) {
+    //         // $name = $this->fieldDefinition[SchemaDefinition::ARGNAME_NAME];
+    //         return new EnumType($this->getID()/*, $name*/);
+    //     }
+
+    //     // Check if it is any scalar
+    //     if (in_array($typeName, self::SCALAR_TYPES)) {
+    //         return new ScalarType($typeName);
+    //     }
+
+    //     // Otherwise, it's either a Union or an Object. Find out from the TypeRegistry
+    //     $typeRegistry = TypeRegistryFacade::getInstance();
+    //     $typeDefinition = $typeRegistry->getTypeDefinition($typeName);
+    //     if ($typeDefinition[SchemaDefinition::ARGNAME_IS_UNION]) {
+    //         return new UnionType($typeName);
+    //     }
+    //     return new ObjectType($typeName);
+    // }
 }
