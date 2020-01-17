@@ -2,11 +2,36 @@
 namespace PoP\GraphQL\ObjectModels;
 
 use PoP\GraphQL\Syntax\SyntaxHelpers;
+use PoP\GraphQL\ObjectModels\EnumType;
 use PoP\ComponentModel\Schema\SchemaDefinition;
+// use PoP\GraphQL\Facades\Registries\SchemaRegistryFacade;
 
 class TypeUtils
 {
+    public const SCALAR_TYPES = [
+        SchemaDefinition::TYPE_OBJECT,
+        SchemaDefinition::TYPE_MIXED,
+        SchemaDefinition::TYPE_STRING,
+        SchemaDefinition::TYPE_INT,
+        SchemaDefinition::TYPE_FLOAT,
+        SchemaDefinition::TYPE_BOOL,
+        SchemaDefinition::TYPE_DATE,
+        SchemaDefinition::TYPE_TIME,
+        SchemaDefinition::TYPE_URL,
+        SchemaDefinition::TYPE_EMAIL,
+        SchemaDefinition::TYPE_IP,
+    ];
+
     public const ID_SEPARATOR = '|';
+    public const PATH_SEPARATOR = '.';
+    public static function composeSchemaDefinitionPath(string $parentSchemaDefinitionPath, array $relativePath)
+    {
+        $schemaDefinitionPath = $parentSchemaDefinitionPath;
+        foreach ($relativePath as $pathLevel) {
+            $schemaDefinitionPath .= self::ID_SEPARATOR.$pathLevel;
+        }
+        return $schemaDefinitionPath;
+    }
 
     public static function getResolvableTypeID(string $kind, string $name) {
         return $kind.self::ID_SEPARATOR.$name;
@@ -61,35 +86,50 @@ class TypeUtils
         ];
     }
 
-    // public static function getTypeFromTypeName(string $typeName): AbstractType
+    public static function getTypeFromTypeName(string $typeName, array $schemaDefinitionPath): AbstractType
+    {
+        // Check if it is non-null
+        if (SyntaxHelpers::isNonNullType($typeName)) {
+            return new NonNullType(self::getTypeFromTypeName(SyntaxHelpers::getNonNullTypeNestedTypes($typeName), $schemaDefinitionPath));
+        }
+
+        // Check if it is an array
+        if (SyntaxHelpers::isListType($typeName)) {
+            return new ListType(self::getTypeFromTypeName(SyntaxHelpers::getListTypeNestedTypes($typeName), $schemaDefinitionPath));
+        }
+
+        // Check if it is an enum type
+        if ($typeName == SchemaDefinition::TYPE_ENUM) {
+            return new EnumType($schemaDefinitionPath);
+        }
+
+        // Check if it is any scalar
+        if (in_array($typeName, self::SCALAR_TYPES)) {
+            return new ScalarType($schemaDefinitionPath);
+        }
+
+        // Otherwise, it's either a Union or an Object. Find out from the TypeRegistry
+        $schemaDefinition = self::getSchemaDefinitionByPath($schemaDefinitionPath);
+        if ($schemaDefinition[SchemaDefinition::ARGNAME_IS_UNION]) {
+            return new UnionType($schemaDefinitionPath);
+        }
+        return new ObjectType($schemaDefinitionPath);
+    }
+
+    // public static function &getSchemaDefinitionByPath(array $schemaDefinitionPath): array
     // {
-    //     // Check if it is non-null
-    //     if (SyntaxHelpers::isNonNullType($typeName)) {
-    //         return new NonNullType(SyntaxHelpers::getNonNullTypeNestedTypes($typeName));
+    //     $schemaRegistry = SchemaRegistryFacade::getInstance();
+    //     $schemaDefinitionPointer = $schemaRegistry->getFullSchemaDefinition();
+    //     $schemaDefinitionPathLevels = explode(self::ID_SEPARATOR, $schemaDefinitionPath);
+    //     foreach ($schemaDefinitionPathLevels as $pathLevel) {
+    //         $schemaDefinitionPointer = &$schemaDefinitionPointer[$pathLevel];
     //     }
-
-    //     // Check if it is an array
-    //     if (SyntaxHelpers::isListType($typeName)) {
-    //         return new ListType(SyntaxHelpers::getListTypeNestedTypes($typeName));
-    //     }
-
-    //     // Check if it is an enum type
-    //     if ($typeName == SchemaDefinition::TYPE_ENUM) {
-    //         // $name = $this->fieldDefinition[SchemaDefinition::ARGNAME_NAME];
-    //         return new EnumType($this->getID()/*, $name*/);
-    //     }
-
-    //     // Check if it is any scalar
-    //     if (in_array($typeName, self::SCALAR_TYPES)) {
-    //         return new ScalarType($typeName);
-    //     }
-
-    //     // Otherwise, it's either a Union or an Object. Find out from the TypeRegistry
-    //     $typeRegistry = TypeRegistryFacade::getInstance();
-    //     $typeDefinition = $typeRegistry->getTypeDefinition($typeName);
-    //     if ($typeDefinition[SchemaDefinition::ARGNAME_IS_UNION]) {
-    //         return new UnionType($typeName);
-    //     }
-    //     return new ObjectType($typeName);
+    //     return (array)$schemaDefinitionPointer;
     // }
+
+    public static function getSchemaDefinitionPathFromID(string $id): string
+    {
+        $components = explode(self::ID_SEPARATOR, $id);
+        return $components[count($components)-1];
+    }
 }

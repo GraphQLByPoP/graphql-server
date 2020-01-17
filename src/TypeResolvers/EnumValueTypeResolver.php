@@ -1,9 +1,9 @@
 <?php
 namespace PoP\GraphQL\TypeResolvers;
 
-use PoP\GraphQL\TypeDataLoaders\EnumValueTypeDataLoader;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\AbstractTypeResolver;
+use PoP\GraphQL\TypeDataLoaders\SchemaDefinitionReferenceTypeDataLoader;
 
 class EnumValueTypeResolver extends AbstractTypeResolver
 {
@@ -28,7 +28,7 @@ class EnumValueTypeResolver extends AbstractTypeResolver
 
     public function getTypeDataLoaderClass(): string
     {
-        return EnumValueTypeDataLoader::class;
+        return SchemaDefinitionReferenceTypeDataLoader::class;
     }
 }
 

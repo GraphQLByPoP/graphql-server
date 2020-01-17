@@ -1,6 +1,7 @@
 <?php
 namespace PoP\GraphQL\TypeDataLoaders;
 
+use PoP\GraphQL\ObjectModels\TypeUtils;
 use PoP\GraphQL\ObjectModels\FieldUtils;
 use PoP\GraphQL\ObjectModels\InputValue;
 use PoP\GraphQL\TypeResolvers\InputValueTypeResolver;
@@ -18,10 +19,10 @@ class InputValueTypeDataLoader extends AbstractTypeDataLoader
 
     protected function getTypeNewInstance($id): object
     {
-        list(
-            $field,
-            $inputValueName
-        ) = FieldUtils::getFieldAndInputValueNameFromID($id);
-        return new InputValue($field, $inputValueName);
+        // list(
+        //     $field,
+        //     $inputValueName
+        // ) = FieldUtils::getFieldAndInputValueNameFromID($id);
+        return new InputValue(TypeUtils::getSchemaDefinitionPathFromID($id));
     }
 }

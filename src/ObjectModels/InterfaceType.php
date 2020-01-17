@@ -2,39 +2,27 @@
 namespace PoP\GraphQL\ObjectModels;
 
 use PoP\API\Schema\SchemaDefinition;
-use PoP\GraphQL\ObjectModels\AbstractResolvableType;
+use PoP\GraphQL\ObjectModels\AbstractType;
 use PoP\GraphQL\ObjectModels\HasFieldsTypeTrait;
 use PoP\GraphQL\ObjectModels\HasFieldsTypeInterface;
 use PoP\GraphQL\ObjectModels\HasPossibleTypesTypeTrait;
 use PoP\GraphQL\Facades\Registries\InterfaceRegistryFacade;
 use PoP\GraphQL\ObjectModels\HasPossibleTypesTypeInterface;
 
-class InterfaceType extends AbstractResolvableType implements HasFieldsTypeInterface, HasPossibleTypesTypeInterface
+class InterfaceType extends AbstractType implements HasFieldsTypeInterface, HasPossibleTypesTypeInterface
 {
     use HasFieldsTypeTrait, HasPossibleTypesTypeTrait;
 
-    public function __construct(string $name)
+    public function __construct(array &$fullSchemaDefinition, array $schemaDefinitionPath)
     {
-        parent::__construct($name);
+        parent::__construct($fullSchemaDefinition, $schemaDefinitionPath);
 
-        $this->initFields($name);
-        $this->initPossibleTypes($name);
-    }
-
-    protected function getFieldDefinitions(string $name)
-    {
-        $typeDefinition = $this->getTypeDefinition($name);
-        return $typeDefinition[SchemaDefinition::ARGNAME_FIELDS];
+        $this->initFields($fullSchemaDefinition, $schemaDefinitionPath);
+        // $this->initPossibleTypes($fullSchemaDefinition, $schemaDefinitionPath);
     }
 
     public function getKind(): string
     {
         return TypeKinds::INTERFACE;
-    }
-
-    public function getTypeDefinition(string $name): array
-    {
-        $interfaceRegistry = InterfaceRegistryFacade::getInstance();
-        return $interfaceRegistry->getInterfaceDefinition($name);
     }
 }

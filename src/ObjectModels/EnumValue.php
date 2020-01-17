@@ -1,16 +1,16 @@
 <?php
 namespace PoP\GraphQL\ObjectModels;
 
-use PoP\GraphQL\ObjectModels\AbstractType;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\GraphQL\ObjectModels\AbstractSchemaDefinitionReferenceObject;
-use PoP\GraphQL\ObjectModels\HasLazyTypeSchemaDefinitionReferenceTrait;
 
-class InputValue extends AbstractSchemaDefinitionReferenceObject
-{
-    use HasLazyTypeSchemaDefinitionReferenceTrait;
+class EnumValue extends AbstractSchemaDefinitionReferenceObject {
 
     public function getName(): string
+    {
+        return (string)$this->getValue();
+    }
+    public function getValue()
     {
         return $this->schemaDefinition[SchemaDefinition::ARGNAME_NAME];
     }
@@ -18,8 +18,12 @@ class InputValue extends AbstractSchemaDefinitionReferenceObject
     {
         return $this->schemaDefinition[SchemaDefinition::ARGNAME_DESCRIPTION];
     }
-    public function getDefaultValue(): ?string
+    public function isDeprecated(): bool
     {
-        return $this->schemaDefinition[SchemaDefinition::ARGNAME_DEFAULT_VALUE];
+        return $this->schemaDefinition[SchemaDefinition::ARGNAME_DEPRECATED] ?? false;
+    }
+    public function getDeprecatedReason(): ?string
+    {
+        return $this->schemaDefinition[SchemaDefinition::ARGNAME_DEPRECATIONDESCRIPTION];
     }
 }

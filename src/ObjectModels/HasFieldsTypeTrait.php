@@ -1,39 +1,88 @@
 <?php
 namespace PoP\GraphQL\ObjectModels;
 
+use PoP\GraphQL\ObjectModels\Field;
 use PoP\API\Schema\SchemaDefinition;
-use PoP\GraphQL\Facades\Registries\FieldRegistryFacade;
+use PoP\GraphQL\SchemaDefinition\SchemaDefinitionHelpers;
+use PoP\GraphQL\Facades\Registries\SchemaDefinitionReferenceRegistryFacade;
 
 trait HasFieldsTypeTrait
 {
     protected $fields;
-    abstract protected function getFieldDefinitions(string $name);
-    protected function initFields(string $name)
+    protected function initFields(array &$fullSchemaDefinition, array $schemaDefinitionPath): void
     {
-        // Add the type as part of the ID, and register them in the fieldRegistry
-        $fieldRegistry = FieldRegistryFacade::getInstance();
         $this->fields = [];
-        $fieldDefinitions = $this->getFieldDefinitions($name);
-        foreach ($fieldDefinitions as $field => $fieldDefinition) {
-            $fieldRegistry->registerField($this, $field, $fieldDefinition);
-            $this->fields[FieldUtils::getID($this, $field)] = $fieldDefinition;
-        }
+
+        // Iterate to the definition of the fields in the schema, and create an object for each of them
+        // 1. Fields under this type
+        $this->initFieldsFromPath(
+            $fullSchemaDefinition,
+            array_merge(
+                $schemaDefinitionPath,
+                [
+                    SchemaDefinition::ARGNAME_FIELDS,
+                ]
+            )
+        );
+        // 2. Connections under this type
+        $this->initFieldsFromPath(
+            $fullSchemaDefinition,
+            array_merge(
+                $schemaDefinitionPath,
+                [
+                    SchemaDefinition::ARGNAME_CONNECTIONS,
+                ]
+            )
+        );
+        // Global fields and connections have already been initialized, simply get the reference to the existing objects from the registryMap
+        // 1. Global fields
+        $this->retrieveFieldsFromPath(
+            $fullSchemaDefinition,
+            [
+                SchemaDefinition::ARGNAME_GLOBAL_FIELDS,
+            ]
+        );
+        // 2. Global connections
+        $this->retrieveFieldsFromPath(
+            $fullSchemaDefinition,
+            [
+                SchemaDefinition::ARGNAME_GLOBAL_CONNECTIONS,
+            ]
+        );
+    }
+    protected function initFieldsFromPath(array &$fullSchemaDefinition, array $fieldSchemaDefinitionPath): void
+    {
+        $this->fields = array_merge(
+            $this->fields,
+            SchemaDefinitionHelpers::initFieldsFromPath($fullSchemaDefinition, $fieldSchemaDefinitionPath)
+        );
+    }
+    protected function retrieveFieldsFromPath(array &$fullSchemaDefinition, array $fieldSchemaDefinitionPath): void
+    {
+        $this->fields = array_merge(
+            $this->fields,
+            SchemaDefinitionHelpers::retrieveFieldsFromPath($fullSchemaDefinition, $fieldSchemaDefinitionPath)
+        );
     }
 
     public function getFields(bool $includeDeprecated = false): array
     {
-        if ($includeDeprecated) {
-            // Include all fields
-            $fields = $this->fields;
-        } else {
-            // Filter out the deprecated fields
-            $fields = array_filter(
+        return $includeDeprecated ?
+            $this->fields :
+            array_filter(
                 $this->fields,
-                function($fieldDefinition) {
-                    return !$fieldDefinition[SchemaDefinition::ARGNAME_DEPRECATED];
+                function(Field $field) {
+                    return !$field->isDeprecated();
                 }
             );
-        }
-        return array_keys($fields);
+    }
+    public function getFieldIDs(bool $includeDeprecated = false): array
+    {
+        return array_map(
+            function(Field $field) {
+                return $field->getID();
+            },
+            $this->getFields($includeDeprecated)
+        );
     }
 }

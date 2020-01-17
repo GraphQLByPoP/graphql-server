@@ -22,8 +22,10 @@ class FieldFieldResolver extends AbstractDBDataFieldResolver
         return [
             'name',
             'description',
-            'type',
             'args',
+            'type',
+            'isDeprecated',
+            'deprecationReason',
         ];
     }
 
@@ -32,8 +34,10 @@ class FieldFieldResolver extends AbstractDBDataFieldResolver
         $types = [
             'name' => SchemaDefinition::TYPE_STRING,
             'description' => SchemaDefinition::TYPE_STRING,
-            'type' => SchemaDefinition::TYPE_STRING,
             'args' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_ID),
+            'type' => SchemaDefinition::TYPE_STRING,
+            'isDeprecated' => SchemaDefinition::TYPE_BOOL,
+            'deprecationReason' => SchemaDefinition::TYPE_STRING,
         ];
         return $types[$fieldName] ?? parent::getSchemaFieldType($typeResolver, $fieldName);
     }
@@ -44,8 +48,10 @@ class FieldFieldResolver extends AbstractDBDataFieldResolver
         $descriptions = [
             'name' => $translationAPI->__('Field\'s name', 'graphql'),
             'description' => $translationAPI->__('Field\'s description', 'graphql'),
-            'type' => $translationAPI->__('Type to which the field belongs', 'graphql'),
             'args' => $translationAPI->__('Field arguments', 'graphql'),
+            'type' => $translationAPI->__('Type to which the field belongs', 'graphql'),
+            'isDeprecated' => $translationAPI->__('Is the field deprecated?', 'graphql'),
+            'deprecationReason' => $translationAPI->__('Why was the field deprecated?', 'graphql'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($typeResolver, $fieldName);
     }
@@ -58,10 +64,14 @@ class FieldFieldResolver extends AbstractDBDataFieldResolver
                 return $field->getName();
             case 'description':
                 return $field->getDescription();
-            case 'type':
-                return $field->getType()->getID();
             case 'args':
                 return $field->getArgIDs();
+            case 'type':
+                return $field->getTypeID();
+            case 'isDeprecated':
+                return $field->isDeprecated();
+            case 'deprecationReason':
+                return $field->getDeprecationDescription();
         }
 
         return parent::resolveValue($typeResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
@@ -70,10 +80,10 @@ class FieldFieldResolver extends AbstractDBDataFieldResolver
     public function resolveFieldTypeResolverClass(TypeResolverInterface $typeResolver, string $fieldName, array $fieldArgs = []): ?string
     {
         switch ($fieldName) {
-            case 'type':
-                return TypeTypeResolver::class;
             case 'args':
                 return InputValueTypeResolver::class;
+            case 'type':
+                return TypeTypeResolver::class;
         }
         return parent::resolveFieldTypeResolverClass($typeResolver, $fieldName, $fieldArgs);
     }

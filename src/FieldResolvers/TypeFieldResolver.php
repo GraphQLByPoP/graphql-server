@@ -3,13 +3,11 @@ namespace PoP\GraphQL\FieldResolvers;
 
 use PoP\GraphQL\ObjectModels\EnumType;
 use PoP\GraphQL\ObjectModels\TypeKinds;
-use PoP\GraphQL\ObjectModels\TypeUtils;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\GraphQL\TypeResolvers\TypeTypeResolver;
 use PoP\GraphQL\TypeResolvers\FieldTypeResolver;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
-use PoP\GraphQL\ObjectModels\AbstractResolvableType;
 use PoP\GraphQL\ObjectModels\HasFieldsTypeInterface;
 use PoP\GraphQL\TypeResolvers\EnumValueTypeResolver;
 use PoP\GraphQL\ObjectModels\HasInterfacesTypeInterface;
@@ -113,21 +111,15 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
             case 'kind':
                 return $type->getKind();
             case 'name':
-                if ($type instanceof AbstractResolvableType) {
-                    return $type->getName();
-                }
-                return null;
+                return $type->getName();
             case 'description':
-                if ($type instanceof AbstractResolvableType) {
-                    return $type->getDescription();
-                }
-                return null;
+                return $type->getDescription();
             case 'fields':
                 // From GraphQL spec (https://graphql.github.io/graphql-spec/draft/#sel-FAJbLAC1BJC3BAn6e):
                 // "should be non-null for OBJECT and INTERFACE only, must be null for the others"
                 if ($type instanceof HasFieldsTypeInterface) {
                     $includeDeprecated = $fieldArgs['includeDeprecated'] ?? false;
-                    return $type->getFields($includeDeprecated);
+                    return $type->getFieldIDs($includeDeprecated);
                 }
                 return null;
             case 'interfaces':

@@ -6,6 +6,10 @@ services:
     #         PoP\ComponentModel\Schema\FeedbackMessageStoreInterface: '@feedback_message_store'
     #         PoP\QueryParsing\QueryParserInterface: '@query_parser'
 
+    schema_definition_reference_registry:
+        class: \PoP\GraphQL\Registries\SchemaDefinitionReferenceRegistry
+        public: true
+
     type_registry:
         class: \PoP\GraphQL\Registries\TypeRegistry
         public: true

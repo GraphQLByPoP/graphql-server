@@ -28,34 +28,29 @@ class TypeTypeDataLoader extends AbstractTypeDataLoader
 
     protected function getTypeNewInstance($id): object
     {
+        $schemaDefinitionPath = TypeUtils::getSchemaDefinitionPathFromID($id);
         $kind = TypeUtils::extractKindFromID($id);
         switch ($kind) {
             case TypeKinds::OBJECT:
-                $name = TypeUtils::extractNameFromID($id);
-                return new ObjectType($name);
+                return new ObjectType($schemaDefinitionPath);
             case TypeKinds::INTERFACE:
-                $name = TypeUtils::extractNameFromID($id);
-                return new InterfaceType($name);
+                return new InterfaceType($schemaDefinitionPath);
             case TypeKinds::UNION:
-                $name = TypeUtils::extractNameFromID($id);
-                return new UnionType($name);
+                return new UnionType($schemaDefinitionPath);
             case TypeKinds::SCALAR:
-                return new ScalarType();
+                return new ScalarType($schemaDefinitionPath);
             case TypeKinds::ENUM:
-                // list(
-                //     $fieldID,
-                //     $enumName
-                // ) = TypeUtils::extractFieldIDAndEnumNameFromID($id);
-                $fieldID = TypeUtils::extractFieldIDFromID($id);
-                return new EnumType($fieldID/*, $enumName*/);
+                return new EnumType($schemaDefinitionPath);
             case TypeKinds::INPUT_OBJECT:
-                return new InputObjectType();
+                return new InputObjectType($schemaDefinitionPath);
             case TypeKinds::LIST:
-                $nestedTypes = TypeUtils::extractNestedTypesFromID($id);
-                return new ListType($nestedTypes);
+                // The inner elements themselves have no definitionSchemaPath
+                $nestedTypeID = TypeUtils::extractNestedTypesFromID($id);
+                return new ListType($schemaDefinitionPath, $this->getTypeNewInstance($nestedTypeID));
             case TypeKinds::NON_NULL:
-                $nestedTypes = TypeUtils::extractNestedTypesFromID($id);
-                return new NonNullType($nestedTypes);
+                // The inner elements themselves have no definitionSchemaPath
+                $nestedTypeID = TypeUtils::extractNestedTypesFromID($id);
+                return new NonNullType($schemaDefinitionPath, $this->getTypeNewInstance($nestedTypeID));
         }
 
         $translationAPI = TranslationAPIFacade::getInstance();

@@ -1,50 +1,66 @@
 <?php
 namespace PoP\GraphQL\ObjectModels;
 
+use PoP\GraphQL\ObjectModels\EnumValue;
 use PoP\GraphQL\ObjectModels\AbstractType;
 use PoP\ComponentModel\Schema\SchemaDefinition;
-use PoP\ComponentModel\Schema\SchemaHelpers;
-use PoP\GraphQL\Facades\Registries\FieldRegistryFacade;
+use PoP\GraphQL\ObjectModels\NonDocumentableTypeTrait;
 
 class EnumType extends AbstractType
 {
-    protected $fieldID;
-    // protected $name;
+    use NonDocumentableTypeTrait;
+
     protected $enumValues;
-    function __construct(string $fieldID/*, string $name*/)
+
+    public function __construct(array &$fullSchemaDefinition, array $schemaDefinitionPath)
     {
-        $this->fieldID = $fieldID;
-        // $this->name = $name;
+        parent::__construct($fullSchemaDefinition, $schemaDefinitionPath);
+
+        $this->initEnumValues($fullSchemaDefinition, $schemaDefinitionPath);
     }
-    public function getID()
+    protected function initEnumValues(array &$fullSchemaDefinition, array $schemaDefinitionPath): void
     {
-        return TypeUtils::getEnumTypeID($this->getKind(), $this->fieldID/*, $this->name*/);
+        $this->enumValues = [];
+        if ($enumValues = $this->schemaDefinition[SchemaDefinition::ARGNAME_ENUMVALUES]) {
+            foreach (array_keys($enumValues) as $enumValueName) {
+                $enumValueSchemaDefinitionPath = array_merge(
+                    $schemaDefinitionPath,
+                    [
+                        SchemaDefinition::ARGNAME_ENUMVALUES,
+                        $enumValueName,
+                    ]
+                );
+                $this->enumValues[] = new EnumValue(
+                    $fullSchemaDefinition,
+                    $enumValueSchemaDefinitionPath
+                );
+            }
+        }
     }
+
     public function getKind(): string
     {
         return TypeKinds::ENUM;
     }
     public function getEnumValues(bool $includeDeprecated = false): array
     {
-        if (is_null($this->enumValues)) {
-            // Extract all the properties from the fieldRegistry
-            $fieldRegistry = FieldRegistryFacade::getInstance();
-            $fieldDefinition = $fieldRegistry->getFieldDefinition($this->fieldID);
-            $this->enumValues = $fieldDefinition[SchemaDefinition::ARGNAME_ENUMVALUES];
-        }
-        // Filter deprecated
-        if (!$includeDeprecated) {
-            return SchemaHelpers::removeDeprecatedEnumValuesFromSchemaDefinition($this->enumValues);
-        }
-        return $this->enumValues;
+        return $includeDeprecated ?
+            $this->enumValues :
+            array_filter(
+                $this->enumValues,
+                function(EnumValue $enumValue) {
+                    return !$enumValue->isDeprecated();
+                }
+            );
+
     }
     public function getEnumValueIDs(bool $includeDeprecated = false): array
     {
         return array_map(
-            function($enumValue) {
-                return TypeUtils::getEnumValueID($this->fieldID, $enumValue);
+            function(EnumValue $enumValue) {
+                return $enumValue->getID();
             },
-            array_keys($this->getEnumValues($includeDeprecated))
+            $this->getEnumValues($includeDeprecated)
         );
     }
 }

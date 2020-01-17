@@ -1,85 +1,40 @@
 <?php
 namespace PoP\GraphQL\ObjectModels;
 
-use PoP\API\Schema\SchemaDefinition;
-use PoP\GraphQL\ObjectModels\AbstractResolvableType;
+use PoP\GraphQL\ObjectModels\AbstractType;
 use PoP\GraphQL\ObjectModels\HasFieldsTypeTrait;
 use PoP\GraphQL\ObjectModels\HasFieldsTypeInterface;
-use PoP\GraphQL\Facades\Registries\TypeRegistryFacade;
+use PoP\GraphQL\ObjectModels\HasInterfacesTypeTrait;
 use PoP\GraphQL\ObjectModels\HasInterfacesTypeInterface;
-use PoP\GraphQL\Facades\Registries\InterfaceRegistryFacade;
 
-class ObjectType extends AbstractResolvableType implements HasFieldsTypeInterface, HasInterfacesTypeInterface
+class ObjectType extends AbstractType implements HasFieldsTypeInterface, HasInterfacesTypeInterface
 {
-    use HasFieldsTypeTrait;
+    use HasFieldsTypeTrait, HasInterfacesTypeTrait;
 
-    protected $interfaces;
-
-    public function __construct(string $name)
+    public function __construct(array &$fullSchemaDefinition, array $schemaDefinitionPath)
     {
-        parent::__construct($name);
+        parent::__construct($fullSchemaDefinition, $schemaDefinitionPath);
 
-        $this->initFields($name);
-
-        // Extract all the properties from the typeRegistry
-        $typeRegistry = TypeRegistryFacade::getInstance();
-        $typeDefinition = $typeRegistry->getTypeDefinition($name);
-
-        // Register the interfaces in the registry
-        $interfaceRegistry = InterfaceRegistryFacade::getInstance();
-        $interfaceDefinitions = $typeDefinition[SchemaDefinition::ARGNAME_INTERFACES];
-        $this->interfaces = [];
-        foreach ($interfaceDefinitions as $interfaceResolverClass => $interfaceDefinition) {
-            $interfaceName = $interfaceDefinition[SchemaDefinition::ARGNAME_NAME];
-            // This same interface may have been registered already. It doesn't matter: re-registering it doesn't cause any side effect
-            $interfaceRegistry->registerType($interfaceName, $interfaceResolverClass, $interfaceDefinition);
-            $this->interfaces[$interfaceName] = $interfaceDefinition;
-        }
+        $this->initFields($fullSchemaDefinition, $schemaDefinitionPath);
+        // $this->initInterfaces();
     }
 
-    protected function getFieldDefinitions(string $name)
-    {
-        // Extract all the properties from the typeRegistry
-        $typeRegistry = TypeRegistryFacade::getInstance();
-        $typeDefinition = $this->getTypeDefinition($name);
-        // Include the global fields and the ones specific to this type
-        return array_merge(
-            $typeRegistry->getGlobalFields(),
-            $typeRegistry->getGlobalConnections(),
-            $typeDefinition[SchemaDefinition::ARGNAME_FIELDS],
-            // Connections can be null
-            $typeDefinition[SchemaDefinition::ARGNAME_CONNECTIONS] ?? []
-        );
-    }
+    // protected function getFieldSchemaDefinitions()
+    // {
+    //     // Include the global fields and the ones specific to this type
+    //     $schemaRegistry = SchemaRegistryFacade::getInstance();
+    //     $fullSchemaDefinition = $schemaRegistry->getFullSchemaDefinition();
+    //     return array_merge(
+    //         $fullSchemaDefinition[SchemaDefinition::ARGNAME_GLOBAL_FIELDS],
+    //         $fullSchemaDefinition[SchemaDefinition::ARGNAME_GLOBAL_CONNECTIONS],
+    //         $this->schemaDefinition[SchemaDefinition::ARGNAME_FIELDS],
+    //         // Connections can be null
+    //         $this->schemaDefinition[SchemaDefinition::ARGNAME_CONNECTIONS] ?? []
+    //     );
+    // }
 
     public function getKind(): string
     {
         return TypeKinds::OBJECT;
-    }
-
-    public function getTypeDefinition(string $name): array
-    {
-        $typeRegistry = TypeRegistryFacade::getInstance();
-        return $typeRegistry->getTypeDefinition($name);
-    }
-
-    public function getInterfaces(): array
-    {
-        return array_keys($this->interfaces);
-    }
-
-    /**
-     * Return the interfaces through their ID representation: Kind + Name
-     *
-     * @return array
-     */
-    public function getInterfaceIDs(): array
-    {
-        return array_map(
-            function($interfaceName) {
-                return TypeUtils::getResolvableTypeID(TypeKinds::INTERFACE, $interfaceName);
-            },
-            $this->getInterfaces()
-        );
     }
 }

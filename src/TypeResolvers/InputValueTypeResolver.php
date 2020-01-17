@@ -1,7 +1,7 @@
 <?php
 namespace PoP\GraphQL\TypeResolvers;
 
-use PoP\GraphQL\TypeDataLoaders\InputValueTypeDataLoader;
+use PoP\GraphQL\TypeDataLoaders\SchemaDefinitionReferenceTypeDataLoader;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\AbstractTypeResolver;
 
@@ -28,7 +28,7 @@ class InputValueTypeResolver extends AbstractTypeResolver
 
     public function getTypeDataLoaderClass(): string
     {
-        return InputValueTypeDataLoader::class;
+        return SchemaDefinitionReferenceTypeDataLoader::class;
     }
 }
 

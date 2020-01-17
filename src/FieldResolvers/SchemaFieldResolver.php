@@ -60,21 +60,24 @@ class SchemaFieldResolver extends AbstractDBDataFieldResolver
         $schema = $resultItem;
         switch ($fieldName) {
             case 'queryType':
-                return TypeUtils::getResolvableTypeID(TypeKinds::OBJECT, $schema->getQueryTypeResolverInstance()->getTypeName());
+                // return TypeUtils::getResolvableTypeID(TypeKinds::OBJECT, $schema->getQueryTypeResolverInstance()->getTypeName());
+                return $schema->getQueryTypeID();
             case 'mutationType':
-                if ($typeResolverInstance = $schema->getMutationTypeResolverInstance()) {
-                    return TypeUtils::getResolvableTypeID(TypeKinds::OBJECT, $typeResolverInstance->getTypeName());
-                }
-                return null;
+                return $schema->getMutationTypeID();
+                // if ($typeResolverInstance = $schema->getMutationTypeResolverInstance()) {
+                //     return TypeUtils::getResolvableTypeID(TypeKinds::OBJECT, $typeResolverInstance->getTypeName());
+                // }
+                // return null;
             case 'subscriptionType':
-                if ($typeResolverInstance = $schema->getSubscriptionTypeResolverInstance()) {
-                    return TypeUtils::getResolvableTypeID(TypeKinds::OBJECT, $typeResolverInstance->getTypeName());
-                }
-                return null;
+                return $schema->getSubscriptionTypeID();
+                // if ($typeResolverInstance = $schema->getSubscriptionTypeResolverInstance()) {
+                //     return TypeUtils::getResolvableTypeID(TypeKinds::OBJECT, $typeResolverInstance->getTypeName());
+                // }
+                // return null;
             case 'types':
                 return $schema->getTypeIDs();
             case 'directives':
-                return $schema->getDirectives();
+                return $schema->getDirectiveIDs();
         }
 
         return parent::resolveValue($typeResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);

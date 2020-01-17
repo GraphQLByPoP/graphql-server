@@ -1,19 +1,12 @@
 <?php
 namespace PoP\GraphQL\ObjectModels;
 
-class Directive
+use PoP\ComponentModel\Schema\SchemaDefinition;
+
+class Directive extends AbstractSchemaDefinitionReferenceObject
 {
-    protected $name;
-    public function __construct(string $name)
-    {
-        $this->name = $name;
-    }
-    public function getID()
-    {
-        return $this->name;
-    }
     public function getName(): string
     {
-        return $this->name;
+        return $this->schemaDefinition[SchemaDefinition::ARGNAME_NAME];
     }
 }

@@ -5,13 +5,10 @@ use PoP\GraphQL\ObjectModels\AbstractType;
 
 abstract class AbstractNestableTypesType extends AbstractType
 {
-    protected $nestedTypes;
-    public function __construct(string $nestedTypes)
+    protected $nestedType;
+    public function __construct(array &$fullSchemaDefinition, array $schemaDefinitionPath, AbstractType $nestedType)
     {
-        $this->nestedTypes = $nestedTypes;
-    }
-    public function getID()
-    {
-        return TypeUtils::getNestableTypeID($this->getKind(), $this->nestedTypes);
+        parent::__construct($fullSchemaDefinition, $schemaDefinitionPath);
+        $this->nestedType = $nestedType;
     }
 }

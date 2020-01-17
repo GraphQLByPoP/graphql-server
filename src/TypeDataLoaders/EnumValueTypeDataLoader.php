@@ -1,7 +1,7 @@
 <?php
 namespace PoP\GraphQL\TypeDataLoaders;
 
-use PoP\GraphQL\ObjectModels\EnumValueType;
+use PoP\GraphQL\ObjectModels\EnumValue;
 use PoP\GraphQL\TypeResolvers\EnumValueTypeResolver;
 use PoP\ComponentModel\TypeDataLoaders\AbstractTypeDataLoader;
 use PoP\ComponentModel\TypeDataLoaders\UseObjectDictionaryTypeDataLoaderTrait;
@@ -18,10 +18,10 @@ class EnumValueTypeDataLoader extends AbstractTypeDataLoader
 
     protected function getTypeNewInstance($id): object
     {
-        list(
-            $fieldID,
-            $value
-        ) = TypeUtils::extractFieldIDAndEnumValueFromID($id);
-        return new EnumValueType($fieldID, $value);
+        // list(
+        //     $fieldID,
+        //     $value
+        // ) = TypeUtils::extractFieldIDAndEnumValueFromID($id);
+        return new EnumValue(TypeUtils::getSchemaDefinitionPathFromID($id));
     }
 }

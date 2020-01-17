@@ -1,9 +1,9 @@
 <?php
 namespace PoP\GraphQL\TypeResolvers;
 
-use PoP\GraphQL\TypeDataLoaders\FieldTypeDataLoader;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\AbstractTypeResolver;
+use PoP\GraphQL\TypeDataLoaders\SchemaDefinitionReferenceTypeDataLoader;
 
 class FieldTypeResolver extends AbstractTypeResolver
 {
@@ -28,7 +28,7 @@ class FieldTypeResolver extends AbstractTypeResolver
 
     public function getTypeDataLoaderClass(): string
     {
-        return FieldTypeDataLoader::class;
+        return SchemaDefinitionReferenceTypeDataLoader::class;
     }
 }
 
