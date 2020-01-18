@@ -25,25 +25,11 @@ class Directive extends AbstractSchemaDefinitionReferenceObject
     }
     public function getLocations(): array
     {
+        // They apply to the field (these are the same DirectiveLocations as used by "@skip": https://graphql.github.io/graphql-spec/draft/#sec--skip)
         return [
-            DirectiveLocations::QUERY,
-            DirectiveLocations::MUTATION,
-            DirectiveLocations::SUBSCRIPTION,
             DirectiveLocations::FIELD,
-            DirectiveLocations::FRAGMENT_DEFINITION,
             DirectiveLocations::FRAGMENT_SPREAD,
             DirectiveLocations::INLINE_FRAGMENT,
-            DirectiveLocations::SCHEMA,
-            DirectiveLocations::SCALAR,
-            DirectiveLocations::OBJECT,
-            DirectiveLocations::FIELD_DEFINITION,
-            DirectiveLocations::ARGUMENT_DEFINITION,
-            DirectiveLocations::INTERFACE,
-            DirectiveLocations::UNION,
-            DirectiveLocations::ENUM,
-            DirectiveLocations::ENUM_VALUE,
-            DirectiveLocations::INPUT_OBJECT,
-            DirectiveLocations::INPUT_FIELD_DEFINITION,
         ];
     }
 }
