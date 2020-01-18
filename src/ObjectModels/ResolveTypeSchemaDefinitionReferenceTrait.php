@@ -50,23 +50,24 @@ trait ResolveTypeSchemaDefinitionReferenceTrait
             );
         }
 
-        // Any type that has been defined in the schema
-        if (SchemaDefinitionHelpers::isResolvableType($typeName)) {
-            // Reference to the already-defined type
-            $typeSchemaDefinitionPath = [
-                SchemaDefinition::ARGNAME_TYPES,
-                $typeName,
-            ];
-            $schemaDefinitionID = SchemaDefinitionHelpers::getID($typeSchemaDefinitionPath);
-            $schemaDefinitionReferenceRegistry = SchemaDefinitionReferenceRegistryFacade::getInstance();
-            return $schemaDefinitionReferenceRegistry->getSchemaDefinitionReference($schemaDefinitionID);
-        }
+        // // Any type that has been defined in the schema
+        // if (SchemaDefinitionHelpers::isResolvableType($typeName)) {
 
-        // It's a scalar
-        return new ScalarType(
-            $this->fullSchemaDefinition,
-            $this->schemaDefinitionPath,
-            $typeName
-        );
+        // By now, it's either an ObjectType or a ScalarType. Since they have both been registered, we can get their references from the registry
+        $typeSchemaDefinitionPath = [
+            SchemaDefinition::ARGNAME_TYPES,
+            $typeName,
+        ];
+        $schemaDefinitionID = SchemaDefinitionHelpers::getID($typeSchemaDefinitionPath);
+        $schemaDefinitionReferenceRegistry = SchemaDefinitionReferenceRegistryFacade::getInstance();
+        return $schemaDefinitionReferenceRegistry->getSchemaDefinitionReference($schemaDefinitionID);
+        // }
+
+        // // It's a scalar
+        // return new ScalarType(
+        //     $this->fullSchemaDefinition,
+        //     $this->schemaDefinitionPath,
+        //     $typeName
+        // );
     }
 }

@@ -110,14 +110,14 @@ class Schema
             SchemaDefinition::TYPE_EMAIL,
             SchemaDefinition::TYPE_IP,
         ];
-        foreach ($scalarTypeNames as $scalarTypeName) {
-            $graphQLScalarTypeName = SchemaHelpers::convertTypeNameToGraphQLStandard($scalarTypeName);
-            $this->types[] = new ScalarType(
-                $fullSchemaDefinition,
-                [],
-                $graphQLScalarTypeName
-            );
-        }
+        // Convert them to the GraphQL standard: Title case for the Types
+        $scalarTypeNames = array_map(
+            function($scalarTypeName) {
+                return SchemaHelpers::convertTypeNameToGraphQLStandard($scalarTypeName);
+            },
+            $scalarTypeNames
+        );
+        $scalarTypeNames[] = 'id';
 
         // 2. Initialize all the TypeResolver types
         foreach ($fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES] as $typeName => $typeDefinition) {
@@ -125,7 +125,13 @@ class Schema
                 SchemaDefinition::ARGNAME_TYPES,
                 $typeName,
             ];
-            $this->types[] = $this->getType($fullSchemaDefinition, $typeSchemaDefinitionPath);
+            $this->types[] = in_array($typeName, $scalarTypeNames) ?
+                new ScalarType(
+                    $fullSchemaDefinition,
+                    $typeSchemaDefinitionPath,
+                    $typeName
+                ) :
+                $this->getType($fullSchemaDefinition, $typeSchemaDefinitionPath);
         }
     }
     protected function getType(array &$fullSchemaDefinition, array $typeSchemaDefinitionPath)

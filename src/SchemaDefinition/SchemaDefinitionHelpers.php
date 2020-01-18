@@ -63,15 +63,15 @@ class SchemaDefinitionHelpers
         }
         return $fields;
     }
-    public static function isResolvableType(string $typeName): bool
-    {
-        $schemaDefinitionReferenceRegistry = SchemaDefinitionReferenceRegistryFacade::getInstance();
-        $fullSchemaDefinition = $schemaDefinitionReferenceRegistry->getFullSchemaDefinition();
-        return in_array(
-            $typeName,
-            array_keys($fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES])
-        );
-    }
+    // public static function isResolvableType(string $typeName): bool
+    // {
+    //     $schemaDefinitionReferenceRegistry = SchemaDefinitionReferenceRegistryFacade::getInstance();
+    //     $fullSchemaDefinition = $schemaDefinitionReferenceRegistry->getFullSchemaDefinition();
+    //     return in_array(
+    //         $typeName,
+    //         array_keys($fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES])
+    //     );
+    // }
     // /**
     //  * Add a silent level to the path. It is needed to instantiate NonNull/List/Enum/Scalar types, and have their IDs still be unique
     //  * Eg: a NonNullType wraps another AbstractType inside, so by initializing this one with an extra level "dependent", they can both have a unique ID and get their data from the same $schemaDefinition

@@ -3,6 +3,7 @@ namespace PoP\GraphQL\Registries;
 
 use PoP\GraphQL\ObjectModels\UnionType;
 use PoP\GraphQL\ObjectModels\ObjectType;
+use PoP\ComponentModel\Schema\SchemaHelpers;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\API\Facades\SchemaDefinitionRegistryFacade;
 use PoP\GraphQL\SchemaDefinition\SchemaDefinitionHelpers;
@@ -33,6 +34,40 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
             // Get the schema definitions
             $schemaDefinitionRegistry = SchemaDefinitionRegistryFacade::getInstance();
             $this->fullSchemaDefinition = $schemaDefinitionRegistry->getSchemaDefinition($fieldArgs, $options);
+
+            // Add the scalar types
+            $scalarTypeNames = [
+                SchemaDefinition::TYPE_UNRESOLVED_ID,
+                SchemaDefinition::TYPE_STRING,
+                SchemaDefinition::TYPE_INT,
+                SchemaDefinition::TYPE_FLOAT,
+                SchemaDefinition::TYPE_BOOL,
+                SchemaDefinition::TYPE_OBJECT,
+                SchemaDefinition::TYPE_MIXED,
+                SchemaDefinition::TYPE_DATE,
+                SchemaDefinition::TYPE_TIME,
+                SchemaDefinition::TYPE_URL,
+                SchemaDefinition::TYPE_EMAIL,
+                SchemaDefinition::TYPE_IP,
+            ];
+            $scalarTypeNames = array_map(
+                function($scalarTypeName) {
+                    return SchemaHelpers::convertTypeNameToGraphQLStandard($scalarTypeName);
+                },
+                $scalarTypeNames
+            );
+            $scalarTypeNames[] = 'id';
+
+            foreach ($scalarTypeNames as $scalarTypeName) {
+                $this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$scalarTypeName] = [
+                    SchemaDefinition::ARGNAME_NAME => $scalarTypeName,
+                    SchemaDefinition::ARGNAME_DESCRIPTION => null,
+                    SchemaDefinition::ARGNAME_DIRECTIVES => null,
+                    SchemaDefinition::ARGNAME_FIELDS => null,
+                    SchemaDefinition::ARGNAME_CONNECTIONS => null,
+                    SchemaDefinition::ARGNAME_INTERFACES => null,
+                ];
+            }
         }
 
         return $this->fullSchemaDefinition;
