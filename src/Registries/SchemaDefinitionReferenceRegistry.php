@@ -41,7 +41,7 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
             $this->fullSchemaDefinition = $schemaDefinitionRegistry->getSchemaDefinition($fieldArgs, $options);
 
             // Expand the full schema with more data that is needed for GraphQL
-            // 1. Add the scalar types
+            // Add the scalar types
             $scalarTypeNames = [
                 // SchemaDefinition::TYPE_UNRESOLVED_ID,
                 SchemaDefinition::TYPE_ID,
@@ -74,8 +74,6 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                     SchemaDefinition::ARGNAME_INTERFACES => null,
                 ];
             }
-
-            // 2. Add the interfaces
         }
 
         return $this->fullSchemaDefinition;
