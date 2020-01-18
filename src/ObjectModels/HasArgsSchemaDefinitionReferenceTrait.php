@@ -26,6 +26,12 @@ trait HasArgsSchemaDefinitionReferenceTrait
             }
         }
     }
+    public function initializeArgsTypeDependencies(): void
+    {
+        foreach ($this->args as $arg) {
+            $arg->initializeTypeDependencies();
+        }
+    }
     /**
      * Implementation of "args" field from the Field object (https://graphql.github.io/graphql-spec/draft/#sel-FAJbLACsEIDuEAA-vb)
      *

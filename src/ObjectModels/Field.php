@@ -19,6 +19,7 @@ class Field extends AbstractSchemaDefinitionReferenceObject
     public function initializeTypeDependencies(): void
     {
         $this->initType();
+        $this->initializeArgsTypeDependencies();
     }
     public function getName(): string
     {
