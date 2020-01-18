@@ -35,7 +35,24 @@ class Schema
         );
 
         // Initialize the interfaces
-        // ...
+        $interfaceSchemaDefinitionPath = [
+            SchemaDefinition::ARGNAME_INTERFACES,
+        ];
+        $interfaceSchemaDefinitionPointer = SchemaDefinitionHelpers::advancePointerToPath(
+            $fullSchemaDefinition,
+            $interfaceSchemaDefinitionPath
+        );
+        foreach (array_keys($interfaceSchemaDefinitionPointer) as $interfaceName) {
+            new InterfaceType(
+                $fullSchemaDefinition,
+                array_merge(
+                    $interfaceSchemaDefinitionPath,
+                    [
+                        $interfaceName
+                    ]
+                )
+            );
+        }
 
         // Initialize the directives
         $this->directives = [];

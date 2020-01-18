@@ -1,28 +1,44 @@
 <?php
 namespace PoP\GraphQL\ObjectModels;
 
-use PoP\GraphQL\ObjectModels\InterfaceType;
 use PoP\API\Schema\SchemaDefinition;
+use PoP\GraphQL\ObjectModels\InterfaceType;
+use PoP\GraphQL\SchemaDefinition\SchemaDefinitionHelpers;
+use PoP\GraphQL\Facades\Registries\SchemaDefinitionReferenceRegistryFacade;
 
 trait HasInterfacesTypeTrait
 {
     protected $interfaces;
-    protected function initInterfaces(): void
+    /**
+     * Reference the already-registered interfaces
+     *
+     * @return void
+     */
+    protected function initInterfaces(array &$fullSchemaDefinition, array $schemaDefinitionPath): void
     {
         $this->interfaces = [];
-        // foreach ($this->schemaDefinitions[SchemaDefinition::ARGNAME_INTERFACES] as $interfaceResolverClass => $interfaceDefinition) {
-        //     $interfaceName = $interfaceDefinition[SchemaDefinition::ARGNAME_NAME];
-        //     $interfaces[] = new InterfaceType(
-        //         TypeUtils::composeSchemaDefinitionPath($this->schemaDefinitionPath, [SchemaDefinition::ARGNAME_INTERFACES, $interfaceName])
-        //     );
-        // }
+        $interfaceSchemaDefinitionPath = array_merge(
+            $schemaDefinitionPath,
+            [
+                SchemaDefinition::ARGNAME_INTERFACES,
+            ]
+        );
+        $schemaDefinitionReferenceRegistry = SchemaDefinitionReferenceRegistryFacade::getInstance();
+        $interfaceSchemaDefinitionPointer = SchemaDefinitionHelpers::advancePointerToPath($fullSchemaDefinition, $interfaceSchemaDefinitionPath);
+        foreach ($interfaceSchemaDefinitionPointer as $interfaceName) {
+            // The InterfaceType has already been registered on the root, under "interfaces"
+            $schemaDefinitionID = SchemaDefinitionHelpers::getID(
+                [
+                    SchemaDefinition::ARGNAME_INTERFACES,
+                    $interfaceName
+                ]
+            );
+            $this->interfaces[] = $schemaDefinitionReferenceRegistry->getSchemaDefinitionReference($schemaDefinitionID);
+        }
     }
 
     public function getInterfaces(): array
     {
-        if (is_null($this->interfaces)) {
-            $this->initInterfaces();
-        }
         return $this->interfaces;
     }
     public function getInterfaceIDs(): array
