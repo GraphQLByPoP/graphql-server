@@ -22,13 +22,18 @@ class SchemaDefinitionHelpers
             $schemaDefinitionPath
         );
     }
+    public static function &advancePointerToPath(array &$schemaDefinition, array $schemaDefinitionPath)
+    {
+        $schemaDefinitionPointer = &$schemaDefinition;
+        foreach ($schemaDefinitionPath as $pathLevel) {
+            $schemaDefinitionPointer = &$schemaDefinitionPointer[$pathLevel];
+        }
+        return $schemaDefinitionPointer;
+    }
     public static function initFieldsFromPath(array &$fullSchemaDefinition, array $fieldSchemaDefinitionPath): array
     {
+        $fieldSchemaDefinitionPointer = self::advancePointerToPath($fullSchemaDefinition, $fieldSchemaDefinitionPath);
         $fields = [];
-        $fieldSchemaDefinitionPointer = &$fullSchemaDefinition;
-        foreach ($fieldSchemaDefinitionPath as $pathLevel) {
-            $fieldSchemaDefinitionPointer = &$fieldSchemaDefinitionPointer[$pathLevel];
-        }
         foreach (array_keys($fieldSchemaDefinitionPointer) as $fieldName) {
             $fields[] = new Field(
                 $fullSchemaDefinition,
@@ -44,12 +49,9 @@ class SchemaDefinitionHelpers
     }
     public static function retrieveFieldsFromPath(array &$fullSchemaDefinition, array $fieldSchemaDefinitionPath): array
     {
-        $fields = [];
+        $fieldSchemaDefinitionPointer = self::advancePointerToPath($fullSchemaDefinition, $fieldSchemaDefinitionPath);
         $schemaDefinitionReferenceRegistry = SchemaDefinitionReferenceRegistryFacade::getInstance();
-        $fieldSchemaDefinitionPointer = &$fullSchemaDefinition;
-        foreach ($fieldSchemaDefinitionPath as $pathLevel) {
-            $fieldSchemaDefinitionPointer = &$fieldSchemaDefinitionPointer[$pathLevel];
-        }
+        $fields = [];
         foreach (array_keys($fieldSchemaDefinitionPointer) as $fieldName) {
             $schemaDefinitionID = SchemaDefinitionHelpers::getID(array_merge(
                 $fieldSchemaDefinitionPath,

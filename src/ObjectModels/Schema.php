@@ -34,6 +34,9 @@ class Schema
             ]
         );
 
+        // Initialize the interfaces
+        // ...
+
         // Initialize the directives
         $this->directives = [];
         foreach ($fullSchemaDefinition[SchemaDefinition::ARGNAME_GLOBAL_DIRECTIVES] as $directiveName => $directiveDefinition) {
@@ -43,9 +46,6 @@ class Schema
             ];
             $this->directives[] = $this->getDirective($fullSchemaDefinition, $directiveSchemaDefinitionPath);
         }
-
-        // Initialize the interfaces
-        // ...
 
         // Initialize the different types
         // 1. queryType
