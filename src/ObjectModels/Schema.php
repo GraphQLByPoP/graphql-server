@@ -3,7 +3,9 @@ namespace PoP\GraphQL\ObjectModels;
 
 use PoP\API\Schema\SchemaDefinition;
 use PoP\GraphQL\ObjectModels\Directive;
+use PoP\GraphQL\ObjectModels\ScalarType;
 use PoP\GraphQL\ObjectModels\AbstractType;
+use PoP\ComponentModel\Schema\SchemaHelpers;
 use PoP\GraphQL\SchemaDefinition\SchemaDefinitionHelpers;
 
 class Schema
@@ -92,6 +94,32 @@ class Schema
 
         // Initialize the types
         $this->types = [];
+
+        // 1. Initialize all the Scalar types
+        $scalarTypeNames = [
+            SchemaDefinition::TYPE_UNRESOLVED_ID,
+            SchemaDefinition::TYPE_STRING,
+            SchemaDefinition::TYPE_INT,
+            SchemaDefinition::TYPE_FLOAT,
+            SchemaDefinition::TYPE_BOOL,
+            SchemaDefinition::TYPE_OBJECT,
+            SchemaDefinition::TYPE_MIXED,
+            SchemaDefinition::TYPE_DATE,
+            SchemaDefinition::TYPE_TIME,
+            SchemaDefinition::TYPE_URL,
+            SchemaDefinition::TYPE_EMAIL,
+            SchemaDefinition::TYPE_IP,
+        ];
+        foreach ($scalarTypeNames as $scalarTypeName) {
+            $graphQLScalarTypeName = SchemaHelpers::convertTypeNameToGraphQLStandard($scalarTypeName);
+            $this->types[] = new ScalarType(
+                $fullSchemaDefinition,
+                [],
+                $graphQLScalarTypeName
+            );
+        }
+
+        // 2. Initialize all the TypeResolver types
         foreach ($fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES] as $typeName => $typeDefinition) {
             $typeSchemaDefinitionPath = [
                 SchemaDefinition::ARGNAME_TYPES,
