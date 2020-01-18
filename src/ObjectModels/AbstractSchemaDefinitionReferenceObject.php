@@ -1,7 +1,6 @@
 <?php
 namespace PoP\GraphQL\ObjectModels;
 
-use PoP\GraphQL\SchemaDefinition\SchemaDefinitionHelpers;
 use PoP\GraphQL\Facades\Registries\SchemaDefinitionReferenceRegistryFacade;
 
 abstract class AbstractSchemaDefinitionReferenceObject
