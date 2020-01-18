@@ -49,6 +49,7 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                 SchemaDefinition::TYPE_INT,
                 SchemaDefinition::TYPE_FLOAT,
                 SchemaDefinition::TYPE_BOOL,
+                SchemaDefinition::TYPE_ENUM,
                 SchemaDefinition::TYPE_OBJECT,
                 SchemaDefinition::TYPE_MIXED,
                 SchemaDefinition::TYPE_DATE,
