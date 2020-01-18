@@ -1,7 +1,6 @@
 <?php
-namespace PoP\GraphQL\SchemaDefinition;
+namespace PoP\GraphQL\Schema;
 
-use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\GraphQL\ObjectModels\Field;
 use PoP\GraphQL\Facades\Registries\SchemaDefinitionReferenceRegistryFacade;
 

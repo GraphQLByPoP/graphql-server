@@ -3,10 +3,10 @@ namespace PoP\GraphQL\Registries;
 
 use PoP\GraphQL\ObjectModels\UnionType;
 use PoP\GraphQL\ObjectModels\ObjectType;
-use PoP\ComponentModel\Schema\SchemaHelpers;
+use PoP\GraphQL\Schema\SchemaHelpers;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\API\Facades\SchemaDefinitionRegistryFacade;
-use PoP\GraphQL\SchemaDefinition\SchemaDefinitionHelpers;
+use PoP\GraphQL\Schema\SchemaDefinitionHelpers;
 use PoP\GraphQL\ObjectModels\AbstractSchemaDefinitionReferenceObject;
 use PoP\GraphQL\Registries\SchemaDefinitionReferenceRegistryInterface;
 
@@ -15,6 +15,7 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
     protected $fullSchemaDefinition;
     protected $fullSchemaDefinitionReferenceMap;
     protected $fullSchemaDefinitionReferenceDictionary;
+    protected $dynamicTypes = [];
 
     /**
      * It returns the full schema, expanded with all data required to satisfy GraphQL's introspection fields (starting from "__schema")
@@ -49,7 +50,7 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                 SchemaDefinition::TYPE_INT,
                 SchemaDefinition::TYPE_FLOAT,
                 SchemaDefinition::TYPE_BOOL,
-                SchemaDefinition::TYPE_ENUM,
+                // SchemaDefinition::TYPE_ENUM,
                 SchemaDefinition::TYPE_OBJECT,
                 SchemaDefinition::TYPE_MIXED,
                 SchemaDefinition::TYPE_DATE,
@@ -131,6 +132,11 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
             $referenceObjectID .= '*';
         }
         $this->fullSchemaDefinitionReferenceDictionary[$referenceObjectID] = $referenceObject;
+
+        // Dynamic types are stored so that the schema can add them to its "types" field
+        if ($referenceObject->isDynamicType()) {
+            $this->dynamicTypes[] = $referenceObject;
+        }
         return $referenceObjectID;
     }
     public function getSchemaDefinitionReference(
@@ -138,5 +144,10 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
     ): AbstractSchemaDefinitionReferenceObject
     {
         return $this->fullSchemaDefinitionReferenceDictionary[$referenceObjectID];
+    }
+
+    public function getDynamicTypes(): array
+    {
+        return $this->dynamicTypes;
     }
 }

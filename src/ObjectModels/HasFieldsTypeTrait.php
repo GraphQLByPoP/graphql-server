@@ -3,7 +3,7 @@ namespace PoP\GraphQL\ObjectModels;
 
 use PoP\GraphQL\ObjectModels\Field;
 use PoP\API\Schema\SchemaDefinition;
-use PoP\GraphQL\SchemaDefinition\SchemaDefinitionHelpers;
+use PoP\GraphQL\Schema\SchemaDefinitionHelpers;
 
 trait HasFieldsTypeTrait
 {

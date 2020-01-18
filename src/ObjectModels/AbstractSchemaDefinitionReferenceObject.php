@@ -31,6 +31,11 @@ abstract class AbstractSchemaDefinitionReferenceObject
         $this->id = $schemaDefinitionReferenceRegistry->registerSchemaDefinitionReference($this);
     }
 
+    public function isDynamicType(): bool
+    {
+        return false;
+    }
+
     public function getSchemaDefinition(): array
     {
         return $this->schemaDefinition;

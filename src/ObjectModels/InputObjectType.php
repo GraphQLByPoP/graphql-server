@@ -35,6 +35,10 @@ class InputObjectType extends AbstractType
         }
     }
 
+    public function isDynamicType(): bool
+    {
+        return true;
+    }
     public function getKind(): string
     {
         return TypeKinds::INPUT_OBJECT;

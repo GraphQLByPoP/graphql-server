@@ -10,7 +10,12 @@ abstract class AbstractType extends AbstractSchemaDefinitionReferenceObject
 
     public function getName(): string
     {
-        return $this->schemaDefinition[SchemaDefinition::ARGNAME_NAME];
+        $name = $this->schemaDefinition[SchemaDefinition::ARGNAME_NAME];
+        // Enum and InputObject are dynamic types: their name is composed by their field and their kind
+        if ($this->isDynamicType()) {
+            $name .= '_'.$this->getKind();
+        }
+        return $name;
     }
     public function getDescription(): ?string
     {

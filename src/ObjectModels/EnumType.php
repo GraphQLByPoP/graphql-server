@@ -38,9 +38,9 @@ class EnumType extends AbstractType
         }
     }
 
-    public function getName(): string
+    public function isDynamicType(): bool
     {
-        return 'enum';
+        return true;
     }
     public function getKind(): string
     {

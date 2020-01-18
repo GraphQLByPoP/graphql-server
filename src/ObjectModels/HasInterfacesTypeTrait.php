@@ -3,7 +3,7 @@ namespace PoP\GraphQL\ObjectModels;
 
 use PoP\API\Schema\SchemaDefinition;
 use PoP\GraphQL\ObjectModels\InterfaceType;
-use PoP\GraphQL\SchemaDefinition\SchemaDefinitionHelpers;
+use PoP\GraphQL\Schema\SchemaDefinitionHelpers;
 use PoP\GraphQL\Facades\Registries\SchemaDefinitionReferenceRegistryFacade;
 
 trait HasInterfacesTypeTrait

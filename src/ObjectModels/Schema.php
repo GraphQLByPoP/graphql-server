@@ -5,8 +5,9 @@ use PoP\API\Schema\SchemaDefinition;
 use PoP\GraphQL\ObjectModels\Directive;
 use PoP\GraphQL\ObjectModels\ScalarType;
 use PoP\GraphQL\ObjectModels\AbstractType;
-use PoP\ComponentModel\Schema\SchemaHelpers;
-use PoP\GraphQL\SchemaDefinition\SchemaDefinitionHelpers;
+use PoP\GraphQL\Schema\SchemaHelpers;
+use PoP\GraphQL\Facades\Registries\SchemaDefinitionReferenceRegistryFacade;
+use PoP\GraphQL\Schema\SchemaDefinitionHelpers;
 
 class Schema
 {
@@ -103,7 +104,7 @@ class Schema
             SchemaDefinition::TYPE_INT,
             SchemaDefinition::TYPE_FLOAT,
             SchemaDefinition::TYPE_BOOL,
-            SchemaDefinition::TYPE_ENUM,
+            // SchemaDefinition::TYPE_ENUM,
             SchemaDefinition::TYPE_OBJECT,
             SchemaDefinition::TYPE_MIXED,
             SchemaDefinition::TYPE_DATE,
@@ -146,6 +147,13 @@ class Schema
                 $interfaceSchemaDefinitionPath
             );
         }
+
+        // 4. After initializing everything, we can include the dynamic types
+        $schemaDefinitionReferenceRegistry = SchemaDefinitionReferenceRegistryFacade::getInstance();
+        $this->types = array_merge(
+            $this->types,
+            $schemaDefinitionReferenceRegistry->getDynamicTypes()
+        );
     }
     protected function getType(array &$fullSchemaDefinition, array $typeSchemaDefinitionPath)
     {

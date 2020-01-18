@@ -2,10 +2,11 @@
 namespace PoP\GraphQL\ObjectModels;
 
 use PoP\API\Schema\SchemaDefinition;
+use PoP\GraphQL\Schema\SchemaDefinition as GraphQLSchemaDefinition;
 use PoP\GraphQL\Syntax\SyntaxHelpers;
 use PoP\GraphQL\ObjectModels\AbstractType;
 use PoP\GraphQL\ObjectModels\InputObjectType;
-use PoP\GraphQL\SchemaDefinition\SchemaDefinitionHelpers;
+use PoP\GraphQL\Schema\SchemaDefinitionHelpers;
 use PoP\GraphQL\Facades\Registries\SchemaDefinitionReferenceRegistryFacade;
 
 trait ResolveTypeSchemaDefinitionReferenceTrait
@@ -35,7 +36,7 @@ trait ResolveTypeSchemaDefinitionReferenceTrait
         }
 
         // Check if it is an enum type
-        if ($typeName == SchemaDefinition::TYPE_ENUM) {
+        if ($typeName == GraphQLSchemaDefinition::TYPE_ENUM) {
             return new EnumType(
                 $this->fullSchemaDefinition,
                 $this->schemaDefinitionPath
@@ -43,7 +44,7 @@ trait ResolveTypeSchemaDefinitionReferenceTrait
         }
 
         // Check if it is an enum type
-        if ($typeName == SchemaDefinition::TYPE_INPUT_OBJECT) {
+        if ($typeName == GraphQLSchemaDefinition::TYPE_INPUT_OBJECT) {
             return new InputObjectType(
                 $this->fullSchemaDefinition,
                 $this->schemaDefinitionPath
