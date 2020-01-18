@@ -5,6 +5,7 @@ use PoP\GraphQL\ObjectModels\UnionType;
 use PoP\GraphQL\ObjectModels\ObjectType;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\API\Facades\SchemaDefinitionRegistryFacade;
+use PoP\GraphQL\SchemaDefinition\SchemaDefinitionHelpers;
 use PoP\GraphQL\ObjectModels\AbstractSchemaDefinitionReferenceObject;
 use PoP\GraphQL\Registries\SchemaDefinitionReferenceRegistryInterface;
 
@@ -77,22 +78,24 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
         return $this->fullSchemaDefinitionReferenceMap;
     }
     public function registerSchemaDefinitionReference(
-        AbstractSchemaDefinitionReferenceObject $referenceObject,
-        string $referenceObjectID
-    ): void
+        AbstractSchemaDefinitionReferenceObject $referenceObject
+    ): string
     {
+        $schemaDefinitionPath = $referenceObject->getSchemaDefinitionPath();
+        $referenceObjectID = SchemaDefinitionHelpers::getID($schemaDefinitionPath);
+        // Calculate and set the ID. If this is a nested type, its wrapping type will already have been registered under this ID
+        // Hence, register it under another one
+        while (isset($this->fullSchemaDefinitionReferenceDictionary[$referenceObjectID])) {
+            // Append the ID with a distinctive token at the end
+            $referenceObjectID .= '*';
+        }
         $this->fullSchemaDefinitionReferenceDictionary[$referenceObjectID] = $referenceObject;
+        return $referenceObjectID;
     }
     public function getSchemaDefinitionReference(
         string $referenceObjectID
     ): AbstractSchemaDefinitionReferenceObject
     {
         return $this->fullSchemaDefinitionReferenceDictionary[$referenceObjectID];
-    }
-    public function hasSchemaDefinitionReference(
-        string $referenceObjectID
-    ): bool
-    {
-        return isset($this->fullSchemaDefinitionReferenceDictionary[$referenceObjectID]);
     }
 }

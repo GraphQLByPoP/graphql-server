@@ -27,21 +27,9 @@ abstract class AbstractSchemaDefinitionReferenceObject
         }
         $this->schemaDefinition = $schemaDefinitionPointer;
 
-        // Calculate and set the ID. If this is a nested type, its wrapping type will already have been registered under this ID
-        // Hence, register it under another one
+        // Register the object, and get back its ID
         $schemaDefinitionReferenceRegistry = SchemaDefinitionReferenceRegistryFacade::getInstance();
-        $id = SchemaDefinitionHelpers::getID($this->schemaDefinitionPath);
-        while ($schemaDefinitionReferenceRegistry->hasSchemaDefinitionReference($id)) {
-            // Append the ID with a distinctive token at the end
-            $id .= '*';
-        }
-        $this->id = $id;
-
-        // Register myself into the referenceMap, under my ID
-        $schemaDefinitionReferenceRegistry->registerSchemaDefinitionReference(
-            $this,
-            $this->id
-        );
+        $this->id = $schemaDefinitionReferenceRegistry->registerSchemaDefinitionReference($this);
     }
 
     public function getSchemaDefinition(): array
@@ -49,24 +37,13 @@ abstract class AbstractSchemaDefinitionReferenceObject
         return $this->schemaDefinition;
     }
 
+    public function getSchemaDefinitionPath(): array
+    {
+        return $this->schemaDefinitionPath;
+    }
+
     public function getID(): string
     {
         return $this->id;
-        // return $this->getObjectModelFamily().($this->schemaDefinitionPath ? implode(TypeUtils::PATH_SEPARATOR, $this->schemaDefinitionPath) : '');
-        // return $this->getObjectModelFamily().SchemaDefinitionHelpers::getID($this->schemaDefinitionPath);
-        // return SchemaDefinitionHelpers::getID($this->schemaDefinitionPath);
     }
-    // public function getID(): string
-    // {
-    //     return $this->getObjectModelFamily().TypeUtils::ID_SEPARATOR.($this->schemaDefinitionPath ?? '');
-    // }
-    // public function getObjectModelFamily(): string
-    // {
-    //     // The name of the class, without the namespace
-    //     $qualifiedClassName = get_called_class();//__CLASS__;
-    //     if ($pos = strrpos($qualifiedClassName, '\\')) {
-    //         return substr($qualifiedClassName, $pos + 1);
-    //     }
-    //     return $qualifiedClassName;
-    // }
 }

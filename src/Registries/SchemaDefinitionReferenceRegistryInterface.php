@@ -7,13 +7,9 @@ interface SchemaDefinitionReferenceRegistryInterface {
     public function &getFullSchemaDefinition(): array;
     public function &getFullSchemaDefinitionReferenceMap(): array;
     public function registerSchemaDefinitionReference(
-        AbstractSchemaDefinitionReferenceObject $referenceObject,
-        string $referenceObjectID
-    ): void;
+        AbstractSchemaDefinitionReferenceObject $referenceObject
+    ): string;
     public function getSchemaDefinitionReference(
         string $referenceObjectID
     ): AbstractSchemaDefinitionReferenceObject;
-    public function hasSchemaDefinitionReference(
-        string $referenceObjectID
-    ): bool;
 }
