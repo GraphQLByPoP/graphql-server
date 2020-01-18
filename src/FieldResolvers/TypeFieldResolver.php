@@ -105,7 +105,7 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
                         SchemaDefinition::ARGNAME_NAME => 'includeDeprecated',
                         SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_BOOL,
                         SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Include deprecated fields?', 'graphql'),
-                        SchemaDefinition::ARGNAME_DEFAULT_VALUE => false,
+                        SchemaDefinition::ARGNAME_DEFAULT_VALUE => 'false',
                     ],
                 ];
         }
