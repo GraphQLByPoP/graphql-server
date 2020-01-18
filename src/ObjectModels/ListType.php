@@ -2,9 +2,9 @@
 namespace PoP\GraphQL\ObjectModels;
 
 use PoP\GraphQL\ObjectModels\NonDocumentableTypeTrait;
-use PoP\GraphQL\ObjectModels\AbstractNestableTypesType;
+use PoP\GraphQL\ObjectModels\AbstractNestableType;
 
-class ListType extends AbstractNestableTypesType
+class ListType extends AbstractNestableType
 {
     use NonDocumentableTypeTrait;
 

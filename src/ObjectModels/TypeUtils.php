@@ -90,12 +90,12 @@ class TypeUtils
     {
         // Check if it is non-null
         if (SyntaxHelpers::isNonNullType($typeName)) {
-            return new NonNullType(self::getTypeFromTypeName(SyntaxHelpers::getNonNullTypeNestedTypes($typeName), $schemaDefinitionPath));
+            return new NonNullType(self::getTypeFromTypeName(SyntaxHelpers::getNonNullTypeNestedTypeName($typeName), $schemaDefinitionPath));
         }
 
         // Check if it is an array
         if (SyntaxHelpers::isListType($typeName)) {
-            return new ListType(self::getTypeFromTypeName(SyntaxHelpers::getListTypeNestedTypes($typeName), $schemaDefinitionPath));
+            return new ListType(self::getTypeFromTypeName(SyntaxHelpers::getListTypeNestedTypeName($typeName), $schemaDefinitionPath));
         }
 
         // Check if it is an enum type

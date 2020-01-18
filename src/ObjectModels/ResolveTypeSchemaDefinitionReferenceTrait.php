@@ -18,7 +18,7 @@ trait ResolveTypeSchemaDefinitionReferenceTrait
                 $this->fullSchemaDefinition,
                 $this->schemaDefinitionPath,
                 $this->getTypeFromTypeName(
-                    SyntaxHelpers::getNonNullTypeNestedTypes($typeName)
+                    SyntaxHelpers::getNonNullTypeNestedTypeName($typeName)
                 )
             );
         }
@@ -29,7 +29,7 @@ trait ResolveTypeSchemaDefinitionReferenceTrait
                 $this->fullSchemaDefinition,
                 $this->schemaDefinitionPath,
                 $this->getTypeFromTypeName(
-                    SyntaxHelpers::getListTypeNestedTypes($typeName)
+                    SyntaxHelpers::getListTypeNestedTypeName($typeName)
                 )
             );
         }

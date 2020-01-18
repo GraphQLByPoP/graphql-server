@@ -12,6 +12,7 @@ use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\GraphQL\ObjectModels\HasFieldsTypeInterface;
 use PoP\GraphQL\TypeResolvers\EnumValueTypeResolver;
 use PoP\GraphQL\TypeResolvers\InputValueTypeResolver;
+use PoP\GraphQL\ObjectModels\AbstractNestableType;
 use PoP\GraphQL\ObjectModels\HasInterfacesTypeInterface;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\GraphQL\ObjectModels\HasPossibleTypesTypeInterface;
@@ -38,6 +39,7 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
             'possibleTypes',
             'enumValues',
             'inputFields',
+            'ofType',
         ];
     }
 
@@ -52,6 +54,7 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
             'possibleTypes' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_ID),
             'enumValues' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_ID),
             'inputFields' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_ID),
+            'ofType' => SchemaDefinition::TYPE_ID,
         ];
         return $types[$fieldName] ?? parent::getSchemaFieldType($typeResolver, $fieldName);
     }
@@ -86,6 +89,7 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
             'possibleTypes' => $translationAPI->__('Type\'s possible types (available for Interface and Union types only) as defined by the GraphQL spec (https://graphql.github.io/graphql-spec/draft/#sel-FAJbLACzCBC7CA0vN)', 'graphql'),
             'enumValues' => $translationAPI->__('Type\'s enum values (available for Enum type only) as defined by the GraphQL spec (https://graphql.github.io/graphql-spec/draft/#sel-FAJbLAC9CDD_CAA2lB)', 'graphql'),
             'inputFields' => $translationAPI->__('Type\'s input Fields (available for InputObject type only) as defined by the GraphQL spec (https://graphql.github.io/graphql-spec/draft/#sel-HAJbLAuDABCBIu9N)', 'graphql'),
+            'ofType' => $translationAPI->__('The type of the nested type (available for NonNull and List types only) as defined by the GraphQL spec (https://graphql.github.io/graphql-spec/draft/#sel-HAJbLA4DABCBIu9N)', 'graphql'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($typeResolver, $fieldName);
     }
@@ -156,6 +160,13 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
                     return $type->getInputFieldIDs();
                 }
                 return null;
+            case 'ofType':
+                // From GraphQL spec (https://graphql.github.io/graphql-spec/draft/#sel-HAJbLA4DABCBIu9N):
+                // "should be non-null for NON_NULL and LIST only, must be null for the others"
+                if ($type instanceof AbstractNestableType) {
+                    return $type->getNestedTypeID();
+                }
+                return null;
         }
 
         return parent::resolveValue($typeResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
@@ -168,6 +179,7 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
                 return FieldTypeResolver::class;
             case 'interfaces':
             case 'possibleTypes':
+            case 'ofType':
                 return TypeTypeResolver::class;
             case 'enumValues':
                 return EnumValueTypeResolver::class;

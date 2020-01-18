@@ -18,9 +18,9 @@ class SyntaxHelpers
      * Extract the nested types inside the list
      *
      * @param string $type
-     * @return boolean
+     * @return string
      */
-    public static function getListTypeNestedTypes(string $type): bool
+    public static function getListTypeNestedTypeName(string $type): string
     {
         return substr($type, 1, strlen($type)-2);
     }
@@ -40,9 +40,9 @@ class SyntaxHelpers
      * Extract the nested types which are "non null"
      *
      * @param string $type
-     * @return boolean
+     * @return string
      */
-    public static function getNonNullTypeNestedTypes(string $type): bool
+    public static function getNonNullTypeNestedTypeName(string $type): string
     {
         return substr($type, 0, strlen($type)-1);
     }
