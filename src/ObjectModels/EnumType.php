@@ -38,6 +38,10 @@ class EnumType extends AbstractType
         }
     }
 
+    public function getName(): string
+    {
+        return 'enum';
+    }
     public function getKind(): string
     {
         return TypeKinds::ENUM;

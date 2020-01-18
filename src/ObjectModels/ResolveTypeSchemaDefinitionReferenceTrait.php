@@ -65,7 +65,8 @@ trait ResolveTypeSchemaDefinitionReferenceTrait
         // It's a scalar
         return new ScalarType(
             $this->fullSchemaDefinition,
-            $this->schemaDefinitionPath
+            $this->schemaDefinitionPath,
+            $typeName
         );
     }
 }
