@@ -120,7 +120,7 @@ class Schema
         );
 
         // 2. Initialize all the TypeResolver types
-        foreach ($fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES] as $typeName => $typeDefinition) {
+        foreach (array_keys($fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES]) as $typeName) {
             $typeSchemaDefinitionPath = [
                 SchemaDefinition::ARGNAME_TYPES,
                 $typeName,
@@ -132,6 +132,18 @@ class Schema
                     $typeName
                 ) :
                 $this->getType($fullSchemaDefinition, $typeSchemaDefinitionPath);
+        }
+
+        // 3. Initialize all the Interface types
+        foreach (array_keys($fullSchemaDefinition[SchemaDefinition::ARGNAME_INTERFACES]) as $interfaceName) {
+            $interfaceSchemaDefinitionPath = [
+                SchemaDefinition::ARGNAME_INTERFACES,
+                $interfaceName,
+            ];
+            $this->types[] = new InterfaceType(
+                $fullSchemaDefinition,
+                $interfaceSchemaDefinitionPath
+            );
         }
     }
     protected function getType(array &$fullSchemaDefinition, array $typeSchemaDefinitionPath)

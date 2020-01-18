@@ -50,10 +50,7 @@ trait ResolveTypeSchemaDefinitionReferenceTrait
             );
         }
 
-        // // Any type that has been defined in the schema
-        // if (SchemaDefinitionHelpers::isResolvableType($typeName)) {
-
-        // By now, it's either an ObjectType or a ScalarType. Since they have both been registered, we can get their references from the registry
+        // By now, it's either an InterfaceType, UnionType, ObjectType or a ScalarType. Since they have all been registered, we can get their references from the registry
         $typeSchemaDefinitionPath = [
             SchemaDefinition::ARGNAME_TYPES,
             $typeName,
@@ -61,13 +58,5 @@ trait ResolveTypeSchemaDefinitionReferenceTrait
         $schemaDefinitionID = SchemaDefinitionHelpers::getID($typeSchemaDefinitionPath);
         $schemaDefinitionReferenceRegistry = SchemaDefinitionReferenceRegistryFacade::getInstance();
         return $schemaDefinitionReferenceRegistry->getSchemaDefinitionReference($schemaDefinitionID);
-        // }
-
-        // // It's a scalar
-        // return new ScalarType(
-        //     $this->fullSchemaDefinition,
-        //     $this->schemaDefinitionPath,
-        //     $typeName
-        // );
     }
 }

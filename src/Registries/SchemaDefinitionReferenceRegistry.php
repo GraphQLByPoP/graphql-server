@@ -16,6 +16,11 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
     protected $fullSchemaDefinitionReferenceMap;
     protected $fullSchemaDefinitionReferenceDictionary;
 
+    /**
+     * It returns the full schema, expanded with all data required to satisfy GraphQL's introspection fields (starting from "__schema")
+     *
+     * @return array
+     */
     public function &getFullSchemaDefinition(): array
     {
         if (is_null($this->fullSchemaDefinition)) {
@@ -35,7 +40,8 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
             $schemaDefinitionRegistry = SchemaDefinitionRegistryFacade::getInstance();
             $this->fullSchemaDefinition = $schemaDefinitionRegistry->getSchemaDefinition($fieldArgs, $options);
 
-            // Add the scalar types
+            // Expand the full schema with more data that is needed for GraphQL
+            // 1. Add the scalar types
             $scalarTypeNames = [
                 // SchemaDefinition::TYPE_UNRESOLVED_ID,
                 SchemaDefinition::TYPE_ID,
@@ -57,7 +63,6 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                 },
                 $scalarTypeNames
             );
-
             foreach ($scalarTypeNames as $scalarTypeName) {
                 $this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$scalarTypeName] = [
                     SchemaDefinition::ARGNAME_NAME => $scalarTypeName,
@@ -68,6 +73,8 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                     SchemaDefinition::ARGNAME_INTERFACES => null,
                 ];
             }
+
+            // 2. Add the interfaces
         }
 
         return $this->fullSchemaDefinition;
