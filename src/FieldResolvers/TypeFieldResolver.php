@@ -153,7 +153,7 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
                 // From GraphQL spec (https://graphql.github.io/graphql-spec/draft/#sel-HAJbLAuDABCBIu9N):
                 // "should be non-null for INPUT_OBJECT only, must be null for the others"
                 if ($type instanceof InputObjectType) {
-                    return $type->getInputObjectIDs();
+                    return $type->getInputFieldIDs();
                 }
                 return null;
         }

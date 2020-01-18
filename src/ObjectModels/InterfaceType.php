@@ -15,8 +15,7 @@ class InterfaceType extends AbstractType implements HasFieldsTypeInterface, HasP
     {
         parent::__construct($fullSchemaDefinition, $schemaDefinitionPath);
 
-        $this->initFields($fullSchemaDefinition, $schemaDefinitionPath);
-        // $this->initPossibleTypes($fullSchemaDefinition, $schemaDefinitionPath);
+        $this->initFields($fullSchemaDefinition, $schemaDefinitionPath, false);
     }
 
     public function getKind(): string

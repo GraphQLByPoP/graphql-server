@@ -15,7 +15,7 @@ class ObjectType extends AbstractType implements HasFieldsTypeInterface, HasInte
     {
         parent::__construct($fullSchemaDefinition, $schemaDefinitionPath);
 
-        $this->initFields($fullSchemaDefinition, $schemaDefinitionPath);
+        $this->initFields($fullSchemaDefinition, $schemaDefinitionPath, true);
         $this->initInterfaces($fullSchemaDefinition, $schemaDefinitionPath);
     }
 

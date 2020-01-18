@@ -4,12 +4,11 @@ namespace PoP\GraphQL\ObjectModels;
 use PoP\GraphQL\ObjectModels\Field;
 use PoP\API\Schema\SchemaDefinition;
 use PoP\GraphQL\SchemaDefinition\SchemaDefinitionHelpers;
-use PoP\GraphQL\Facades\Registries\SchemaDefinitionReferenceRegistryFacade;
 
 trait HasFieldsTypeTrait
 {
     protected $fields;
-    protected function initFields(array &$fullSchemaDefinition, array $schemaDefinitionPath): void
+    protected function initFields(array &$fullSchemaDefinition, array $schemaDefinitionPath, bool $includeConnections): void
     {
         $this->fields = [];
 
@@ -25,15 +24,17 @@ trait HasFieldsTypeTrait
             )
         );
         // 2. Connections under this type
-        $this->initFieldsFromPath(
-            $fullSchemaDefinition,
-            array_merge(
-                $schemaDefinitionPath,
-                [
-                    SchemaDefinition::ARGNAME_CONNECTIONS,
-                ]
-            )
-        );
+        if ($includeConnections) {
+            $this->initFieldsFromPath(
+                $fullSchemaDefinition,
+                array_merge(
+                    $schemaDefinitionPath,
+                    [
+                        SchemaDefinition::ARGNAME_CONNECTIONS,
+                    ]
+                )
+            );
+        }
         // Global fields and connections have already been initialized, simply get the reference to the existing objects from the registryMap
         // 1. Global fields
         $this->retrieveFieldsFromPath(
@@ -43,12 +44,14 @@ trait HasFieldsTypeTrait
             ]
         );
         // 2. Global connections
-        $this->retrieveFieldsFromPath(
-            $fullSchemaDefinition,
-            [
-                SchemaDefinition::ARGNAME_GLOBAL_CONNECTIONS,
-            ]
-        );
+        if ($includeConnections) {
+            $this->retrieveFieldsFromPath(
+                $fullSchemaDefinition,
+                [
+                    SchemaDefinition::ARGNAME_GLOBAL_CONNECTIONS,
+                ]
+            );
+        }
     }
     protected function initFieldsFromPath(array &$fullSchemaDefinition, array $fieldSchemaDefinitionPath): void
     {
