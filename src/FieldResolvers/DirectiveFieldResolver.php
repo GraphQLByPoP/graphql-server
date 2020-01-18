@@ -2,15 +2,19 @@
 namespace PoP\GraphQL\FieldResolvers;
 
 use PoP\ComponentModel\Schema\SchemaDefinition;
+use PoP\GraphQL\ObjectModels\DirectiveLocations;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\GraphQL\TypeResolvers\DirectiveTypeResolver;
 use PoP\GraphQL\TypeResolvers\InputValueTypeResolver;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\FieldResolvers\AbstractDBDataFieldResolver;
+use PoP\ComponentModel\FieldResolvers\EnumTypeSchemaDefinitionResolverTrait;
 
 class DirectiveFieldResolver extends AbstractDBDataFieldResolver
 {
+    use EnumTypeSchemaDefinitionResolverTrait;
+
     public static function getClassesToAttachTo(): array
     {
         return array(DirectiveTypeResolver::class);
@@ -22,6 +26,7 @@ class DirectiveFieldResolver extends AbstractDBDataFieldResolver
             'name',
             'description',
             'args',
+            'locations',
         ];
     }
 
@@ -31,8 +36,37 @@ class DirectiveFieldResolver extends AbstractDBDataFieldResolver
             'name' => SchemaDefinition::TYPE_STRING,
             'description' => SchemaDefinition::TYPE_STRING,
             'args' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_ID),
+            'locations' => SchemaDefinition::TYPE_ENUM,
         ];
         return $types[$fieldName] ?? parent::getSchemaFieldType($typeResolver, $fieldName);
+    }
+
+    protected function getSchemaDefinitionEnumValues(TypeResolverInterface $typeResolver, string $fieldName): ?array
+    {
+        switch ($fieldName) {
+            case 'locations':
+                return [
+                    DirectiveLocations::QUERY,
+                    DirectiveLocations::MUTATION,
+                    DirectiveLocations::SUBSCRIPTION,
+                    DirectiveLocations::FIELD,
+                    DirectiveLocations::FRAGMENT_DEFINITION,
+                    DirectiveLocations::FRAGMENT_SPREAD,
+                    DirectiveLocations::INLINE_FRAGMENT,
+                    DirectiveLocations::SCHEMA,
+                    DirectiveLocations::SCALAR,
+                    DirectiveLocations::OBJECT,
+                    DirectiveLocations::FIELD_DEFINITION,
+                    DirectiveLocations::ARGUMENT_DEFINITION,
+                    DirectiveLocations::INTERFACE,
+                    DirectiveLocations::UNION,
+                    DirectiveLocations::ENUM,
+                    DirectiveLocations::ENUM_VALUE,
+                    DirectiveLocations::INPUT_OBJECT,
+                    DirectiveLocations::INPUT_FIELD_DEFINITION,
+                ];
+        }
+        return null;
     }
 
     public function getSchemaFieldDescription(TypeResolverInterface $typeResolver, string $fieldName): ?string
@@ -42,6 +76,7 @@ class DirectiveFieldResolver extends AbstractDBDataFieldResolver
             'name' => $translationAPI->__('Directive\'s name', 'graphql'),
             'description' => $translationAPI->__('Directive\'s description', 'graphql'),
             'args' => $translationAPI->__('Directive\'s arguments', 'graphql'),
+            'locations' => $translationAPI->__('The locations where the directive may be placed', 'graphql'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($typeResolver, $fieldName);
     }
@@ -56,6 +91,8 @@ class DirectiveFieldResolver extends AbstractDBDataFieldResolver
                 return $directive->getDescription();
             case 'args':
                 return $directive->getArgIDs();
+            case 'locations':
+                return $directive->getLocations();
         }
 
         return parent::resolveValue($typeResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
