@@ -44,6 +44,9 @@ class Schema
             $this->directives[] = $this->getDirective($fullSchemaDefinition, $directiveSchemaDefinitionPath);
         }
 
+        // Initialize the interfaces
+        // ...
+
         // Initialize the different types
         // 1. queryType
         $queryTypeSchemaDefinitionPath = [
