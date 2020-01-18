@@ -3,8 +3,8 @@ namespace PoP\GraphQL\Registries;
 
 use PoP\GraphQL\ObjectModels\UnionType;
 use PoP\GraphQL\ObjectModels\ObjectType;
-use PoP\GraphQL\Schema\SchemaHelpers;
 use PoP\ComponentModel\Schema\SchemaDefinition;
+use PoP\GraphQL\Schema\SchemaDefinition as GraphQLSchemaDefinition;
 use PoP\API\Facades\SchemaDefinitionRegistryFacade;
 use PoP\GraphQL\Schema\SchemaDefinitionHelpers;
 use PoP\GraphQL\ObjectModels\AbstractSchemaDefinitionReferenceObject;
@@ -44,27 +44,27 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
             // Expand the full schema with more data that is needed for GraphQL
             // Add the scalar types
             $scalarTypeNames = [
-                // SchemaDefinition::TYPE_UNRESOLVED_ID,
-                SchemaDefinition::TYPE_ID,
-                SchemaDefinition::TYPE_STRING,
-                SchemaDefinition::TYPE_INT,
-                SchemaDefinition::TYPE_FLOAT,
-                SchemaDefinition::TYPE_BOOL,
-                // SchemaDefinition::TYPE_ENUM,
-                SchemaDefinition::TYPE_OBJECT,
-                SchemaDefinition::TYPE_MIXED,
-                SchemaDefinition::TYPE_DATE,
-                SchemaDefinition::TYPE_TIME,
-                SchemaDefinition::TYPE_URL,
-                SchemaDefinition::TYPE_EMAIL,
-                SchemaDefinition::TYPE_IP,
+                // GraphQLSchemaDefinition::TYPE_UNRESOLVED_ID,
+                GraphQLSchemaDefinition::TYPE_ID,
+                GraphQLSchemaDefinition::TYPE_STRING,
+                GraphQLSchemaDefinition::TYPE_INT,
+                GraphQLSchemaDefinition::TYPE_FLOAT,
+                GraphQLSchemaDefinition::TYPE_BOOL,
+                // GraphQLSchemaDefinition::TYPE_ENUM,
+                GraphQLSchemaDefinition::TYPE_OBJECT,
+                GraphQLSchemaDefinition::TYPE_MIXED,
+                GraphQLSchemaDefinition::TYPE_DATE,
+                GraphQLSchemaDefinition::TYPE_TIME,
+                GraphQLSchemaDefinition::TYPE_URL,
+                GraphQLSchemaDefinition::TYPE_EMAIL,
+                GraphQLSchemaDefinition::TYPE_IP,
             ];
-            $scalarTypeNames = array_map(
-                function($scalarTypeName) {
-                    return SchemaHelpers::convertTypeNameToGraphQLStandard($scalarTypeName);
-                },
-                $scalarTypeNames
-            );
+            // $scalarTypeNames = array_map(
+            //     function($scalarTypeName) {
+            //         return SchemaHelpers::convertTypeNameToGraphQLStandard($scalarTypeName);
+            //     },
+            //     $scalarTypeNames
+            // );
             foreach ($scalarTypeNames as $scalarTypeName) {
                 $this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$scalarTypeName] = [
                     SchemaDefinition::ARGNAME_NAME => $scalarTypeName,
@@ -99,22 +99,6 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                     new ObjectType($fullSchemaDefinition, $typeSchemaDefinitionPath);
                 $this->fullSchemaDefinitionReferenceMap[SchemaDefinition::ARGNAME_TYPES][$typeName] = $typeInstance;
             }
-
-            // // Register all the fields/directives/types in the TypeRegistry
-            // $typeRegistry = TypeRegistryFacade::getInstance();
-            // $typeRegistry->setGlobalFields(
-            //     $this->fullSchema[SchemaDefinition::ARGNAME_GLOBAL_FIELDS]
-            // );
-            // $typeRegistry->setGlobalConnections(
-            //     $this->fullSchema[SchemaDefinition::ARGNAME_GLOBAL_CONNECTIONS]
-            // );
-            // $typeRegistry->setGlobalDirectives(
-            //     $this->fullSchema[SchemaDefinition::ARGNAME_GLOBAL_DIRECTIVES]
-            // );
-            // foreach ($this->fullSchema[SchemaDefinition::ARGNAME_TYPES] as $typeResolverClass => $typeDefinition) {
-            //     $typeName = $typeDefinition[SchemaDefinition::ARGNAME_NAME];
-            //     $typeRegistry->registerType($typeName, $typeResolverClass, $typeDefinition);
-            // }
         }
 
         return $this->fullSchemaDefinitionReferenceMap;

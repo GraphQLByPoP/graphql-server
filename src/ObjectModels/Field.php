@@ -2,19 +2,23 @@
 namespace PoP\GraphQL\ObjectModels;
 
 use PoP\API\Schema\SchemaDefinition;
-use PoP\GraphQL\ObjectModels\InputValue;
 use PoP\GraphQL\ObjectModels\HasArgsSchemaDefinitionReferenceTrait;
-use PoP\GraphQL\ObjectModels\HasLazyTypeSchemaDefinitionReferenceTrait;
+use PoP\GraphQL\ObjectModels\HasTypeSchemaDefinitionReferenceTrait;
 
 class Field extends AbstractSchemaDefinitionReferenceObject
 {
-    use HasLazyTypeSchemaDefinitionReferenceTrait, HasArgsSchemaDefinitionReferenceTrait;
+    use HasTypeSchemaDefinitionReferenceTrait, HasArgsSchemaDefinitionReferenceTrait;
 
     public function __construct(array &$fullSchemaDefinition, array $schemaDefinitionPath)
     {
         parent::__construct($fullSchemaDefinition, $schemaDefinitionPath);
 
         $this->initArgs($fullSchemaDefinition, $schemaDefinitionPath);
+        // $this->initType();
+    }
+    public function initializeTypeDependencies(): void
+    {
+        $this->initType();
     }
     public function getName(): string
     {

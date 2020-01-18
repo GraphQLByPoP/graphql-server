@@ -2,6 +2,7 @@
 namespace PoP\GraphQL\ObjectModels;
 
 use PoP\API\Schema\SchemaDefinition;
+use PoP\GraphQL\Schema\SchemaDefinition as GraphQLSchemaDefinition;
 use PoP\GraphQL\ObjectModels\Directive;
 use PoP\GraphQL\ObjectModels\ScalarType;
 use PoP\GraphQL\ObjectModels\AbstractType;
@@ -22,6 +23,43 @@ class Schema
         $this->id = $id;
 
         // Initialize the global elements before anything, since they will be references from the ObjectType: Fields/Connections/Directives
+        // 1. Initialize all the Scalar types
+        $scalarTypeNames = [
+            // GraphQLSchemaDefinition::TYPE_UNRESOLVED_ID,
+            GraphQLSchemaDefinition::TYPE_ID,
+            GraphQLSchemaDefinition::TYPE_STRING,
+            GraphQLSchemaDefinition::TYPE_INT,
+            GraphQLSchemaDefinition::TYPE_FLOAT,
+            GraphQLSchemaDefinition::TYPE_BOOL,
+            // GraphQLSchemaDefinition::TYPE_ENUM,
+            GraphQLSchemaDefinition::TYPE_OBJECT,
+            GraphQLSchemaDefinition::TYPE_MIXED,
+            GraphQLSchemaDefinition::TYPE_DATE,
+            GraphQLSchemaDefinition::TYPE_TIME,
+            GraphQLSchemaDefinition::TYPE_URL,
+            GraphQLSchemaDefinition::TYPE_EMAIL,
+            GraphQLSchemaDefinition::TYPE_IP,
+        ];
+        // // Convert them to the GraphQL standard: Title case for the Types
+        // $scalarTypeNames = array_map(
+        //     function($scalarTypeName) {
+        //         return SchemaHelpers::convertTypeNameToGraphQLStandard($scalarTypeName);
+        //     },
+        //     $scalarTypeNames
+        // );
+        $this->types = [];
+        foreach ($scalarTypeNames as $typeName) {
+            $typeSchemaDefinitionPath = [
+                SchemaDefinition::ARGNAME_TYPES,
+                $typeName,
+            ];
+            $this->types[] = new ScalarType(
+                $fullSchemaDefinition,
+                $typeSchemaDefinitionPath,
+                $typeName
+            );
+        }
+
         // 1. Global fields
         SchemaDefinitionHelpers::initFieldsFromPath(
             $fullSchemaDefinition,
@@ -93,50 +131,30 @@ class Schema
             $this->subscriptionType = $this->getType($fullSchemaDefinition, $subscriptionTypeSchemaDefinitionPath);
         }
 
-        // Initialize the types
-        $this->types = [];
-
-        // 1. Initialize all the Scalar types
-        $scalarTypeNames = [
-            // SchemaDefinition::TYPE_UNRESOLVED_ID,
-            SchemaDefinition::TYPE_ID,
-            SchemaDefinition::TYPE_STRING,
-            SchemaDefinition::TYPE_INT,
-            SchemaDefinition::TYPE_FLOAT,
-            SchemaDefinition::TYPE_BOOL,
-            // SchemaDefinition::TYPE_ENUM,
-            SchemaDefinition::TYPE_OBJECT,
-            SchemaDefinition::TYPE_MIXED,
-            SchemaDefinition::TYPE_DATE,
-            SchemaDefinition::TYPE_TIME,
-            SchemaDefinition::TYPE_URL,
-            SchemaDefinition::TYPE_EMAIL,
-            SchemaDefinition::TYPE_IP,
-        ];
-        // Convert them to the GraphQL standard: Title case for the Types
-        $scalarTypeNames = array_map(
-            function($scalarTypeName) {
-                return SchemaHelpers::convertTypeNameToGraphQLStandard($scalarTypeName);
-            },
+        // 2. Initialize all the TypeResolver types
+        $resolvableTypes = [];
+        $resolvableTypeNames = array_diff(
+            array_keys($fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES]),
             $scalarTypeNames
         );
-
-        // 2. Initialize all the TypeResolver types
-        foreach (array_keys($fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES]) as $typeName) {
+        foreach ($resolvableTypeNames as $typeName) {
             $typeSchemaDefinitionPath = [
                 SchemaDefinition::ARGNAME_TYPES,
                 $typeName,
             ];
-            $this->types[] = in_array($typeName, $scalarTypeNames) ?
-                new ScalarType(
-                    $fullSchemaDefinition,
-                    $typeSchemaDefinitionPath,
-                    $typeName
-                ) :
-                $this->getType($fullSchemaDefinition, $typeSchemaDefinitionPath);
+            $resolvableTypes[] = $this->getType($fullSchemaDefinition, $typeSchemaDefinitionPath);
+        }
+        $this->types = array_merge(
+            $this->types,
+            $resolvableTypes
+        );
+
+        // 3. Since all types have been initialized by now, we tell them to further initialize their type dependencies, since now they all exist
+        foreach ($resolvableTypes as $resolvableType) {
+            $resolvableType->initializeTypeDependencies();
         }
 
-        // 3. Initialize all the Interface types
+        // 4. Initialize all the Interface types
         foreach (array_keys($fullSchemaDefinition[SchemaDefinition::ARGNAME_INTERFACES]) as $interfaceName) {
             $interfaceSchemaDefinitionPath = [
                 SchemaDefinition::ARGNAME_INTERFACES,

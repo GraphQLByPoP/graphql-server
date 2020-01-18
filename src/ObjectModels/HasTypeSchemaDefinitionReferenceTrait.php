@@ -5,7 +5,7 @@ use PoP\API\Schema\SchemaDefinition;
 use PoP\GraphQL\ObjectModels\AbstractType;
 use PoP\GraphQL\ObjectModels\ResolveTypeSchemaDefinitionReferenceTrait;
 
-trait HasLazyTypeSchemaDefinitionReferenceTrait
+trait HasTypeSchemaDefinitionReferenceTrait
 {
     use ResolveTypeSchemaDefinitionReferenceTrait;
 

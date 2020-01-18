@@ -8,6 +8,16 @@ abstract class AbstractType extends AbstractSchemaDefinitionReferenceObject
 {
     abstract public function getKind(): string;
 
+    /**
+     * Once all types are initialized, call this function to further link to other types
+     *
+     * @return void
+     */
+    public function initializeTypeDependencies(): void
+    {
+
+    }
+
     public function getName(): string
     {
         $name = $this->schemaDefinition[SchemaDefinition::ARGNAME_NAME];

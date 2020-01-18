@@ -43,7 +43,7 @@ trait ResolveTypeSchemaDefinitionReferenceTrait
             );
         }
 
-        // Check if it is an enum type
+        // Check if it is an inputObject type
         if ($typeName == GraphQLSchemaDefinition::TYPE_INPUT_OBJECT) {
             return new InputObjectType(
                 $this->fullSchemaDefinition,

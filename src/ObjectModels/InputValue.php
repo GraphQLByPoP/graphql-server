@@ -1,15 +1,24 @@
 <?php
 namespace PoP\GraphQL\ObjectModels;
 
-use PoP\GraphQL\ObjectModels\AbstractType;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\GraphQL\ObjectModels\AbstractSchemaDefinitionReferenceObject;
-use PoP\GraphQL\ObjectModels\HasLazyTypeSchemaDefinitionReferenceTrait;
+use PoP\GraphQL\ObjectModels\HasTypeSchemaDefinitionReferenceTrait;
 
 class InputValue extends AbstractSchemaDefinitionReferenceObject
 {
-    use HasLazyTypeSchemaDefinitionReferenceTrait;
+    use HasTypeSchemaDefinitionReferenceTrait;
 
+    // public function __construct(array &$fullSchemaDefinition, array $schemaDefinitionPath)
+    // {
+    //     parent::__construct($fullSchemaDefinition, $schemaDefinitionPath);
+
+    //     $this->initType();
+    // }
+    public function initializeTypeDependencies(): void
+    {
+        $this->initType();
+    }
     public function getName(): string
     {
         return $this->schemaDefinition[SchemaDefinition::ARGNAME_NAME];

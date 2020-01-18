@@ -11,7 +11,7 @@ abstract class AbstractSchemaDefinitionReferenceObject
     protected $schemaDefinition;
     public function __construct(array &$fullSchemaDefinition, array $schemaDefinitionPath)
     {
-        // Also save this variable to lazy initi new types in HasLazyTypeSchemaDefinitionReferenceTrait
+        // Also save this variable to lazy initi new types in HasTypeSchemaDefinitionReferenceTrait
         $this->fullSchemaDefinition = $fullSchemaDefinition;
         $this->schemaDefinitionPath = $schemaDefinitionPath;
 
