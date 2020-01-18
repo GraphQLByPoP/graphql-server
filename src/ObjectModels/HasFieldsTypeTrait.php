@@ -67,6 +67,12 @@ trait HasFieldsTypeTrait
             SchemaDefinitionHelpers::retrieveFieldsFromPath($fullSchemaDefinition, $fieldSchemaDefinitionPath)
         );
     }
+    public function initializeFieldTypeDependencies(): void
+    {
+        foreach ($this->fields as $field) {
+            $field->initializeTypeDependencies();
+        }
+    }
 
     public function getFields(bool $includeDeprecated = false): array
     {

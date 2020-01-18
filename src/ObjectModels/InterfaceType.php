@@ -21,6 +21,7 @@ class InterfaceType extends AbstractType implements HasFieldsTypeInterface, HasP
     public function initializeTypeDependencies(): void
     {
         $this->initPossibleTypes();
+        $this->initializeFieldTypeDependencies();
     }
 
     public function getKind(): string
