@@ -37,7 +37,8 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
 
             // Add the scalar types
             $scalarTypeNames = [
-                SchemaDefinition::TYPE_UNRESOLVED_ID,
+                // SchemaDefinition::TYPE_UNRESOLVED_ID,
+                SchemaDefinition::TYPE_ID,
                 SchemaDefinition::TYPE_STRING,
                 SchemaDefinition::TYPE_INT,
                 SchemaDefinition::TYPE_FLOAT,
@@ -56,7 +57,6 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                 },
                 $scalarTypeNames
             );
-            $scalarTypeNames[] = 'id';
 
             foreach ($scalarTypeNames as $scalarTypeName) {
                 $this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$scalarTypeName] = [
