@@ -31,7 +31,6 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                 'shape' => SchemaDefinition::ARGVALUE_SCHEMA_SHAPE_FLAT,
                 'compressed' => true,
                 'typeAsSDL' => true,
-                'readable' => true,
             ];
 
             // Get the schema definitions
