@@ -1,14 +1,14 @@
 <?php
 namespace PoP\GraphQL\ObjectModels;
 
-use PoP\API\Schema\SchemaDefinition;
 use PoP\GraphQL\Environment;
-use PoP\GraphQL\Schema\SchemaDefinition as GraphQLSchemaDefinition;
+use PoP\API\Schema\SchemaDefinition;
 use PoP\GraphQL\ObjectModels\Directive;
 use PoP\GraphQL\ObjectModels\ScalarType;
 use PoP\GraphQL\ObjectModels\AbstractType;
-use PoP\GraphQL\Facades\Registries\SchemaDefinitionReferenceRegistryFacade;
 use PoP\GraphQL\Schema\SchemaDefinitionHelpers;
+use PoP\GraphQL\Schema\SchemaDefinition as GraphQLSchemaDefinition;
+use PoP\GraphQL\Facades\Registries\SchemaDefinitionReferenceRegistryFacade;
 
 class Schema
 {
@@ -21,16 +21,6 @@ class Schema
     public function __construct(array $fullSchemaDefinition, string $id, string $queryTypeName, ?string $mutationTypeName = null, ?string $subscriptionTypeName = null)
     {
         $this->id = $id;
-
-        // Remove the introspection fields that must not be added to the schema
-        // Field "__typename" from all types (GraphQL spec @ https://graphql.github.io/graphql-spec/draft/#sel-FAJZHABFBKjrL):
-        // "This field is implicit and does not appear in the fields list in any defined type."
-        unset($fullSchemaDefinition[SchemaDefinition::ARGNAME_GLOBAL_FIELDS]['__typename']);
-
-        // Fields "__schema" and "__type" from the query type (GraphQL spec @ https://graphql.github.io/graphql-spec/draft/#sel-FAJbHABABnD9ub):
-        // "These fields are implicit and do not appear in the fields list in the root type of the query operation."
-        unset($fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$queryTypeName][SchemaDefinition::ARGNAME_CONNECTIONS]['__type']);
-        unset($fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$queryTypeName][SchemaDefinition::ARGNAME_CONNECTIONS]['__schema']);
 
         // Initialize the global elements before anything, since they will be references from the ObjectType: Fields/Connections/Directives
         // 1. Initialize all the Scalar types
@@ -64,6 +54,7 @@ class Schema
 
         // Enable or not to add the global fields to the schema, since they may pollute the documentation
         if (Environment::addGlobalFieldsToSchema()) {
+            // Add the fields in the registry
             // 1. Global fields
             SchemaDefinitionHelpers::initFieldsFromPath(
                 $fullSchemaDefinition,

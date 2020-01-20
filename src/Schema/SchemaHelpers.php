@@ -1,13 +1,11 @@
 <?php
 namespace PoP\GraphQL\Schema;
 
-use InvalidArgumentException;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\GraphQL\Schema\SchemaDefinition as GraphQLSchemaDefinition;
-use PoP\ComponentModel\Schema\TypeCastingHelpers;
-use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\Facades\Instances\InstanceManagerFacade;
+use PoP\ComponentModel\Schema\SchemaHelpers as ComponentModelSchemaHelpers;
 
 class SchemaHelpers
 {
@@ -24,7 +22,7 @@ class SchemaHelpers
         list (
             $arrayInstances,
             $convertedType
-        ) = self::getTypeComponents($type);
+        ) = ComponentModelSchemaHelpers::getTypeComponents($type);
 
         // If the type is an ID, replace it with the actual type the ID references
         if ($convertedType == SchemaDefinition::TYPE_ID) {
@@ -46,7 +44,7 @@ class SchemaHelpers
         list (
             $arrayInstances,
             $convertedType
-        ) = self::getTypeComponents($type);
+        ) = ComponentModelSchemaHelpers::getTypeComponents($type);
 
         // Convert the type name to standards by GraphQL
         $convertedType = self::convertTypeNameToGraphQLStandard($convertedType);
@@ -79,34 +77,6 @@ class SchemaHelpers
         }
 
         return $typeName;
-    }
-    protected static function getTypeComponents(string $type): array
-    {
-        $convertedType = $type;
-
-        // Replace all instances of "array:" with wrapping the type with "[]"
-        $arrayInstances = 0;
-        while ($convertedType && TypeCastingHelpers::getTypeCombinationCurrentElement($convertedType) == SchemaDefinition::TYPE_ARRAY) {
-            $arrayInstances++;
-            $convertedType = TypeCastingHelpers::getTypeCombinationNestedElements($convertedType);
-        }
-
-        // If the type was actually only "array", without indicating its type, by now $type will be null
-        // In that case, inform of the error (an array cannot have its inner type undefined)
-        if (!$convertedType) {
-            $translationAPI = TranslationAPIFacade::getInstance();
-            throw new InvalidArgumentException(
-                sprintf(
-                    $translationAPI->__('Type \'%s\' doesn\'t declare the type of the innermost element'),
-                    $type
-                )
-            );
-        }
-
-        return [
-            $arrayInstances,
-            $convertedType
-        ];
     }
     protected static function convertTypeToSDLSyntax(int $arrayInstances, string $convertedType, ?bool $isMandatory = false): string
     {
