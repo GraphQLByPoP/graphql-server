@@ -33,13 +33,10 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                 'typeAsSDL' => true,
                 'readable' => true,
             ];
-            $options = [
-                // 'use-type-resolver-class-as-schema-key' => true,
-            ];
 
             // Get the schema definitions
             $schemaDefinitionRegistry = SchemaDefinitionRegistryFacade::getInstance();
-            $this->fullSchemaDefinition = $schemaDefinitionRegistry->getSchemaDefinition($fieldArgs, $options);
+            $this->fullSchemaDefinition = $schemaDefinitionRegistry->getSchemaDefinition($fieldArgs);
 
             // Expand the full schema with more data that is needed for GraphQL
             // Add the scalar types
