@@ -17,9 +17,19 @@ class Schema
     protected $subscriptionTypeResolverInstance;
     protected $types;
     protected $directives;
-    public function __construct(array &$fullSchemaDefinition, string $id, string $queryTypeName, ?string $mutationTypeName = null, ?string $subscriptionTypeName = null)
+    public function __construct(array $fullSchemaDefinition, string $id, string $queryTypeName, ?string $mutationTypeName = null, ?string $subscriptionTypeName = null)
     {
         $this->id = $id;
+
+        // Remove the introspection fields that must not be added to the schema
+        // Field "__typename" from all types (GraphQL spec @ https://graphql.github.io/graphql-spec/draft/#sel-FAJZHABFBKjrL):
+        // "This field is implicit and does not appear in the fields list in any defined type."
+        unset($fullSchemaDefinition[SchemaDefinition::ARGNAME_GLOBAL_FIELDS]['__typename']);
+
+        // Fields "__schema" and "__type" from the query type (GraphQL spec @ https://graphql.github.io/graphql-spec/draft/#sel-FAJbHABABnD9ub):
+        // "These fields are implicit and do not appear in the fields list in the root type of the query operation."
+        unset($fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$queryTypeName][SchemaDefinition::ARGNAME_CONNECTIONS]['__type']);
+        unset($fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$queryTypeName][SchemaDefinition::ARGNAME_CONNECTIONS]['__schema']);
 
         // Initialize the global elements before anything, since they will be references from the ObjectType: Fields/Connections/Directives
         // 1. Initialize all the Scalar types
@@ -180,21 +190,33 @@ class Schema
     public function getID() {
         return $this->id;
     }
+    public function getQueryType(): AbstractType
+    {
+        return $this->queryType;
+    }
     public function getQueryTypeID(): string
     {
-        return $this->queryType->getID();
+        return $this->getQueryType()->getID();
+    }
+    public function getMutationType(): ?AbstractType
+    {
+        return $this->mutationType;
     }
     public function getMutationTypeID(): ?string
     {
-        if ($this->mutationType) {
-            return $this->mutationType->getID();
+        if ($mutationType = $this->getMutationType()) {
+            return $mutationType->getID();
         }
         return null;
     }
+    public function getSubscriptionType(): ?AbstractType
+    {
+        return $this->subscriptionType;
+    }
     public function getSubscriptionTypeID(): ?string
     {
-        if ($this->subscriptionType) {
-            return $this->subscriptionType->getID();
+        if ($subscriptionType = $this->getSubscriptionType()) {
+            return $subscriptionType->getID();
         }
         return null;
     }
