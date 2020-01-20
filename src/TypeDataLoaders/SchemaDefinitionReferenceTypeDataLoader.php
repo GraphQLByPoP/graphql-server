@@ -15,21 +15,5 @@ class SchemaDefinitionReferenceTypeDataLoader extends AbstractTypeDataLoader
             },
             $ids
         );
-        // // $schemaDefinitionReferenceMap = $schemaDefinitionReferenceRegistry->getFullSchemaDefinitionReferenceMap();
-        // foreach ($ids as $id) {
-        //     $schemaDefinitionPath = explode(TypeUtils::PATH_SEPARATOR, $id);
-        //     $schemaDefinitionPointer = &$schemaDefinitionReferenceMap;
-        //     foreach ($schemaDefinitionPath as $pathLevel) {
-        //         $schemaDefinitionPointer = &$schemaDefinitionPointer[$pathLevel];
-        //         // if (is_object($schemaDefinitionPointer)) {
-        //         //     $schemaDefinitionPointer = &$schemaDefinitionPointer->$pathLevel;
-        //         // } else {
-        //         //     $schemaDefinitionPointer = &$schemaDefinitionPointer[$pathLevel];
-        //         // }
-        //     }
-        //     // Add the element at which we arrived after iterating the path
-        //     $ret[] = $schemaDefinitionPointer;
-        // }
-        // return $ret;
     }
 }

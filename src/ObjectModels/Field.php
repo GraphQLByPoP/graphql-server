@@ -14,7 +14,6 @@ class Field extends AbstractSchemaDefinitionReferenceObject
         parent::__construct($fullSchemaDefinition, $schemaDefinitionPath);
 
         $this->initArgs($fullSchemaDefinition, $schemaDefinitionPath);
-        // $this->initType();
     }
     public function initializeTypeDependencies(): void
     {

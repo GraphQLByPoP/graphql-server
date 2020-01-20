@@ -10,18 +10,8 @@ trait HasTypeSchemaDefinitionReferenceTrait
     use ResolveTypeSchemaDefinitionReferenceTrait;
 
     protected $type;
-    /**
-     * Important: this function MUST BE lazily loaded!
-     * It can't be called when creating the Field object, since the Type it is referencing to doesn't exist yet,
-     * and can't be created either because it would create an endless loop (new Type => new Field => new Type => new Field => ...)
-     *
-     * @return void
-     */
     public function getType(): AbstractType
     {
-        if (is_null($this->type)) {
-            $this->initType();
-        }
         return $this->type;
     }
     /**

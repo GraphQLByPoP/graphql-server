@@ -4,7 +4,7 @@ namespace PoP\GraphQL\Schema;
 class SchemaDefinition {
     const TYPE_MIXED = 'Mixed';
     const TYPE_ID = 'ID';
-    // const TYPE_UNRESOLVED_ID = 'unresolved_id';
+    // const TYPE_UNRESOLVED_ID = 'unresolvedID';
     const TYPE_STRING = 'String';
     const TYPE_INT = 'Int';
     const TYPE_FLOAT = 'Float';

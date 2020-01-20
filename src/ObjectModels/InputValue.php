@@ -9,12 +9,6 @@ class InputValue extends AbstractSchemaDefinitionReferenceObject
 {
     use HasTypeSchemaDefinitionReferenceTrait;
 
-    // public function __construct(array &$fullSchemaDefinition, array $schemaDefinitionPath)
-    // {
-    //     parent::__construct($fullSchemaDefinition, $schemaDefinitionPath);
-
-    //     $this->initType();
-    // }
     public function initializeTypeDependencies(): void
     {
         $this->initType();

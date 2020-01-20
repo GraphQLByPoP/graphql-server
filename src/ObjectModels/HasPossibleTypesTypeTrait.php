@@ -9,18 +9,8 @@ trait HasPossibleTypesTypeTrait
     use ResolveTypeSchemaDefinitionReferenceTrait;
 
     protected $possibleTypes;
-    /**
-     * Important: this function MUST BE lazily loaded!
-     * It can't be called when creating the Field object, since the Type it is referencing to doesn't exist yet,
-     * and can't be created either because it would create an endless loop (new Type => new Field => new Type => new Field => ...)
-     *
-     * @return void
-     */
     public function getPossibleTypes(): array
     {
-        if (is_null($this->possibleTypes)) {
-            $this->initPossibleTypes();
-        }
         return $this->possibleTypes;
     }
     /**

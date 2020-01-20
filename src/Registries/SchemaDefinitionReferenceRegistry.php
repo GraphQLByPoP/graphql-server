@@ -50,7 +50,6 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                 GraphQLSchemaDefinition::TYPE_INT,
                 GraphQLSchemaDefinition::TYPE_FLOAT,
                 GraphQLSchemaDefinition::TYPE_BOOL,
-                // GraphQLSchemaDefinition::TYPE_ENUM,
                 GraphQLSchemaDefinition::TYPE_OBJECT,
                 GraphQLSchemaDefinition::TYPE_MIXED,
                 GraphQLSchemaDefinition::TYPE_DATE,
@@ -59,12 +58,6 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                 GraphQLSchemaDefinition::TYPE_EMAIL,
                 GraphQLSchemaDefinition::TYPE_IP,
             ];
-            // $scalarTypeNames = array_map(
-            //     function($scalarTypeName) {
-            //         return SchemaHelpers::convertTypeNameToGraphQLStandard($scalarTypeName);
-            //     },
-            //     $scalarTypeNames
-            // );
             foreach ($scalarTypeNames as $scalarTypeName) {
                 $this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$scalarTypeName] = [
                     SchemaDefinition::ARGNAME_NAME => $scalarTypeName,
@@ -88,7 +81,6 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
 
             // Build the reference map from the schema definitions
             foreach ($fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES] as $typeName => $typeSchemaDefinition) {
-                // $typeName = $typeSchemaDefinition[SchemaDefinition::ARGNAME_NAME];
                 $typeSchemaDefinitionPath = [
                     SchemaDefinition::ARGNAME_TYPES,
                     $typeName

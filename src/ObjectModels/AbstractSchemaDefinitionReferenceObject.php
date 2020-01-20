@@ -18,10 +18,6 @@ abstract class AbstractSchemaDefinitionReferenceObject
         // Retrieve this element's schema definition by iterating down its path starting from the root of the full schema definition
         $schemaDefinitionPointer = &$fullSchemaDefinition;
         foreach ($schemaDefinitionPath as $pathLevel) {
-            // // The "dependent" token doesn't advance the definitionPath, but still allows to generate a unique ID
-            // if ($pathLevel == SchemaDefinitionHelpers::DEPENDENT_TOKEN) {
-            //     continue;
-            // }
             $schemaDefinitionPointer = &$schemaDefinitionPointer[$pathLevel];
         }
         $this->schemaDefinition = $schemaDefinitionPointer;

@@ -6,7 +6,6 @@ use PoP\GraphQL\Schema\SchemaDefinition as GraphQLSchemaDefinition;
 use PoP\GraphQL\ObjectModels\Directive;
 use PoP\GraphQL\ObjectModels\ScalarType;
 use PoP\GraphQL\ObjectModels\AbstractType;
-use PoP\GraphQL\Schema\SchemaHelpers;
 use PoP\GraphQL\Facades\Registries\SchemaDefinitionReferenceRegistryFacade;
 use PoP\GraphQL\Schema\SchemaDefinitionHelpers;
 
@@ -31,7 +30,6 @@ class Schema
             GraphQLSchemaDefinition::TYPE_INT,
             GraphQLSchemaDefinition::TYPE_FLOAT,
             GraphQLSchemaDefinition::TYPE_BOOL,
-            // GraphQLSchemaDefinition::TYPE_ENUM,
             GraphQLSchemaDefinition::TYPE_OBJECT,
             GraphQLSchemaDefinition::TYPE_MIXED,
             GraphQLSchemaDefinition::TYPE_DATE,
@@ -40,13 +38,6 @@ class Schema
             GraphQLSchemaDefinition::TYPE_EMAIL,
             GraphQLSchemaDefinition::TYPE_IP,
         ];
-        // // Convert them to the GraphQL standard: Title case for the Types
-        // $scalarTypeNames = array_map(
-        //     function($scalarTypeName) {
-        //         return SchemaHelpers::convertTypeNameToGraphQLStandard($scalarTypeName);
-        //     },
-        //     $scalarTypeNames
-        // );
         $this->types = [];
         foreach ($scalarTypeNames as $typeName) {
             $typeSchemaDefinitionPath = [
@@ -131,7 +122,7 @@ class Schema
             $this->subscriptionType = $this->getType($fullSchemaDefinition, $subscriptionTypeSchemaDefinitionPath);
         }
 
-        // 2. Initialize all the TypeResolver types
+        // 2. Initialize the Object and Union types from under "types" and the Interface type from under "interfaces"
         $resolvableTypes = [];
         $resolvableTypeNames = array_diff(
             array_keys($fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES]),
@@ -144,32 +135,28 @@ class Schema
             ];
             $resolvableTypes[] = $this->getType($fullSchemaDefinition, $typeSchemaDefinitionPath);
         }
-        $this->types = array_merge(
-            $this->types,
-            $resolvableTypes
-        );
-
-        // 3. Since all types have been initialized by now, we tell them to further initialize their type dependencies, since now they all exist
-        foreach ($resolvableTypes as $resolvableType) {
-            $resolvableType->initializeTypeDependencies();
-        }
-
-        // 4. Initialize all the Interface types
         foreach (array_keys($fullSchemaDefinition[SchemaDefinition::ARGNAME_INTERFACES]) as $interfaceName) {
             $interfaceSchemaDefinitionPath = [
                 SchemaDefinition::ARGNAME_INTERFACES,
                 $interfaceName,
             ];
-            $this->types[] = new InterfaceType(
+            $resolvableTypes[] = new InterfaceType(
                 $fullSchemaDefinition,
                 $interfaceSchemaDefinitionPath
             );
         }
 
-        // 4. After initializing everything, we can include the dynamic types
+        // 3. Since all types have been initialized by now, we tell them to further initialize their type dependencies, since now they all exist
+        // This step will initialize the dynamic Enum and InputObject types and add them to the registry
+        foreach ($resolvableTypes as $resolvableType) {
+            $resolvableType->initializeTypeDependencies();
+        }
+
+        // 4. Add the Object, Union and Interface types under $resolvableTypes, and the dynamic Enum and InputObject types from the registry
         $schemaDefinitionReferenceRegistry = SchemaDefinitionReferenceRegistryFacade::getInstance();
         $this->types = array_merge(
             $this->types,
+            $resolvableTypes,
             $schemaDefinitionReferenceRegistry->getDynamicTypes()
         );
     }
@@ -193,19 +180,6 @@ class Schema
     public function getID() {
         return $this->id;
     }
-    // public function getQueryTypeResolverInstance(): TypeResolverInterface
-    // {
-    //     $instanceManager = InstanceManagerFacade::getInstance();
-    //     return $instanceManager->getInstance(RootTypeResolver::class);
-    // }
-    // public function getMutationTypeResolverInstance(): ?TypeResolverInterface
-    // {
-    //     return null;
-    // }
-    // public function getSubscriptionTypeResolverInstance(): ?TypeResolverInterface
-    // {
-    //     return null;
-    // }
     public function getQueryTypeID(): string
     {
         return $this->queryType->getID();

@@ -2,7 +2,6 @@
 namespace PoP\GraphQL\Hooks;
 
 use PoP\Engine\Hooks\AbstractHookSet;
-use PoP\UserState\FieldResolvers\GlobalFieldResolver;
 
 class DBEntriesHooks extends AbstractHookSet
 {

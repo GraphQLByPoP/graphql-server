@@ -9,12 +9,6 @@ class UnionType extends AbstractType implements HasPossibleTypesTypeInterface
 {
     use HasPossibleTypesTypeTrait;
 
-    // public function __construct(array &$fullSchemaDefinition, array $schemaDefinitionPath)
-    // {
-    //     parent::__construct($fullSchemaDefinition, $schemaDefinitionPath);
-
-    //     $this->initPossibleTypes();
-    // }
     public function initializeTypeDependencies(): void
     {
         $this->initPossibleTypes();

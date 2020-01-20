@@ -1,25 +1,6 @@
 services:
-    # _defaults:
-    #     bind:
-    #         PoP\Hooks\HooksAPIInterface: '@hooks_api'
-    #         PoP\Translation\TranslationAPIInterface: '@translation_api'
-    #         PoP\ComponentModel\Schema\FeedbackMessageStoreInterface: '@feedback_message_store'
-    #         PoP\QueryParsing\QueryParserInterface: '@query_parser'
-
     schema_definition_reference_registry:
         class: \PoP\GraphQL\Registries\SchemaDefinitionReferenceRegistry
-        public: true
-
-    type_registry:
-        class: \PoP\GraphQL\Registries\TypeRegistry
-        public: true
-
-    field_registry:
-        class: \PoP\GraphQL\Registries\FieldRegistry
-        public: true
-
-    interface_registry:
-        class: \PoP\GraphQL\Registries\InterfaceRegistry
         public: true
 
     PoP\GraphQL\FieldResolvers\:

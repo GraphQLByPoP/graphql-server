@@ -2,8 +2,6 @@
 namespace PoP\GraphQL\FieldResolvers;
 
 use PoP\API\Schema\SchemaDefinition;
-use PoP\GraphQL\ObjectModels\TypeKinds;
-use PoP\GraphQL\ObjectModels\TypeUtils;
 use PoP\GraphQL\TypeResolvers\TypeTypeResolver;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\GraphQL\TypeResolvers\SchemaTypeResolver;
@@ -60,20 +58,11 @@ class SchemaFieldResolver extends AbstractDBDataFieldResolver
         $schema = $resultItem;
         switch ($fieldName) {
             case 'queryType':
-                // return TypeUtils::getResolvableTypeID(TypeKinds::OBJECT, $schema->getQueryTypeResolverInstance()->getTypeName());
                 return $schema->getQueryTypeID();
             case 'mutationType':
                 return $schema->getMutationTypeID();
-                // if ($typeResolverInstance = $schema->getMutationTypeResolverInstance()) {
-                //     return TypeUtils::getResolvableTypeID(TypeKinds::OBJECT, $typeResolverInstance->getTypeName());
-                // }
-                // return null;
             case 'subscriptionType':
                 return $schema->getSubscriptionTypeID();
-                // if ($typeResolverInstance = $schema->getSubscriptionTypeResolverInstance()) {
-                //     return TypeUtils::getResolvableTypeID(TypeKinds::OBJECT, $typeResolverInstance->getTypeName());
-                // }
-                // return null;
             case 'types':
                 return $schema->getTypeIDs();
             case 'directives':
