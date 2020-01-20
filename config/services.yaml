@@ -3,6 +3,10 @@ services:
         class: \PoP\GraphQL\Registries\SchemaDefinitionReferenceRegistry
         public: true
 
+    schema_definition_service:
+        class: \PoP\GraphQL\Schema\SchemaDefinitionService
+        public: true
+
     PoP\GraphQL\FieldResolvers\:
         resource: '../src/FieldResolvers/*'
         public: true

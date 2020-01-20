@@ -7,6 +7,7 @@ use PoP\GraphQL\ObjectModels\Directive;
 use PoP\GraphQL\ObjectModels\ScalarType;
 use PoP\GraphQL\ObjectModels\AbstractType;
 use PoP\GraphQL\Schema\SchemaDefinitionHelpers;
+use PoP\GraphQL\Facades\Schema\SchemaDefinitionServiceFacade;
 use PoP\GraphQL\Schema\SchemaDefinition as GraphQLSchemaDefinition;
 use PoP\GraphQL\Facades\Registries\SchemaDefinitionReferenceRegistryFacade;
 
@@ -18,7 +19,7 @@ class Schema
     protected $subscriptionTypeResolverInstance;
     protected $types;
     protected $directives;
-    public function __construct(array $fullSchemaDefinition, string $id, string $queryTypeName, ?string $mutationTypeName = null, ?string $subscriptionTypeName = null)
+    public function __construct(array $fullSchemaDefinition, string $id)
     {
         $this->id = $id;
 
@@ -101,8 +102,11 @@ class Schema
             $this->directives[] = $this->getDirectiveInstance($fullSchemaDefinition, $directiveSchemaDefinitionPath);
         }
 
+        $schemaDefinitionService = SchemaDefinitionServiceFacade::getInstance();
+
         // Initialize the different types
         // 1. queryType
+        $queryTypeName = $schemaDefinitionService->getQueryTypeName();
         $queryTypeSchemaDefinitionPath = [
             SchemaDefinition::ARGNAME_TYPES,
             $queryTypeName,
@@ -110,6 +114,7 @@ class Schema
         $this->queryType = $this->getTypeInstance($fullSchemaDefinition, $queryTypeSchemaDefinitionPath);
 
         // 2. mutationType
+        $mutationTypeName = $schemaDefinitionService->getMutationTypeName();
         if ($mutationTypeName) {
             $mutationTypeSchemaDefinitionPath = [
                 SchemaDefinition::ARGNAME_TYPES,
@@ -119,6 +124,7 @@ class Schema
         }
 
         // 3. subscriptionType
+        $subscriptionTypeName = $schemaDefinitionService->getSubscriptionTypeName();
         if ($subscriptionTypeName) {
             $subscriptionTypeSchemaDefinitionPath = [
                 SchemaDefinition::ARGNAME_TYPES,

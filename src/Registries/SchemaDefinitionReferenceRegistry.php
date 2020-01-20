@@ -2,13 +2,14 @@
 namespace PoP\GraphQL\Registries;
 
 use PoP\GraphQL\Environment;
+use PoP\GraphQL\Schema\SchemaHelpers;
 use PoP\ComponentModel\Schema\SchemaDefinition;
-use PoP\API\Facades\SchemaDefinitionRegistryFacade;
 use PoP\GraphQL\Schema\SchemaDefinitionHelpers;
+use PoP\API\Facades\SchemaDefinitionRegistryFacade;
+use PoP\GraphQL\Facades\Schema\SchemaDefinitionServiceFacade;
+use PoP\GraphQL\Schema\SchemaDefinition as GraphQLSchemaDefinition;
 use PoP\GraphQL\ObjectModels\AbstractSchemaDefinitionReferenceObject;
 use PoP\GraphQL\Registries\SchemaDefinitionReferenceRegistryInterface;
-use PoP\GraphQL\Schema\SchemaHelpers;
-use PoP\GraphQL\Schema\SchemaDefinition as GraphQLSchemaDefinition;
 
 class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegistryInterface {
 
@@ -38,7 +39,8 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
             $this->fullSchemaDefinition = $schemaDefinitionRegistry->getSchemaDefinition($fieldArgs);
 
             // Convert the schema from PoP's format to what GraphQL needs to work with
-            $queryTypeName = 'Root';
+            $schemaDefinitionService = SchemaDefinitionServiceFacade::getInstance();
+            $queryTypeName = $schemaDefinitionService->getQueryTypeName();
             $this->prepareSchemaDefinitionForGraphQL($queryTypeName);
         }
 
