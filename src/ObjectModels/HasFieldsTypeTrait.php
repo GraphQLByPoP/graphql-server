@@ -1,6 +1,7 @@
 <?php
 namespace PoP\GraphQL\ObjectModels;
 
+use PoP\GraphQL\Environment;
 use PoP\GraphQL\ObjectModels\Field;
 use PoP\API\Schema\SchemaDefinition;
 use PoP\GraphQL\Schema\SchemaDefinitionHelpers;
@@ -35,22 +36,24 @@ trait HasFieldsTypeTrait
                 )
             );
         }
-        // Global fields and connections have already been initialized, simply get the reference to the existing objects from the registryMap
-        // 1. Global fields
-        $this->retrieveFieldsFromPath(
-            $fullSchemaDefinition,
-            [
-                SchemaDefinition::ARGNAME_GLOBAL_FIELDS,
-            ]
-        );
-        // 2. Global connections
-        if ($includeConnections) {
+        if (Environment::addGlobalFieldsToSchema()) {
+            // Global fields and connections have already been initialized, simply get the reference to the existing objects from the registryMap
+            // 1. Global fields
             $this->retrieveFieldsFromPath(
                 $fullSchemaDefinition,
                 [
-                    SchemaDefinition::ARGNAME_GLOBAL_CONNECTIONS,
+                    SchemaDefinition::ARGNAME_GLOBAL_FIELDS,
                 ]
             );
+            // 2. Global connections
+            if ($includeConnections) {
+                $this->retrieveFieldsFromPath(
+                    $fullSchemaDefinition,
+                    [
+                        SchemaDefinition::ARGNAME_GLOBAL_CONNECTIONS,
+                    ]
+                );
+            }
         }
     }
     protected function initFieldsFromPath(array &$fullSchemaDefinition, array $fieldSchemaDefinitionPath): void

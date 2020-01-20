@@ -2,6 +2,7 @@
 namespace PoP\GraphQL\ObjectModels;
 
 use PoP\API\Schema\SchemaDefinition;
+use PoP\GraphQL\Environment;
 use PoP\GraphQL\Schema\SchemaDefinition as GraphQLSchemaDefinition;
 use PoP\GraphQL\ObjectModels\Directive;
 use PoP\GraphQL\ObjectModels\ScalarType;
@@ -61,20 +62,23 @@ class Schema
             );
         }
 
-        // 1. Global fields
-        SchemaDefinitionHelpers::initFieldsFromPath(
-            $fullSchemaDefinition,
-            [
-                SchemaDefinition::ARGNAME_GLOBAL_FIELDS,
-            ]
-        );
-        // 2. Global connections
-        SchemaDefinitionHelpers::initFieldsFromPath(
-            $fullSchemaDefinition,
-            [
-                SchemaDefinition::ARGNAME_GLOBAL_CONNECTIONS,
-            ]
-        );
+        // Enable or not to add the global fields to the schema, since they may pollute the documentation
+        if (Environment::addGlobalFieldsToSchema()) {
+            // 1. Global fields
+            SchemaDefinitionHelpers::initFieldsFromPath(
+                $fullSchemaDefinition,
+                [
+                    SchemaDefinition::ARGNAME_GLOBAL_FIELDS,
+                ]
+            );
+            // 2. Global connections
+            SchemaDefinitionHelpers::initFieldsFromPath(
+                $fullSchemaDefinition,
+                [
+                    SchemaDefinition::ARGNAME_GLOBAL_CONNECTIONS,
+                ]
+            );
+        }
 
         // Initialize the interfaces
         $interfaceSchemaDefinitionPath = [
