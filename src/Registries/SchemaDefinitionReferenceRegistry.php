@@ -1,8 +1,6 @@
 <?php
 namespace PoP\GraphQL\Registries;
 
-use PoP\GraphQL\ObjectModels\UnionType;
-use PoP\GraphQL\ObjectModels\ObjectType;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\GraphQL\Schema\SchemaDefinition as GraphQLSchemaDefinition;
 use PoP\API\Facades\SchemaDefinitionRegistryFacade;
