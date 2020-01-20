@@ -25,6 +25,7 @@ class SchemaFieldResolver extends AbstractDBDataFieldResolver
             'subscriptionType',
             'types',
             'directives',
+            'type',
         ];
     }
 
@@ -36,6 +37,7 @@ class SchemaFieldResolver extends AbstractDBDataFieldResolver
             'subscriptionType' => SchemaDefinition::TYPE_ID,
             'types' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_ID),
             'directives' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_ID),
+            'type' => SchemaDefinition::TYPE_ID,
         ];
         return $types[$fieldName] ?? parent::getSchemaFieldType($typeResolver, $fieldName);
     }
@@ -49,8 +51,27 @@ class SchemaFieldResolver extends AbstractDBDataFieldResolver
             'subscriptionType' => $translationAPI->__('The type, accessible from the root, that resolves subscriptions', 'graphql'),
             'types' => $translationAPI->__('All types registered in the data graph', 'graphql'),
             'directives' => $translationAPI->__('All directives registered in the data graph', 'graphql'),
+            'type' => $translationAPI->__('Obtain a specific type from the schema', 'graphql'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($typeResolver, $fieldName);
+    }
+
+    public function getSchemaFieldArgs(TypeResolverInterface $typeResolver, string $fieldName): array
+    {
+        $translationAPI = TranslationAPIFacade::getInstance();
+        switch ($fieldName) {
+            case 'type':
+                return [
+                    [
+                        SchemaDefinition::ARGNAME_NAME => 'name',
+                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The name of the type', 'graphql'),
+                        SchemaDefinition::ARGNAME_MANDATORY => true,
+                    ],
+                ];
+        }
+
+        return parent::getSchemaFieldArgs($typeResolver, $fieldName);
     }
 
     public function resolveValue(TypeResolverInterface $typeResolver, $resultItem, string $fieldName, array $fieldArgs = [], ?array $variables = null, ?array $expressions = null, array $options = [])
@@ -67,6 +88,8 @@ class SchemaFieldResolver extends AbstractDBDataFieldResolver
                 return $schema->getTypeIDs();
             case 'directives':
                 return $schema->getDirectiveIDs();
+            case 'type':
+                return $schema->getTypeID($fieldArgs['name']);
         }
 
         return parent::resolveValue($typeResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
@@ -79,6 +102,7 @@ class SchemaFieldResolver extends AbstractDBDataFieldResolver
             case 'mutationType':
             case 'subscriptionType':
             case 'types':
+            case 'type':
                 return TypeTypeResolver::class;
             case 'directives':
                 return DirectiveTypeResolver::class;

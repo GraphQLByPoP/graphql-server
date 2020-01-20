@@ -93,7 +93,7 @@ class Schema
                 SchemaDefinition::ARGNAME_GLOBAL_DIRECTIVES,
                 $directiveName,
             ];
-            $this->directives[] = $this->getDirective($fullSchemaDefinition, $directiveSchemaDefinitionPath);
+            $this->directives[] = $this->getDirectiveInstance($fullSchemaDefinition, $directiveSchemaDefinitionPath);
         }
 
         // Initialize the different types
@@ -102,7 +102,7 @@ class Schema
             SchemaDefinition::ARGNAME_TYPES,
             $queryTypeName,
         ];
-        $this->queryType = $this->getType($fullSchemaDefinition, $queryTypeSchemaDefinitionPath);
+        $this->queryType = $this->getTypeInstance($fullSchemaDefinition, $queryTypeSchemaDefinitionPath);
 
         // 2. mutationType
         if ($mutationTypeName) {
@@ -110,7 +110,7 @@ class Schema
                 SchemaDefinition::ARGNAME_TYPES,
                 $mutationTypeName,
             ];
-            $this->mutationType = $this->getType($fullSchemaDefinition, $mutationTypeSchemaDefinitionPath);
+            $this->mutationType = $this->getTypeInstance($fullSchemaDefinition, $mutationTypeSchemaDefinitionPath);
         }
 
         // 3. subscriptionType
@@ -119,7 +119,7 @@ class Schema
                 SchemaDefinition::ARGNAME_TYPES,
                 $subscriptionTypeName,
             ];
-            $this->subscriptionType = $this->getType($fullSchemaDefinition, $subscriptionTypeSchemaDefinitionPath);
+            $this->subscriptionType = $this->getTypeInstance($fullSchemaDefinition, $subscriptionTypeSchemaDefinitionPath);
         }
 
         // 2. Initialize the Object and Union types from under "types" and the Interface type from under "interfaces"
@@ -133,7 +133,7 @@ class Schema
                 SchemaDefinition::ARGNAME_TYPES,
                 $typeName,
             ];
-            $resolvableTypes[] = $this->getType($fullSchemaDefinition, $typeSchemaDefinitionPath);
+            $resolvableTypes[] = $this->getTypeInstance($fullSchemaDefinition, $typeSchemaDefinitionPath);
         }
         foreach (array_keys($fullSchemaDefinition[SchemaDefinition::ARGNAME_INTERFACES]) as $interfaceName) {
             $interfaceSchemaDefinitionPath = [
@@ -160,7 +160,7 @@ class Schema
             $schemaDefinitionReferenceRegistry->getDynamicTypes()
         );
     }
-    protected function getType(array &$fullSchemaDefinition, array $typeSchemaDefinitionPath)
+    protected function getTypeInstance(array &$fullSchemaDefinition, array $typeSchemaDefinitionPath)
     {
         $typeSchemaDefinitionPointer = &$fullSchemaDefinition;
         foreach ($typeSchemaDefinitionPath as $pathLevel) {
@@ -172,7 +172,7 @@ class Schema
             new UnionType($fullSchemaDefinition, $typeSchemaDefinitionPath) :
             new ObjectType($fullSchemaDefinition, $typeSchemaDefinitionPath);
     }
-    protected function getDirective(array &$fullSchemaDefinition, array $directiveSchemaDefinitionPath)
+    protected function getDirectiveInstance(array &$fullSchemaDefinition, array $directiveSchemaDefinitionPath)
     {
         return new Directive($fullSchemaDefinition, $directiveSchemaDefinitionPath);
     }
@@ -224,5 +224,22 @@ class Schema
             },
             $this->getDirectives()
         );
+    }
+    public function getType(string $typeName): ?AbstractType
+    {
+        // From all the types, get the one that has this name
+        foreach ($this->types as $type) {
+            if ($type->getName() == $typeName) {
+                return $type;
+            }
+        }
+        return null;
+    }
+    public function getTypeID(string $typeName): ?string
+    {
+        if ($type = $this->getType($typeName)) {
+            return $type->getID();
+        }
+        return null;
     }
 }
