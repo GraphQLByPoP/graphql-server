@@ -70,28 +70,6 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
         return $this->fullSchemaDefinition;
     }
 
-    public function &getFullSchemaDefinitionReferenceMap(): array
-    {
-        if (is_null($this->fullSchemaDefinitionReferenceMap)) {
-            $fullSchemaDefinition = $this->getFullSchemaDefinition();
-            $this->fullSchemaDefinitionReferenceMap = [];
-
-            // Build the reference map from the schema definitions
-            foreach ($fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES] as $typeName => $typeSchemaDefinition) {
-                $typeSchemaDefinitionPath = [
-                    SchemaDefinition::ARGNAME_TYPES,
-                    $typeName
-                ];
-                // The type here can either be an ObjectType or a UnionType
-                $typeInstance = $typeSchemaDefinition[SchemaDefinition::ARGNAME_IS_UNION] ?
-                    new UnionType($fullSchemaDefinition, $typeSchemaDefinitionPath) :
-                    new ObjectType($fullSchemaDefinition, $typeSchemaDefinitionPath);
-                $this->fullSchemaDefinitionReferenceMap[SchemaDefinition::ARGNAME_TYPES][$typeName] = $typeInstance;
-            }
-        }
-
-        return $this->fullSchemaDefinitionReferenceMap;
-    }
     public function registerSchemaDefinitionReference(
         AbstractSchemaDefinitionReferenceObject $referenceObject
     ): string

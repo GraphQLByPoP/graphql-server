@@ -10,7 +10,6 @@ interface SchemaDefinitionReferenceRegistryInterface {
      * @return array
      */
     public function &getFullSchemaDefinition(): array;
-    public function &getFullSchemaDefinitionReferenceMap(): array;
     public function registerSchemaDefinitionReference(
         AbstractSchemaDefinitionReferenceObject $referenceObject
     ): string;
