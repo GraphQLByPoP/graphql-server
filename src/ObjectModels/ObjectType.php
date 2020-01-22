@@ -2,6 +2,7 @@
 namespace PoP\GraphQL\ObjectModels;
 
 use PoP\GraphQL\ObjectModels\AbstractType;
+use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\GraphQL\ObjectModels\HasFieldsTypeTrait;
 use PoP\GraphQL\ObjectModels\HasFieldsTypeInterface;
 use PoP\GraphQL\ObjectModels\HasInterfacesTypeTrait;

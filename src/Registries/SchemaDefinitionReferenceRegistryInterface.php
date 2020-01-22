@@ -16,5 +16,5 @@ interface SchemaDefinitionReferenceRegistryInterface {
     public function getSchemaDefinitionReference(
         string $referenceObjectID
     ): AbstractSchemaDefinitionReferenceObject;
-    public function getDynamicTypes(): array;
+    public function getDynamicTypes(bool $filterRepeated = true): array;
 }

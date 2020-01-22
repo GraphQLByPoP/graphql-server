@@ -229,8 +229,23 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
         return $this->fullSchemaDefinitionReferenceDictionary[$referenceObjectID];
     }
 
-    public function getDynamicTypes(): array
+    public function getDynamicTypes(bool $filterRepeated = true): array
     {
+        // Watch out! When an ObjectType or InterfaceType implements an interface, and a field of dynamicType (such as "status", which is an ENUM) is covered by the interface,
+        // then the field definition will be that one from the interface's perspective
+        // Hence, this field may be registered several times, as coming from different ObjectTypes implementing the same interface! (Eg: both Post and Page have field "status" from interface ContentEntry)
+        // If $filterRepeated is true, remove instances with a repeated name
+        if ($filterRepeated) {
+            $dynamicTypes = $typeNames = [];
+            foreach ($this->dynamicTypes as $type) {
+                $typeName = $type->getName();
+                if (!in_array($typeName, $typeNames)) {
+                    $dynamicTypes[] = $type;
+                    $typeNames[] = $typeName;
+                }
+            }
+            return $dynamicTypes;
+        }
         return $this->dynamicTypes;
     }
 }

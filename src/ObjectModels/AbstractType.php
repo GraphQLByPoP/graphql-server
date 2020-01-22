@@ -24,7 +24,13 @@ abstract class AbstractType extends AbstractSchemaDefinitionReferenceObject
         // To make sure their names are unique, also include their full path
         // Otherwise, field of type "enum" with name "status" but under types "User" and "Post" would have the same name and collide
         if ($this->isDynamicType()) {
-            return implode('_', array_map('ucfirst', $this->schemaDefinitionPath));
+            return implode(
+                '_',
+                array_map(
+                    'ucfirst',
+                    $this->schemaDefinitionPath
+                )
+            );
         }
         // Static types: their names are defined under property "name"
         return $this->schemaDefinition[SchemaDefinition::ARGNAME_NAME];

@@ -12,6 +12,7 @@ trait HasFieldsTypeTrait
     protected function initFields(array &$fullSchemaDefinition, array $schemaDefinitionPath, bool $includeConnections): void
     {
         $this->fields = [];
+        $interfaceNames = $this->getInterfaceNames();
 
         // Iterate to the definition of the fields in the schema, and create an object for each of them
         // 1. Fields under this type
@@ -22,7 +23,8 @@ trait HasFieldsTypeTrait
                 [
                     SchemaDefinition::ARGNAME_FIELDS,
                 ]
-            )
+            ),
+            $interfaceNames
         );
         // 2. Connections under this type
         if ($includeConnections) {
@@ -33,7 +35,8 @@ trait HasFieldsTypeTrait
                     [
                         SchemaDefinition::ARGNAME_CONNECTIONS,
                     ]
-                )
+                ),
+                $interfaceNames
             );
         }
         if (Environment::addGlobalFieldsToSchema()) {
@@ -43,7 +46,8 @@ trait HasFieldsTypeTrait
                 $fullSchemaDefinition,
                 [
                     SchemaDefinition::ARGNAME_GLOBAL_FIELDS,
-                ]
+                ],
+                $interfaceNames
             );
             // 2. Global connections
             if ($includeConnections) {
@@ -51,23 +55,31 @@ trait HasFieldsTypeTrait
                     $fullSchemaDefinition,
                     [
                         SchemaDefinition::ARGNAME_GLOBAL_CONNECTIONS,
-                    ]
+                    ],
+                    $interfaceNames
                 );
             }
         }
     }
-    protected function initFieldsFromPath(array &$fullSchemaDefinition, array $fieldSchemaDefinitionPath): void
+    protected function getInterfaceNames()
+    {
+        if ($this instanceof HasInterfacesTypeInterface) {
+            return $this->schemaDefinition[SchemaDefinition::ARGNAME_INTERFACES];
+        }
+        return [];
+    }
+    protected function initFieldsFromPath(array &$fullSchemaDefinition, array $fieldSchemaDefinitionPath, array $interfaceNames): void
     {
         $this->fields = array_merge(
             $this->fields,
-            SchemaDefinitionHelpers::initFieldsFromPath($fullSchemaDefinition, $fieldSchemaDefinitionPath)
+            SchemaDefinitionHelpers::initFieldsFromPath($fullSchemaDefinition, $fieldSchemaDefinitionPath, $interfaceNames)
         );
     }
-    protected function retrieveFieldsFromPath(array &$fullSchemaDefinition, array $fieldSchemaDefinitionPath): void
+    protected function retrieveFieldsFromPath(array &$fullSchemaDefinition, array $fieldSchemaDefinitionPath, array $interfaceNames): void
     {
         $this->fields = array_merge(
             $this->fields,
-            SchemaDefinitionHelpers::retrieveFieldsFromPath($fullSchemaDefinition, $fieldSchemaDefinitionPath)
+            SchemaDefinitionHelpers::retrieveFieldsFromPath($fullSchemaDefinition, $fieldSchemaDefinitionPath, $interfaceNames)
         );
     }
     public function initializeFieldTypeDependencies(): void
