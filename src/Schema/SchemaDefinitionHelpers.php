@@ -65,14 +65,11 @@ class SchemaDefinitionHelpers
     }
     public static function initFieldsFromPath(array &$fullSchemaDefinition, array $fieldSchemaDefinitionPath, array $interfaceNames): array
     {
-        // Watch out! If an ObjectType implements an interface, and the interface implements the same field, then we must return the field definition as from the perspective of the interface!
-        // Otherwise, when querying the schema in the GraphQL Playground (https://www.graphqlbin.com/v2/new/), it produces this error from a mismatched type:
-        // "Error: ContentEntry.status expects type "Interfaces_ContentEntry_Fields_Status" but Post.status provides type "Types_Post_Fields_Status"."
         $fieldInterfaces = self::getFieldInterfaces($fullSchemaDefinition, $interfaceNames);
         $fieldSchemaDefinitionPointer = self::advancePointerToPath($fullSchemaDefinition, $fieldSchemaDefinitionPath);
         $fields = [];
         foreach (array_keys($fieldSchemaDefinitionPointer) as $fieldName) {
-            // If this field is covered by an interface, use the interface's definition of the field!
+            // If an ObjectType implements an interface, and the interface implements the same field, then we must return the field definition as from the perspective of the interface!
             if ($interfaceName = $fieldInterfaces[$fieldName]) {
                 $targetFieldSchemaDefinitionPath = [
                     SchemaDefinition::ARGNAME_INTERFACES,
@@ -94,7 +91,7 @@ class SchemaDefinitionHelpers
         }
         return $fields;
     }
-    public static function retrieveFieldsFromPath(array &$fullSchemaDefinition, array $fieldSchemaDefinitionPath, array $interfaceNames): array
+    public static function retrieveFieldsFromPath(array &$fullSchemaDefinition, array $fieldSchemaDefinitionPath): array
     {
         $fieldSchemaDefinitionPointer = self::advancePointerToPath($fullSchemaDefinition, $fieldSchemaDefinitionPath);
         $schemaDefinitionReferenceRegistry = SchemaDefinitionReferenceRegistryFacade::getInstance();

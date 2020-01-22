@@ -46,8 +46,7 @@ trait HasFieldsTypeTrait
                 $fullSchemaDefinition,
                 [
                     SchemaDefinition::ARGNAME_GLOBAL_FIELDS,
-                ],
-                $interfaceNames
+                ]
             );
             // 2. Global connections
             if ($includeConnections) {
@@ -55,8 +54,7 @@ trait HasFieldsTypeTrait
                     $fullSchemaDefinition,
                     [
                         SchemaDefinition::ARGNAME_GLOBAL_CONNECTIONS,
-                    ],
-                    $interfaceNames
+                    ]
                 );
             }
         }
@@ -75,11 +73,11 @@ trait HasFieldsTypeTrait
             SchemaDefinitionHelpers::initFieldsFromPath($fullSchemaDefinition, $fieldSchemaDefinitionPath, $interfaceNames)
         );
     }
-    protected function retrieveFieldsFromPath(array &$fullSchemaDefinition, array $fieldSchemaDefinitionPath, array $interfaceNames): void
+    protected function retrieveFieldsFromPath(array &$fullSchemaDefinition, array $fieldSchemaDefinitionPath): void
     {
         $this->fields = array_merge(
             $this->fields,
-            SchemaDefinitionHelpers::retrieveFieldsFromPath($fullSchemaDefinition, $fieldSchemaDefinitionPath, $interfaceNames)
+            SchemaDefinitionHelpers::retrieveFieldsFromPath($fullSchemaDefinition, $fieldSchemaDefinitionPath)
         );
     }
     public function initializeFieldTypeDependencies(): void
