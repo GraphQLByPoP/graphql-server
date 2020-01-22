@@ -33,7 +33,24 @@ class SchemaDefinitionHelpers
         if ($interfaceNames) {
             foreach ($interfaceNames as $interfaceName) {
                 $interfaceSchemaDefinition = $fullSchemaDefinition[SchemaDefinition::ARGNAME_INTERFACES][$interfaceName];
-                foreach (array_keys($interfaceSchemaDefinition[SchemaDefinition::ARGNAME_FIELDS]) as $interfaceField) {
+                $interfaceFields = array_keys($interfaceSchemaDefinition[SchemaDefinition::ARGNAME_FIELDS]);
+                // Watch out (again)! An interface can itself implement interfaces, and a field can be shared across them (eg: field "status" for interfaces ContentEntity and ContentEntry)
+                // Then, check if the interface's interface also implements the field! Then, do not add it yet, leave it for its implemented interface to add it
+                if ($interfaceImplementedInterfaceNames = $fullSchemaDefinition[SchemaDefinition::ARGNAME_INTERFACES][$interfaceName][SchemaDefinition::ARGNAME_INTERFACES]) {
+                    $interfaceImplementedInterfaceFields = [];
+                    foreach ($interfaceImplementedInterfaceNames as $interfaceImplementedInterfaceName) {
+                        $interfaceImplementedInterfaceFields = array_merge(
+                            $interfaceImplementedInterfaceFields,
+                            array_keys($fullSchemaDefinition[SchemaDefinition::ARGNAME_INTERFACES][$interfaceImplementedInterfaceName][SchemaDefinition::ARGNAME_FIELDS])
+                        );
+                    }
+                    $interfaceFields = array_diff(
+                        $interfaceFields,
+                        $interfaceImplementedInterfaceFields
+                    );
+                }
+                // Set these fields as being defined by which interface
+                foreach ($interfaceFields as $interfaceField) {
                     $fieldInterfaces[$interfaceField] = $interfaceName;
                 }
             }
