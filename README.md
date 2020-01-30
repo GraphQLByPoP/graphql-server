@@ -91,6 +91,15 @@ From a unique source code, the API also supports REST. Check out these example l
 
 Find out more [in this package](https://github.com/getpop/api-rest)
 
+## Demo
+
+The GraphQL API is deployed under this endpoint: https://newapi.getpop.org/api/graphql/
+
+You can play with it through the following clients: 
+
+- GraphiQL: https://newapi.getpop.org/graphiql/
+- GraphQL Voyager: https://newapi.getpop.org/graphql-interactive/
+
 ## Change log
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
