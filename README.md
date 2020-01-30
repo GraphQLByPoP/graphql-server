@@ -15,7 +15,7 @@ GraphQL server in PHP, implemented through the PoP API
 
 ### Installing a fully-working API:
 
-Follow the instructions under [Bootstrap a PoP API for WordPress](https://github.com/leoloso/PoP-API-WP) (currently, the API is available for WordPress only).
+Follow the instructions under [Bootstrap a PoP API for WordPress](https://github.com/leoloso/PoP-API-WP) (even though CMS-agnostic, only the WordPress adapters have been presently implemented).
 
 ### Installing this library: 
 
