@@ -58,11 +58,9 @@ RewriteRule ^api/graphql/?$ /?scheme=api&datastructure=graphql [L,P,QSA]
 </IfModule>
 ```
 
-### Usage
+## 100% compliant of GraphQL syntax
 
-> **Note:** this library has been installed in [this WordPress site](https://newapi.getpop.org), the accessible [under this GraphQL endpoint](https://newapi.getpop.org/api/graphql/), and you can interact with it through [this GraphiQL client](https://newapi.getpop.org/graphiql/). 
-
-Click on the links below to demonstrate the [GraphQL features](https://graphql.org/learn/queries/) in the website's GraphiQL client:
+All [GraphQL queries](https://graphql.org/learn/queries/) are supported (click on the links below to try them out in [GraphiQL](https://newapi.getpop.org/graphiql/)):
 
 - <a href="https://newapi.getpop.org/graphiql/?query=query%20%7B%0A%20%20posts%20%7B%0A%20%20%20%20id%0A%20%20%20%20url%0A%20%20%20%20title%0A%20%20%20%20excerpt%0A%20%20%20%20date%0A%20%20%20%20tags%20%7B%0A%20%20%20%20%20%20name%0A%20%20%20%20%7D%0A%20%20%20%20comments%20%7B%0A%20%20%20%20%20%20content%0A%20%20%20%20%20%20author%20%7B%0A%20%20%20%20%20%20%20%20id%0A%20%20%20%20%20%20%20%20name%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D" target="leoloso-graphiql">Fields</a>
 - <a href="https://newapi.getpop.org/graphiql/?query=query%20%7B%0A%20%20posts(limit%3A2)%20%7B%0A%20%20%20%20id%0A%20%20%20%20title%0A%20%20%20%20author%20%7B%0A%20%20%20%20%20%20id%0A%20%20%20%20%20%20name%0A%20%20%20%20%20%20posts(limit%3A3)%20%7B%0A%20%20%20%20%20%20%20%20id%0A%20%20%20%20%20%20%20%20url%0A%20%20%20%20%20%20%20%20title%0A%20%20%20%20%20%20%20%20date(format%3A%22d%2Fm%2FY%22)%0A%20%20%20%20%20%20%20%20tags%20%7B%0A%20%20%20%20%20%20%20%20%20%20name%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20featuredimage%20%7B%0A%20%20%20%20%20%20%20%20%20%20id%0A%20%20%20%20%20%20%20%20%20%20src%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D" target="leoloso-graphiql">Field arguments</a>
@@ -76,24 +74,23 @@ Click on the links below to demonstrate the [GraphQL features](https://graphql.o
 - <a href="https://newapi.getpop.org/graphiql/?query=query%20GetPosts(%24includeAuthor%3A%20Boolean!%2C%20%24rootLimit%3A%20Int%20%3D%203%2C%20%24nestedLimit%3A%20Int%20%3D%202)%20%7B%0A%20%20rootPosts%3A%20posts(limit%3A%24rootLimit)%20%7B%0A%20%20%20%20id%0A%20%20%20%20title%0A%20%20%20%20...postProperties%0A%20%20%7D%0A%7D%0Afragment%20postProperties%20on%20Post%20%7B%0A%20%20author%20%40include(if%3A%20%24includeAuthor)%20%7B%0A%20%20%20%20id%0A%20%20%20%20name%0A%20%20%20%20nestedPosts%3A%20posts(limit%3A%24nestedLimit)%20%7B%0A%20%20%20%20%20%20id%0A%20%20%20%20%20%20url%0A%20%20%20%20%20%20title%0A%20%20%20%20%20%20date%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D&operationName=GetPosts&variables=%7B%0A%20%20%22includeAuthor%22%3A%20true%0A%7D" target="leoloso-graphiql">Fragments with directives</a>
 - <a href="https://newapi.getpop.org/graphiql/?query=query%20GetPosts(%24rootLimit%3A%20Int%20%3D%203%2C%20%24nestedLimit%3A%20Int%20%3D%202)%20%7B%0A%20%20rootPosts%3A%20posts(limit%3A%24rootLimit)%20%7B%0A%20%20%20%20id%0A%20%20%20%20title%0A%20%20%20%20author%20%7B%0A%20%20%20%20%20%20id%0A%20%20%20%20%20%20name%0A%20%20%20%20%20%20content(limit%3A%24nestedLimit)%20%7B%0A%20%20%20%20%20%20%20%20__typename%0A%20%20%20%20%20%20%20%20title%0A%20%20%20%20%20%20%20%20...%20on%20Post%20%7B%0A%20%20%20%20%20%20%20%20%20%20excerpt%0A%20%20%20%20%20%20%20%20%20%20tags%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20name%0A%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20...%20on%20Media%20%7B%0A%20%20%20%20%20%20%20%20%20%20url%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D&operationName=GetPosts" target="leoloso-graphiql">Inline fragments</a>
 
-### Extended GraphQL
+## Extended GraphQL
 
-An upgraded implementation of GraphQL, featuring [many more features](https://leoloso.com/posts/pop-api-features/) (such as composable fields and composable directives) can be found [in this package](https://github.com/getpop/api-graphql).
+An upgraded implementation of the GraphQL server, which enables to resolve [queries as a scripting language](https://leoloso.com/posts/demonstrating-pop-api-graphql-on-steroids/), is found under [this repo](https://github.com/getpop/api-graphql).
 
-The Extended GraphQL enables to resolve complex use cases in a single query, such as [this one](https://leoloso.com/posts/demonstrating-pop-api-graphql-on-steroids/).
+It supports several [features](https://leoloso.com/posts/pop-api-features/) not currently defined by the GraphQL spec, including [composable fields](https://github.com/getpop/api-graphql#composable-fields) and [composable directives](https://github.com/getpop/api-graphql#composable-directives).
 
-### Support for REST
 
-From a unique source code, the API also supports REST. Check out these example links:
+## Support for REST
+
+By installing the [REST package](https://github.com/getpop/api-rest), the GraphQL server can also satisfy REST endpoints, from a single source of truth. Check out these example links:
 
 - [List of posts](https://newapi.getpop.org/posts/api/rest/)
 - [Single post](https://newapi.getpop.org/posts/cope-with-wordpress-post-demo-containing-plenty-of-blocks/api/rest/)
 
-Find out more [in this package](https://github.com/getpop/api-rest)
-
 ## Demo
 
-The GraphQL API is deployed under this endpoint: https://newapi.getpop.org/api/graphql/
+The GraphQL API (running on top of [a WordPress site](https://newapi.getpop.org)) is deployed under this endpoint: https://newapi.getpop.org/api/graphql/
 
 You can play with it through the following clients: 
 
