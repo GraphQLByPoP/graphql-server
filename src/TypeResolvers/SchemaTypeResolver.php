@@ -3,9 +3,9 @@ namespace PoP\GraphQL\TypeResolvers;
 
 use PoP\GraphQL\TypeDataLoaders\SchemaTypeDataLoader;
 use PoP\Translation\Facades\TranslationAPIFacade;
-use PoP\ComponentModel\TypeResolvers\AbstractTypeResolver;
+use PoP\GraphQL\TypeResolvers\AbstractIntrospectionTypeResolver;
 
-class SchemaTypeResolver extends AbstractTypeResolver
+class SchemaTypeResolver extends AbstractIntrospectionTypeResolver
 {
     public const NAME = '__Schema';
 

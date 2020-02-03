@@ -11,7 +11,7 @@ class SchemaDefinitionService extends \PoP\ComponentModel\Schema\SchemaDefinitio
     {
         $instanceManager = InstanceManagerFacade::getInstance();
         $typeResolver = $instanceManager->getInstance($typeResolverClass);
-        return $typeResolver->getTypeName();
+        return $typeResolver->getMaybeQualifiedTypeName();
     }
 
     public function getQueryTypeName(): string

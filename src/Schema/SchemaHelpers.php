@@ -30,7 +30,7 @@ class SchemaHelpers
             // The convertedType may not be implemented yet (eg: Category), then skip
             if ($fieldTypeResolverClass = $typeResolver->resolveFieldTypeResolverClass($fieldName)) {
                 $fieldTypeResolver = $instanceManager->getInstance((string)$fieldTypeResolverClass);
-                $convertedType = $fieldTypeResolver->getTypeName();
+                $convertedType = $fieldTypeResolver->getMaybeQualifiedTypeName();
             }
         }
         // Convert the type name to standards by GraphQL

@@ -3,9 +3,9 @@ namespace PoP\GraphQL\TypeResolvers;
 
 use PoP\GraphQL\TypeDataLoaders\SchemaDefinitionReferenceTypeDataLoader;
 use PoP\Translation\Facades\TranslationAPIFacade;
-use PoP\ComponentModel\TypeResolvers\AbstractTypeResolver;
+use PoP\GraphQL\TypeResolvers\AbstractIntrospectionTypeResolver;
 
-class DirectiveTypeResolver extends AbstractTypeResolver
+class DirectiveTypeResolver extends AbstractIntrospectionTypeResolver
 {
     public const NAME = '__Directive';
 
