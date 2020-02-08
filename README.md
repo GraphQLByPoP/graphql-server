@@ -36,6 +36,7 @@ $ composer require getpop/graphql dev-master
 }
 ```
 
+<!--
 ### Enable pretty permalinks
 
 Add the following code in the `.htaccess` file to enable API endpoint `/api/graphql/`:
@@ -57,6 +58,7 @@ RewriteCond %{SCRIPT_FILENAME} !-f
 RewriteRule ^api/graphql/?$ /?scheme=api&datastructure=graphql [L,P,QSA]
 </IfModule>
 ```
+-->
 
 ## 100% compliant of GraphQL syntax
 
@@ -79,7 +81,6 @@ All [GraphQL queries](https://graphql.org/learn/queries/) are supported (click o
 An upgraded implementation of the GraphQL server, which enables to resolve [queries as a scripting language](https://leoloso.com/posts/demonstrating-pop-api-graphql-on-steroids/), is found under [this repo](https://github.com/getpop/api-graphql).
 
 It supports several [features](https://leoloso.com/posts/pop-api-features/) not currently defined by the GraphQL spec, including [composable fields](https://github.com/getpop/api-graphql#composable-fields) and [composable directives](https://github.com/getpop/api-graphql#composable-directives).
-
 
 ## Support for REST
 
