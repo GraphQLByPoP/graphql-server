@@ -6,10 +6,21 @@ use PoP\GraphQL\Schema\SchemaHelpers;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\GraphQL\Schema\SchemaDefinitionHelpers;
 use PoP\API\Facades\SchemaDefinitionRegistryFacade;
+use PoP\Engine\DirectiveResolvers\ForEachDirectiveResolver;
 use PoP\GraphQL\Facades\Schema\SchemaDefinitionServiceFacade;
+use PoP\API\DirectiveResolvers\RenamePropertyDirectiveResolver;
+use PoP\Engine\DirectiveResolvers\ApplyFunctionDirectiveResolver;
+use PoP\API\DirectiveResolvers\DuplicatePropertyDirectiveResolver;
 use PoP\GraphQL\Schema\SchemaDefinition as GraphQLSchemaDefinition;
+use PoP\API\DirectiveResolvers\TransformArrayItemsDirectiveResolver;
+use PoP\ComponentModel\DirectiveResolvers\ValidateDirectiveResolver;
 use PoP\GraphQL\ObjectModels\AbstractSchemaDefinitionReferenceObject;
+use PoP\API\DirectiveResolvers\CopyRelationalResultsDirectiveResolver;
 use PoP\GraphQL\Registries\SchemaDefinitionReferenceRegistryInterface;
+use PoP\Engine\DirectiveResolvers\SetSelfAsExpressionDirectiveResolver;
+use PoP\Engine\DirectiveResolvers\AdvancePointerInArrayDirectiveResolver;
+use PoP\API\DirectiveResolvers\SetPropertiesAsExpressionsDirectiveResolver;
+use PoP\ComponentModel\DirectiveResolvers\ResolveValueAndMergeDirectiveResolver;
 
 class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegistryInterface {
 
@@ -84,6 +95,36 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                 );
             }
         }
+        // Directives: not all of them must be shown in the schema
+        $hiddenDirectiveClasses = [];
+        // Maybe remove the "system" directives
+        if (!Environment::addSystemDirectivesToSchema()) {
+            $hiddenDirectiveClasses = [
+                ResolveValueAndMergeDirectiveResolver::class,
+                ValidateDirectiveResolver::class,
+            ];
+        }
+        // Maybe remove the Extended GraphQL directives
+        if (!Environment::addExtendedGraphQLDirectivesToSchema()) {
+            $hiddenDirectiveClasses = array_merge(
+                $hiddenDirectiveClasses,
+                [
+                    AdvancePointerInArrayDirectiveResolver::class,
+                    ApplyFunctionDirectiveResolver::class,
+                    ForEachDirectiveResolver::class,
+                    SetSelfAsExpressionDirectiveResolver::class,
+                    CopyRelationalResultsDirectiveResolver::class,
+                    DuplicatePropertyDirectiveResolver::class,
+                    RenamePropertyDirectiveResolver::class,
+                    SetPropertiesAsExpressionsDirectiveResolver::class,
+                    TransformArrayItemsDirectiveResolver::class,
+                ]
+            );
+        }
+        foreach ($hiddenDirectiveClasses as $directiveClass) {
+            unset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_GLOBAL_DIRECTIVES][$directiveClass::getDirectiveName()]);
+        }
+        // Add the directives
         foreach (array_keys($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_GLOBAL_DIRECTIVES]) as $directiveName) {
             $this->introduceSDLNotationToFieldOrDirectiveArgs(
                 [
