@@ -43,5 +43,10 @@ class Component extends AbstractComponent
         // Initialize classes
         ContainerBuilderUtils::instantiateNamespaceServices(__NAMESPACE__.'\\Hooks');
         ContainerBuilderUtils::attachFieldResolversFromNamespace(__NAMESPACE__.'\\FieldResolvers');
+
+        // Boot conditional on API package being installed
+        if (class_exists('\PoP\AccessControl\Component')) {
+            \PoP\GraphQL\Conditional\AccessControl\ComponentBoot::boot();
+        }
     }
 }
