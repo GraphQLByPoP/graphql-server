@@ -8,6 +8,11 @@ class Environment
         return isset($_ENV['ADD_GLOBAL_FIELDS_TO_SCHEMA']) ? strtolower($_ENV['ADD_GLOBAL_FIELDS_TO_SCHEMA']) == "true" : false;
     }
 
+    public static function addSelfFieldToSchema(): bool
+    {
+        return isset($_ENV['ADD_SELF_FIELD_TO_SCHEMA']) ? strtolower($_ENV['ADD_SELF_FIELD_TO_SCHEMA']) == "true" : false;
+    }
+
     public static function addSystemDirectivesToSchema(): bool
     {
         return isset($_ENV['ADD_SYSTEM_DIRECTIVES_TO_SCHEMA']) ? strtolower($_ENV['ADD_SYSTEM_DIRECTIVES_TO_SCHEMA']) == "true" : false;

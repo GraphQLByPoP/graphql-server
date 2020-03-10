@@ -74,6 +74,11 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
             unset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_GLOBAL_FIELDS]);
             unset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_GLOBAL_CONNECTIONS]);
         }
+        if (!Environment::addSelfFieldToSchema()) {
+            foreach (array_keys($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES]) as $typeName) {
+                unset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$typeName][SchemaDefinition::ARGNAME_CONNECTIONS]['self']);
+            }
+        }
 
         // Convert the field type from its internal representation (eg: "array:Post") to the GraphQL standard representation (eg: "[Post]")
         // 1. Global fields, connections and directives
