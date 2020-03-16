@@ -38,7 +38,7 @@ class GlobalFieldResolver extends AbstractGlobalFieldResolver
     {
         switch ($fieldName) {
             case '__typename':
-                return $typeResolver->getMaybeQualifiedTypeName();
+                return $typeResolver->getMaybeNamespacedTypeName();
         }
 
         return parent::resolveValue($typeResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
