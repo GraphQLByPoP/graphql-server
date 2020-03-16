@@ -14,3 +14,7 @@ services:
     PoP\GraphQL\DirectiveResolvers\:
         resource: '../src/DirectiveResolvers/*'
         public: true
+
+    PoP\GraphQL\TypeResolvers\:
+        resource: '../src/TypeResolvers/*'
+        public: true

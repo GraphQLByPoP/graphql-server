@@ -41,6 +41,7 @@ class Component extends AbstractComponent
         parent::boot();
 
         // Initialize classes
+        ContainerBuilderUtils::registerTypeResolversFromNamespace(__NAMESPACE__.'\\TypeResolvers');
         ContainerBuilderUtils::instantiateNamespaceServices(__NAMESPACE__.'\\Hooks');
         ContainerBuilderUtils::attachFieldResolversFromNamespace(__NAMESPACE__.'\\FieldResolvers', false);
         // Attach the Extensions with a higher priority, so it executes first
