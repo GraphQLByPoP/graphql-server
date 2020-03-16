@@ -36,9 +36,9 @@ class Component extends AbstractComponent
      *
      * @return void
      */
-    public static function boot()
+    public static function prematureBoot()
     {
-        parent::boot();
+        parent::prematureBoot();
 
         // Initialize classes
         ContainerBuilderUtils::registerTypeResolversFromNamespace(__NAMESPACE__.'\\TypeResolvers');
@@ -49,7 +49,7 @@ class Component extends AbstractComponent
 
         // Boot conditional on API package being installed
         if (class_exists('\PoP\AccessControl\Component')) {
-            \PoP\GraphQL\Conditional\AccessControl\ComponentBoot::boot();
+            \PoP\GraphQL\Conditional\AccessControl\ComponentBoot::prematureBoot();
         }
     }
 }
