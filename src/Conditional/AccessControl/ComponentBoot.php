@@ -15,7 +15,7 @@ class ComponentBoot
      *
      * @return void
      */
-    public static function prematureBoot()
+    public static function beforeBoot()
     {
         // Initialize classes
         self::attachDynamicDirectiveResolvers();
