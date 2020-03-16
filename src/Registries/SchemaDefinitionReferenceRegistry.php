@@ -208,6 +208,8 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
         foreach ($scalarTypeNames as $scalarTypeName) {
             $this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$scalarTypeName] = [
                 SchemaDefinition::ARGNAME_NAME => $scalarTypeName,
+                SchemaDefinition::ARGNAME_NAMESPACED_NAME => $scalarTypeName,
+                SchemaDefinition::ARGNAME_ELEMENT_NAME => $scalarTypeName,
                 SchemaDefinition::ARGNAME_DESCRIPTION => null,
                 SchemaDefinition::ARGNAME_DIRECTIVES => null,
                 SchemaDefinition::ARGNAME_FIELDS => null,
