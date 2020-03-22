@@ -96,21 +96,25 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
 
     public function getSchemaFieldArgs(TypeResolverInterface $typeResolver, string $fieldName): array
     {
+        $schemaFieldArgs = parent::getSchemaFieldArgs($typeResolver, $fieldName);
         $translationAPI = TranslationAPIFacade::getInstance();
         switch ($fieldName) {
             case 'fields':
             case 'enumValues':
-                return [
+                return array_merge(
+                    $schemaFieldArgs,
                     [
-                        SchemaDefinition::ARGNAME_NAME => 'includeDeprecated',
-                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_BOOL,
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Include deprecated fields?', 'graphql'),
-                        SchemaDefinition::ARGNAME_DEFAULT_VALUE => false,
-                    ],
-                ];
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'includeDeprecated',
+                            SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_BOOL,
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Include deprecated fields?', 'graphql'),
+                            SchemaDefinition::ARGNAME_DEFAULT_VALUE => false,
+                        ],
+                    ]
+                );
         }
 
-        return parent::getSchemaFieldArgs($typeResolver, $fieldName);
+        return $schemaFieldArgs;
     }
 
     public function resolveValue(TypeResolverInterface $typeResolver, $resultItem, string $fieldName, array $fieldArgs = [], ?array $variables = null, ?array $expressions = null, array $options = [])
