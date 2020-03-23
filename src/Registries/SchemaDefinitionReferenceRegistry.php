@@ -200,9 +200,9 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                     $fieldName
                 ];
                 $this->introduceSDLNotationToFieldSchemaDefinition($itemPath);
-                if ($addVersionToSchemaFieldDescription) {
-                    $this->addVersionToSchemaFieldDescription($itemPath);
-                }
+                // if ($addVersionToSchemaFieldDescription) {
+                //     $this->addVersionToSchemaFieldDescription($itemPath);
+                // }
             }
         }
 
