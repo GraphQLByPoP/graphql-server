@@ -27,5 +27,10 @@ class Environment
     {
         return isset($_ENV['ADD_EXTENDED_GRAPHQL_DIRECTIVES_TO_SCHEMA']) ? strtolower($_ENV['ADD_EXTENDED_GRAPHQL_DIRECTIVES_TO_SCHEMA']) == "true" : false;
     }
+
+    public static function addVersionToSchemaFieldDescription(): bool
+    {
+        return isset($_ENV['ADD_VERSION_TO_SCHEMA_FIELD_DESCRIPTION']) ? strtolower($_ENV['ADD_VERSION_TO_SCHEMA_FIELD_DESCRIPTION']) == "true" : false;
+    }
 }
 

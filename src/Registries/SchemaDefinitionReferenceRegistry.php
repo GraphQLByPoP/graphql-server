@@ -5,6 +5,7 @@ use PoP\GraphQL\Environment;
 use PoP\GraphQL\Schema\SchemaHelpers;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\GraphQL\Schema\SchemaDefinitionHelpers;
+use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\API\Facades\SchemaDefinitionRegistryFacade;
 use PoP\Engine\DirectiveResolvers\ForEachDirectiveResolver;
 use PoP\GraphQL\Facades\Schema\SchemaDefinitionServiceFacade;
@@ -83,6 +84,27 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
             unset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$queryTypeName][SchemaDefinition::ARGNAME_FIELDS]['fullSchema']);
         }
 
+        // Append the field/directive's version to its description, since this field is missing in GraphQL
+        $addVersionToSchemaFieldDescription = Environment::addVersionToSchemaFieldDescription();
+        if ($addVersionToSchemaFieldDescription) {
+            foreach (array_keys($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_GLOBAL_FIELDS]) as $fieldName) {
+                $this->addVersionToSchemaFieldDescription(
+                    [
+                        SchemaDefinition::ARGNAME_GLOBAL_FIELDS,
+                        $fieldName
+                    ]
+                );
+            }
+            foreach (array_keys($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_GLOBAL_CONNECTIONS]) as $connectionName) {
+                $this->addVersionToSchemaFieldDescription(
+                    [
+                        SchemaDefinition::ARGNAME_GLOBAL_CONNECTIONS,
+                        $connectionName
+                    ]
+                );
+            }
+        }
+
         // Convert the field type from its internal representation (eg: "array:Post") to the GraphQL standard representation (eg: "[Post]")
         // 1. Global fields, connections and directives
         if (Environment::addGlobalFieldsToSchema()) {
@@ -144,34 +166,40 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
         // 2. Each type's fields, connections and directives
         foreach ($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES] as $typeName => $typeSchemaDefinition) {
             foreach (array_keys($typeSchemaDefinition[SchemaDefinition::ARGNAME_FIELDS]) as $fieldName) {
-                $this->introduceSDLNotationToFieldSchemaDefinition(
-                    [
-                        SchemaDefinition::ARGNAME_TYPES,
-                        $typeName,
-                        SchemaDefinition::ARGNAME_FIELDS,
-                        $fieldName
-                    ]
-                );
+                $itemPath = [
+                    SchemaDefinition::ARGNAME_TYPES,
+                    $typeName,
+                    SchemaDefinition::ARGNAME_FIELDS,
+                    $fieldName
+                ];
+                $this->introduceSDLNotationToFieldSchemaDefinition($itemPath);
+                if ($addVersionToSchemaFieldDescription) {
+                    $this->addVersionToSchemaFieldDescription($itemPath);
+                }
             }
             foreach (array_keys($typeSchemaDefinition[SchemaDefinition::ARGNAME_CONNECTIONS]) as $connectionName) {
-                $this->introduceSDLNotationToFieldSchemaDefinition(
-                    [
-                        SchemaDefinition::ARGNAME_TYPES,
-                        $typeName,
-                        SchemaDefinition::ARGNAME_CONNECTIONS,
-                        $connectionName
-                    ]
-                );
+                $itemPath = [
+                    SchemaDefinition::ARGNAME_TYPES,
+                    $typeName,
+                    SchemaDefinition::ARGNAME_CONNECTIONS,
+                    $connectionName
+                ];
+                $this->introduceSDLNotationToFieldSchemaDefinition($itemPath);
+                if ($addVersionToSchemaFieldDescription) {
+                    $this->addVersionToSchemaFieldDescription($itemPath);
+                }
             }
             foreach (array_keys($typeSchemaDefinition[SchemaDefinition::ARGNAME_DIRECTIVES]) as $directiveName) {
-                $this->introduceSDLNotationToFieldOrDirectiveArgs(
-                    [
-                        SchemaDefinition::ARGNAME_TYPES,
-                        $typeName,
-                        SchemaDefinition::ARGNAME_DIRECTIVES,
-                        $directiveName
-                    ]
-                );
+                $itemPath = [
+                    SchemaDefinition::ARGNAME_TYPES,
+                    $typeName,
+                    SchemaDefinition::ARGNAME_DIRECTIVES,
+                    $directiveName
+                ];
+                $this->introduceSDLNotationToFieldOrDirectiveArgs($itemPath);
+                if ($addVersionToSchemaFieldDescription) {
+                    $this->addVersionToSchemaFieldDescription($itemPath);
+                }
             }
         }
         // 3. Interfaces
@@ -250,6 +278,25 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * Append the field or directive's version to its description
+     *
+     * @param array $fieldOrDirectiveSchemaDefinitionPath
+     * @return void
+     */
+    protected function addVersionToSchemaFieldDescription(array $fieldOrDirectiveSchemaDefinitionPath): void
+    {
+        $fieldOrDirectiveSchemaDefinition = &SchemaDefinitionHelpers::advancePointerToPath($this->fullSchemaDefinition, $fieldOrDirectiveSchemaDefinitionPath);
+
+        if ($schemaFieldVersion = $fieldOrDirectiveSchemaDefinition[SchemaDefinition::ARGNAME_VERSION]) {
+            $translationAPI = TranslationAPIFacade::getInstance();
+            $fieldOrDirectiveSchemaDefinition[SchemaDefinition::ARGNAME_DESCRIPTION] .= sprintf(
+                $translationAPI->__(' (Version: %s)', 'component-model'),
+                $schemaFieldVersion
+            );
         }
     }
 
