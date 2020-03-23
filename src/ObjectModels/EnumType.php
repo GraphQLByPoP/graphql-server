@@ -12,9 +12,9 @@ class EnumType extends AbstractType
 
     protected $enumValues;
 
-    public function __construct(array &$fullSchemaDefinition, array $schemaDefinitionPath)
+    public function __construct(array &$fullSchemaDefinition, array $schemaDefinitionPath, array $customDefinition = [])
     {
-        parent::__construct($fullSchemaDefinition, $schemaDefinitionPath);
+        parent::__construct($fullSchemaDefinition, $schemaDefinitionPath, $customDefinition);
 
         $this->initEnumValues($fullSchemaDefinition, $schemaDefinitionPath);
     }

@@ -1,6 +1,7 @@
 <?php
 namespace PoP\GraphQL\Schema;
 
+use PoP\GraphQL\Environment;
 use PoP\GraphQL\ObjectModels\Field;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\GraphQL\Facades\Registries\SchemaDefinitionReferenceRegistryFacade;
@@ -65,6 +66,7 @@ class SchemaDefinitionHelpers
     }
     public static function initFieldsFromPath(array &$fullSchemaDefinition, array $fieldSchemaDefinitionPath, array $interfaceNames = []): array
     {
+        $addVersionToSchemaFieldDescription = Environment::addVersionToSchemaFieldDescription();
         $fieldInterfaces = self::getFieldInterfaces($fullSchemaDefinition, $interfaceNames);
         $fieldSchemaDefinitionPointer = self::advancePointerToPath($fullSchemaDefinition, $fieldSchemaDefinitionPath);
         $fields = [];
@@ -79,6 +81,20 @@ class SchemaDefinitionHelpers
             } else {
                 $targetFieldSchemaDefinitionPath = $fieldSchemaDefinitionPath;
             }
+            /**
+             * Watch out! The version comes from the field, not from the interface, so if it is defined, do not override
+             * Same with the field, because in function `addVersionToSchemaFieldDescription` it may've added the version at the end of the description
+             */
+            $customDefinition = [];
+            if ($addVersionToSchemaFieldDescription) {
+                if ($schemaFieldVersion = $fieldSchemaDefinitionPointer[$fieldName][SchemaDefinition::ARGNAME_VERSION]) {
+                    $schemaFieldDescription = $fieldSchemaDefinitionPointer[$fieldName][SchemaDefinition::ARGNAME_DESCRIPTION];
+                    $customDefinition = [
+                        SchemaDefinition::ARGNAME_VERSION => $schemaFieldVersion,
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $schemaFieldDescription,
+                    ];
+                }
+            }
             $fields[] = new Field(
                 $fullSchemaDefinition,
                 array_merge(
@@ -86,7 +102,8 @@ class SchemaDefinitionHelpers
                     [
                         $fieldName
                     ]
-                )
+                ),
+                $customDefinition
             );
         }
         return $fields;

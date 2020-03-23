@@ -13,11 +13,11 @@ class InterfaceType extends AbstractType implements HasFieldsTypeInterface, HasP
 {
     use HasFieldsTypeTrait, HasPossibleTypesTypeTrait, HasInterfacesTypeTrait;
 
-    public function __construct(array &$fullSchemaDefinition, array $schemaDefinitionPath)
+    public function __construct(array &$fullSchemaDefinition, array $schemaDefinitionPath, array $customDefinition = [])
     {
-        parent::__construct($fullSchemaDefinition, $schemaDefinitionPath);
+        parent::__construct($fullSchemaDefinition, $schemaDefinitionPath, $customDefinition);
 
-        $this->initFields($fullSchemaDefinition, $schemaDefinitionPath, false);
+        $this->initFields($fullSchemaDefinition, $schemaDefinitionPath, false, false);
         $this->initInterfaces($fullSchemaDefinition, $schemaDefinitionPath);
     }
     public function initializeTypeDependencies(): void

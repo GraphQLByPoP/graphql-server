@@ -9,9 +9,9 @@ class Field extends AbstractSchemaDefinitionReferenceObject
 {
     use HasTypeSchemaDefinitionReferenceTrait, HasArgsSchemaDefinitionReferenceTrait;
 
-    public function __construct(array &$fullSchemaDefinition, array $schemaDefinitionPath)
+    public function __construct(array &$fullSchemaDefinition, array $schemaDefinitionPath, array $customDefinition = [])
     {
-        parent::__construct($fullSchemaDefinition, $schemaDefinitionPath);
+        parent::__construct($fullSchemaDefinition, $schemaDefinitionPath, $customDefinition);
 
         $this->initArgs($fullSchemaDefinition, $schemaDefinitionPath);
     }
