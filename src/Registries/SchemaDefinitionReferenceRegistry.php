@@ -193,14 +193,16 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
         // 3. Interfaces
         foreach ($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_INTERFACES] as $interfaceName => $interfaceSchemaDefinition) {
             foreach (array_keys($interfaceSchemaDefinition[SchemaDefinition::ARGNAME_FIELDS]) as $fieldName) {
-                $this->introduceSDLNotationToFieldSchemaDefinition(
-                    [
-                        SchemaDefinition::ARGNAME_INTERFACES,
-                        $interfaceName,
-                        SchemaDefinition::ARGNAME_FIELDS,
-                        $fieldName
-                    ]
-                );
+                $itemPath = [
+                    SchemaDefinition::ARGNAME_INTERFACES,
+                    $interfaceName,
+                    SchemaDefinition::ARGNAME_FIELDS,
+                    $fieldName
+                ];
+                $this->introduceSDLNotationToFieldSchemaDefinition($itemPath);
+                if ($addVersionToSchemaFieldDescription) {
+                    $this->addVersionToSchemaFieldDescription($itemPath);
+                }
             }
         }
 
