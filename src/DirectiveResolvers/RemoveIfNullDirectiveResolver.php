@@ -191,6 +191,9 @@ class RemoveIfNullDirectiveResolver extends AbstractGlobalDirectiveResolver
         foreach ($idsDataFields as $id => $dataFields) {
             foreach ($dataFields['direct'] as $field) {
                 $fieldOutputKey = $fieldQueryInterpreter->getFieldOutputKey($field);
+                // If the value is null, then remove it from the dbItems object, which contains the data for all retrieved objects
+                // Please notice that this object contains the data for all fields for all types in the query!
+                // Then, make sure that the affected field has a unique alias to avoid side-effects
                 if (is_null($dbItems[(string)$id][$fieldOutputKey])) {
                     $idsDataFieldsToRemove[(string)$id]['direct'][] = $field;
                     unset($dbItems[(string)$id][$fieldOutputKey]);
