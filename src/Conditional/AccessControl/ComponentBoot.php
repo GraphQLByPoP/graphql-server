@@ -32,7 +32,10 @@ class ComponentBoot
          * If `USE_PRIVATE_SCHEMA_MODE` is true, then the schema (as obtained by querying the "__schema" field) is dynamic: Fields will be available or not depending on the user being logged in or not
          * Then, the CacheControl for field "__schema" must be set to "no-cache"
          */
-        if (Environment::usePrivateSchemaMode()) {
+        if (
+            Environment::enableIndividualControlForPublicPrivateSchemaMode() ||
+            Environment::usePrivateSchemaMode()
+        ) {
             SchemaNoCacheCacheControlDirectiveResolver::attach(AttachableExtensionGroups::DIRECTIVERESOLVERS);
         }
     }
