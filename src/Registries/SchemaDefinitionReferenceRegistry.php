@@ -2,14 +2,17 @@
 namespace PoP\GraphQL\Registries;
 
 use PoP\GraphQL\Environment;
+use PoP\GraphQL\Cache\CacheTypes;
 use PoP\GraphQL\Schema\SchemaHelpers;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\GraphQL\Schema\SchemaDefinitionHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\API\Facades\SchemaDefinitionRegistryFacade;
+use PoP\ComponentModel\Facades\Cache\PersistentCacheFacade;
 use PoP\Engine\DirectiveResolvers\ForEachDirectiveResolver;
 use PoP\GraphQL\Facades\Schema\SchemaDefinitionServiceFacade;
 use PoP\API\DirectiveResolvers\RenamePropertyDirectiveResolver;
+use PoP\API\ComponentConfiguration as APIComponentConfiguration;
 use PoP\Engine\DirectiveResolvers\ApplyFunctionDirectiveResolver;
 use PoP\API\DirectiveResolvers\DuplicatePropertyDirectiveResolver;
 use PoP\GraphQL\Schema\SchemaDefinition as GraphQLSchemaDefinition;
@@ -33,6 +36,10 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
     /**
      * It returns the full schema, expanded with all data required to satisfy GraphQL's introspection fields (starting from "__schema")
      *
+     * It can store the value in the cache.
+     * Use cache with care: if the schema is dynamic, it should not be cached.
+     * Public schema: can cache, Private schema: cannot cache.
+     *
      * @return array
      */
     public function &getFullSchemaDefinition(): array
@@ -46,14 +53,34 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                 'useTypeName' => true,
             ];
 
-            // Get the schema definitions
-            $schemaDefinitionRegistry = SchemaDefinitionRegistryFacade::getInstance();
-            $this->fullSchemaDefinition = $schemaDefinitionRegistry->getSchemaDefinition($fieldArgs);
+            // Attempt to retrieve from the cache, if enabled
+            if ($useCache = APIComponentConfiguration::useSchemaDefinitionCache()) {
+                $persistentCache = PersistentCacheFacade::getInstance();
+                // For the persistentCache, use a hash to remove invalid characters (such as "()")
+                $cacheKey = hash('md5', json_encode($fieldArgs));
+            }
+            if ($useCache) {
+                if ($persistentCache->hasCache($cacheKey, CacheTypes::GRAPHQL_SCHEMA_DEFINITION)) {
+                    $this->fullSchemaDefinition = $persistentCache->getCache($cacheKey, CacheTypes::GRAPHQL_SCHEMA_DEFINITION);
+                }
+            }
 
-            // Convert the schema from PoP's format to what GraphQL needs to work with
-            $schemaDefinitionService = SchemaDefinitionServiceFacade::getInstance();
-            $queryTypeName = $schemaDefinitionService->getQueryTypeName();
-            $this->prepareSchemaDefinitionForGraphQL($queryTypeName);
+            // If either not using cache, or using but the value had not been cached, then calculate the value
+            if (!$this->fullSchemaDefinition) {
+                // Get the schema definitions
+                $schemaDefinitionRegistry = SchemaDefinitionRegistryFacade::getInstance();
+                $this->fullSchemaDefinition = $schemaDefinitionRegistry->getSchemaDefinition($fieldArgs);
+
+                // Convert the schema from PoP's format to what GraphQL needs to work with
+                $schemaDefinitionService = SchemaDefinitionServiceFacade::getInstance();
+                $queryTypeName = $schemaDefinitionService->getQueryTypeName();
+                $this->prepareSchemaDefinitionForGraphQL($queryTypeName);
+
+                // Store in the cache
+                if ($useCache) {
+                    $persistentCache->storeCache($cacheKey, CacheTypes::GRAPHQL_SCHEMA_DEFINITION, $this->fullSchemaDefinition);
+                }
+            }
         }
 
         return $this->fullSchemaDefinition;
