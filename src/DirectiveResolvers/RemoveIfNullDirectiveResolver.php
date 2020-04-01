@@ -200,6 +200,11 @@ class RemoveIfNullDirectiveResolver extends AbstractGlobalDirectiveResolver
                 }
             }
         }
+        /**
+         * Remove the IDs for all succeeding pipeline directives
+         * Must check that directives which do not apply on the $resultIDItems, such as @cacheControl, are not affected
+         * (check function `needsIDsDataFieldsToExecute` must be `false` for them)
+         */
         if ($idsDataFieldsToRemove) {
             $this->removeIDsDataFields($idsDataFieldsToRemove, $succeedingPipelineIDsDataFields);
         }
