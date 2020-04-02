@@ -9,7 +9,40 @@ use PoP\ComponentModel\DirectiveResolvers\AbstractGlobalDirectiveResolver;
 use PoP\ComponentModel\GeneralUtils;
 
 /**
- * @export directive, to make the value of a field available through a variable (appending "$"):
+ * @export directive, to make the value of a leaf field available through a variable.
+ *
+ * It works only with the following conditions:
+ *
+ * 1. The name of the variable must start with "_": to tell the GraphQL engine that this variable is resolved on runtime, not on query parsing time
+ * 2. A field `self` from the Root type must be used to control that the field exporting the variable is executed before the field reading the variable
+ * 3. The variable must receive a default value, even if it won't be used: this prevents the parser from throwing a "variable has not been set" error
+ *
+ * To understand how to control the order in which fields are executed, read:
+ * @see https://leoloso.com/posts/demonstrating-pop-api-graphql-on-steroids/
+ *
+ * Examples:
+ *
+ * The query below works, because:
+ *
+ * 1. Variable is called "_me", starting with "_"
+ * 2. Field `self` (on type Root) makes field `posts(author:$_me)` (on type Root) be executed after field `id @export(as:"_me")` (on type User)
+ * 3. Variable has default value "-1"
+ *
+ * ```graphql
+ * query GetMyPosts($_me:ID=-1) {
+ *   me {
+ *     id @export(as:"_me")
+ *   }
+ *   self {
+ *     posts(author:$_me) {
+ *       id
+ *       title
+ *     }
+ *   }
+ * }
+ * ```
+ *
+ * The query below does NOT work, because it doesn't satisfy any of the 3 conditions (failing at 1 is already enough for it to not work)
  *
  * ```graphql
  * query GetMyPosts($me:ID) {
@@ -69,16 +102,7 @@ class ExportDirectiveResolver extends AbstractGlobalDirectiveResolver
      * }
      * ```
      *
-     * ... exports variable $myData as a dictionary {"id": user ID, "name": user name}. This is the same as executing:
-     *
-     * ```graphql
-     * query {
-     *   me @export(as:"myData") {
-     *     id
-     *     name
-     *   }
-     * }
-     * ```
+     * ... exports variable $myData as a dictionary {"id": user ID, "name": user name}
      *
      * If over an array of objects, several fields are exported with the same variable name, then the variable is assigned an array containing dictionaries of field/value. This query:
      *
@@ -91,16 +115,7 @@ class ExportDirectiveResolver extends AbstractGlobalDirectiveResolver
      * }
      * ```
      *
-     * ... exports variable $postIDsAndTitles as an array, where each item is a dictionary {"id": post ID, "title": post title}. This is the same as executing:
-     *
-     * ```graphql
-     * query {
-     *   posts @export(as:"postIDsAndTitles") {
-     *     id
-     *     title
-     *   }
-     * }
-     * ```
+     * ... exports variable $postIDsAndTitles as an array, where each item is a dictionary {"id": post ID, "title": post title}
      *
      * @param TypeResolverInterface $typeResolver
      * @param array $idsDataFields
@@ -111,7 +126,7 @@ class ExportDirectiveResolver extends AbstractGlobalDirectiveResolver
      * @param array $dbItems
      * @param array $previousDBItems
      * @param array $variables
-     * @param array $messages
+     * @param array $_messages
      * @param array $dbErrors
      * @param array $dbWarnings
      * @param array $dbDeprecations
