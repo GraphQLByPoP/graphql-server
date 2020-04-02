@@ -22,7 +22,7 @@ class VariablesAsExpressionsRootFieldResolver extends AbstractDBDataFieldResolve
         return [
             'exportedVariables',
             // 'exportedVariable',
-            'echo',
+            'echoVar',
         ];
     }
 
@@ -31,7 +31,7 @@ class VariablesAsExpressionsRootFieldResolver extends AbstractDBDataFieldResolve
         $types = [
 			'exportedVariables' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
             // 'exportedVariable' => SchemaDefinition::TYPE_MIXED,
-            'echo' => SchemaDefinition::TYPE_MIXED,
+            'echoVar' => SchemaDefinition::TYPE_MIXED,
         ];
         return $types[$fieldName] ?? parent::getSchemaFieldType($typeResolver, $fieldName);
     }
@@ -49,7 +49,7 @@ class VariablesAsExpressionsRootFieldResolver extends AbstractDBDataFieldResolve
             //     $translationAPI->__('Returns the value for a variable exported through the `%s` directive', 'graphql'),
             //     $exportDirectiveName
             // ),
-            'echo' => $translationAPI->__('Echoes back a value', 'graphql'),
+            'echoVar' => $translationAPI->__('Returns the variable value', 'graphql'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($typeResolver, $fieldName);
     }
@@ -74,14 +74,14 @@ class VariablesAsExpressionsRootFieldResolver extends AbstractDBDataFieldResolve
             //             ],
             //         ]
             //     );
-            case 'echo':
+            case 'echoVar':
                 return array_merge(
                     $schemaFieldArgs,
                     [
                         [
-                            SchemaDefinition::ARGNAME_NAME => 'value',
+                            SchemaDefinition::ARGNAME_NAME => 'variable',
                             SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
-                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value to echo back, of any type', 'graphql'),
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The variable to echo back, of any type', 'graphql'),
                             SchemaDefinition::ARGNAME_MANDATORY => true,
                         ],
                     ]
@@ -108,8 +108,8 @@ class VariablesAsExpressionsRootFieldResolver extends AbstractDBDataFieldResolve
             //         return $variables[$fieldArgs['name']];
             //     }
             //     return null;
-            case 'echo':
-                return $fieldArgs['value'];
+            case 'echoVar':
+                return $fieldArgs['variable'];
         }
 
         return parent::resolveValue($typeResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
