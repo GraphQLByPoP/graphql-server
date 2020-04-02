@@ -24,7 +24,9 @@ use PoP\GraphQL\Registries\SchemaDefinitionReferenceRegistryInterface;
 use PoP\Engine\DirectiveResolvers\SetSelfAsExpressionDirectiveResolver;
 use PoP\Engine\DirectiveResolvers\AdvancePointerInArrayDirectiveResolver;
 use PoP\API\DirectiveResolvers\SetPropertiesAsExpressionsDirectiveResolver;
+use PoP\API\TypeResolvers\RootTypeResolver;
 use PoP\ComponentModel\DirectiveResolvers\ResolveValueAndMergeDirectiveResolver;
+use PoP\GraphQL\ComponentConfiguration;
 
 class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegistryInterface {
 
@@ -103,8 +105,16 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
             unset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_GLOBAL_CONNECTIONS]);
         }
         if (!Environment::addSelfFieldToSchema()) {
+            /**
+             * Check if to remove the "self" field everywhere, or if to keep it just for the Root type
+             */
+            $keepSelfFieldForRootType = ComponentConfiguration::addSelfFieldForRootTypeToSchema();
+            $schemaDefinitionService = SchemaDefinitionServiceFacade::getInstance();
+            $rootTypeName = $schemaDefinitionService->getTypeName(RootTypeResolver::class);
             foreach (array_keys($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES]) as $typeName) {
-                unset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$typeName][SchemaDefinition::ARGNAME_CONNECTIONS]['self']);
+                if (!$keepSelfFieldForRootType || $typeName != $rootTypeName) {
+                    unset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$typeName][SchemaDefinition::ARGNAME_CONNECTIONS]['self']);
+                }
             }
         }
         if (!Environment::addFullSchemaFieldToSchema()) {
