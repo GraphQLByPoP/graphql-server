@@ -241,7 +241,7 @@ class ExportDirectiveResolver extends AbstractGlobalDirectiveResolver
             $dictionary = [];
             foreach ($dataFields['direct'] as $field) {
                 $fieldOutputKey = $fieldQueryInterpreter->getFieldOutputKey($field);
-                $dictionary[] = $dbItems[(string)$id][$fieldOutputKey];
+                $dictionary[$fieldOutputKey] = $dbItems[(string)$id][$fieldOutputKey];
             }
             $value[] = $dictionary;
         }
