@@ -1,13 +1,14 @@
 <?php
 namespace PoP\GraphQL\DirectiveResolvers;
 
+use PoP\ComponentModel\GeneralUtils;
+use PoP\ComponentModel\Feedback\Tokens;
+use PoP\GraphQLAPIQuery\Schema\QuerySymbols;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 use PoP\ComponentModel\DirectiveResolvers\AbstractGlobalDirectiveResolver;
-use PoP\ComponentModel\GeneralUtils;
-use PoP\GraphQLAPIQuery\Schema\QuerySymbols;
 
 /**
  * @export directive, to make the value of a leaf field available through a variable.
@@ -165,7 +166,7 @@ class ExportDirectiveResolver extends AbstractGlobalDirectiveResolver
                 $field = $fields[0];
                 $fieldOutputKey = $fieldQueryInterpreter->getFieldOutputKey($field);
                 $value = $dbItems[(string)$id][$fieldOutputKey];
-                $this->setVariable($variables, $value);
+                $this->setVariable($variables, $value, $schemaWarnings);
                 return;
             }
 
@@ -186,7 +187,7 @@ class ExportDirectiveResolver extends AbstractGlobalDirectiveResolver
                 $fieldOutputKey = $fieldQueryInterpreter->getFieldOutputKey($field);
                 $value[$fieldOutputKey] = $dbItems[(string)$id][$fieldOutputKey];
             }
-            $this->setVariable($variables, $value);
+            $this->setVariable($variables, $value, $schemaWarnings);
             return;
         }
 
@@ -221,7 +222,7 @@ class ExportDirectiveResolver extends AbstractGlobalDirectiveResolver
             foreach ($ids as $id) {
                 $value[] = $dbItems[(string)$id][$fieldOutputKey];
             }
-            $this->setVariable($variables, $value);
+            $this->setVariable($variables, $value, $schemaWarnings);
             return;
         }
 
@@ -245,13 +246,25 @@ class ExportDirectiveResolver extends AbstractGlobalDirectiveResolver
             }
             $value[] = $dictionary;
         }
-        $this->setVariable($variables, $value);
+        $this->setVariable($variables, $value, $schemaWarnings);
         return;
     }
 
-    protected function setVariable(array &$variables, $value): void
+    protected function setVariable(array &$variables, $value, array &$schemaWarnings): void
     {
+        $translationAPI = TranslationAPIFacade::getInstance();
         $variableName = $this->directiveArgsForSchema['as'];
+        // If the variable already exists, then throw a warning and do nothing
+        if (isset($variables[$variableName])) {
+            $schemaWarnings[] = [
+                Tokens::PATH => [$this->directive],
+                Tokens::MESSAGE => sprintf(
+                    $translationAPI->__('Cannot export variable with name \'%s\' because this variable has already been set', 'component-model'),
+                    $variableName
+                ),
+            ];
+            return;
+        }
         $variables[$variableName] = $value;
     }
 
