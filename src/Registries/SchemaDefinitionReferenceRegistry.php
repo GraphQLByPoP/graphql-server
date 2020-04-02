@@ -24,7 +24,6 @@ use PoP\GraphQL\Registries\SchemaDefinitionReferenceRegistryInterface;
 use PoP\Engine\DirectiveResolvers\SetSelfAsExpressionDirectiveResolver;
 use PoP\Engine\DirectiveResolvers\AdvancePointerInArrayDirectiveResolver;
 use PoP\API\DirectiveResolvers\SetPropertiesAsExpressionsDirectiveResolver;
-use PoP\API\TypeResolvers\RootTypeResolver;
 use PoP\ComponentModel\DirectiveResolvers\ResolveValueAndMergeDirectiveResolver;
 use PoP\GraphQL\ComponentConfiguration;
 
@@ -110,10 +109,10 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
              */
             $keepSelfFieldForRootType = ComponentConfiguration::addSelfFieldForRootTypeToSchema();
             $schemaDefinitionService = SchemaDefinitionServiceFacade::getInstance();
-            $rootTypeName = $schemaDefinitionService->getTypeName(RootTypeResolver::class);
-            foreach (array_keys($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES]) as $typeName) {
-                if (!$keepSelfFieldForRootType || $typeName != $rootTypeName) {
-                    unset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$typeName][SchemaDefinition::ARGNAME_CONNECTIONS]['self']);
+            $queryTypeSchemaKey = $schemaDefinitionService->getQueryTypeSchemaKey();
+            foreach (array_keys($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES]) as $typeSchemaKey) {
+                if (!$keepSelfFieldForRootType || $typeSchemaKey != $queryTypeSchemaKey) {
+                    unset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$typeSchemaKey][SchemaDefinition::ARGNAME_CONNECTIONS]['self']);
                 }
             }
         }
@@ -189,11 +188,11 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
             }
         }
         // 2. Each type's fields, connections and directives
-        foreach ($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES] as $typeName => $typeSchemaDefinition) {
+        foreach ($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES] as $typeSchemaKey => $typeSchemaDefinition) {
             foreach (array_keys($typeSchemaDefinition[SchemaDefinition::ARGNAME_FIELDS]) as $fieldName) {
                 $itemPath = [
                     SchemaDefinition::ARGNAME_TYPES,
-                    $typeName,
+                    $typeSchemaKey,
                     SchemaDefinition::ARGNAME_FIELDS,
                     $fieldName
                 ];
@@ -205,7 +204,7 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
             foreach (array_keys($typeSchemaDefinition[SchemaDefinition::ARGNAME_CONNECTIONS]) as $connectionName) {
                 $itemPath = [
                     SchemaDefinition::ARGNAME_TYPES,
-                    $typeName,
+                    $typeSchemaKey,
                     SchemaDefinition::ARGNAME_CONNECTIONS,
                     $connectionName
                 ];
@@ -217,7 +216,7 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
             foreach (array_keys($typeSchemaDefinition[SchemaDefinition::ARGNAME_DIRECTIVES]) as $directiveName) {
                 $itemPath = [
                     SchemaDefinition::ARGNAME_TYPES,
-                    $typeName,
+                    $typeSchemaKey,
                     SchemaDefinition::ARGNAME_DIRECTIVES,
                     $directiveName
                 ];
