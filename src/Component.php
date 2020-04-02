@@ -6,6 +6,7 @@ use PoP\Root\Component\YAMLServicesTrait;
 use PoP\Root\Component\CanDisableComponentTrait;
 use PoP\ComponentModel\Container\ContainerBuilderUtils;
 use PoP\GraphQLAPIRequest\Component as GraphQLAPIRequestComponent;
+use PoP\GraphQLAPIQuery\ComponentConfiguration as GraphQLAPIQueryComponentConfiguration;
 
 /**
  * Initialize component
@@ -51,6 +52,11 @@ class Component extends AbstractComponent
         // Boot conditional on API package being installed
         if (class_exists('\PoP\AccessControl\Component')) {
             \PoP\GraphQL\Conditional\AccessControl\ComponentBoot::beforeBoot();
+        }
+
+        // Boot conditional on having variables treated as expressions for @export directive
+        if (GraphQLAPIQueryComponentConfiguration::enableVariablesAsExpressions()) {
+            ContainerBuilderUtils::attachFieldResolversFromNamespace(__NAMESPACE__.'\\FieldResolvers\\ConditionalOnEnvironment\\VariablesAsExpressions');
         }
     }
 }
