@@ -14,9 +14,12 @@ class SchemaDefinitionService extends \PoP\ComponentModel\Schema\SchemaDefinitio
         return $typeResolver->getMaybeNamespacedTypeName();
     }
 
-    public function getQueryTypeName(): string
+    public function getQueryTypeSchemaKey(): string
     {
-        return $this->getTypeName($this->getQueryTypeResolverClass());
+        $instanceManager = InstanceManagerFacade::getInstance();
+        $queryTypeResolverClass = $this->getQueryTypeResolverClass();
+        $queryTypeResolver = $instanceManager->getInstance($queryTypeResolverClass);
+        return $this->getTypeSchemaKey($queryTypeResolver);
     }
 
     public function getQueryTypeResolverClass(): string

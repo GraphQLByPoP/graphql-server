@@ -106,10 +106,10 @@ class Schema
 
         // Initialize the different types
         // 1. queryType
-        $queryTypeName = $schemaDefinitionService->getQueryTypeName();
+        $queryTypeSchemaKey = $schemaDefinitionService->getQueryTypeSchemaKey();
         $queryTypeSchemaDefinitionPath = [
             SchemaDefinition::ARGNAME_TYPES,
-            $queryTypeName,
+            $queryTypeSchemaKey,
         ];
         $this->queryType = $this->getTypeInstance($fullSchemaDefinition, $queryTypeSchemaDefinitionPath);
 
