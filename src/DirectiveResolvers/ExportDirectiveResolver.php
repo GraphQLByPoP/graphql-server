@@ -179,17 +179,6 @@ class ExportDirectiveResolver extends AbstractGlobalDirectiveResolver
              *   }
              * }
              * ```
-             *
-             * or:
-             *
-             * ```graphql
-             * query {
-             *   me @export(as:"myData") {
-             *     id
-             *     name
-             *   }
-             * }
-             * ```
              */
             $value = [];
             foreach ($fields as $field) {
@@ -243,17 +232,6 @@ class ExportDirectiveResolver extends AbstractGlobalDirectiveResolver
          *   posts {
          *     id @export(as:"postIDsAndTitles")
          *     title @export(as:"postIDsAndTitles")
-         *   }
-         * }
-         * ```
-         *
-         * or:
-         *
-         * ```graphql
-         * query {
-         *   posts @export(as:"postIDsAndTitles") {
-         *     id
-         *     title
          *   }
          * }
          * ```
