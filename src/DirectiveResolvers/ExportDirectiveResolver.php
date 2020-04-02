@@ -7,6 +7,7 @@ use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 use PoP\ComponentModel\DirectiveResolvers\AbstractGlobalDirectiveResolver;
 use PoP\ComponentModel\GeneralUtils;
+use PoP\GraphQLAPIQuery\Schema\QuerySymbols;
 
 /**
  * @export directive, to make the value of a leaf field available through a variable.
@@ -266,7 +267,10 @@ class ExportDirectiveResolver extends AbstractGlobalDirectiveResolver
             [
                 SchemaDefinition::ARGNAME_NAME => 'as',
                 SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
-                SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Name of the variable', 'graphql'),
+                SchemaDefinition::ARGNAME_DESCRIPTION => sprintf(
+                    $translationAPI->__('Name of the variable. It must start with \'%s\', or the directive will not work', 'graphql'),
+                    QuerySymbols::VARIABLE_AS_EXPRESSION_NAME_PREFIX
+                ),
                 SchemaDefinition::ARGNAME_MANDATORY => true,
             ],
         ];
