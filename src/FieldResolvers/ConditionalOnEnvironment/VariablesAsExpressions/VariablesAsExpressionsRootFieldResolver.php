@@ -8,6 +8,7 @@ use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\GraphQL\DirectiveResolvers\ExportDirectiveResolver;
+use PoP\GraphQLAPIQuery\Facades\GraphQLQueryConvertorFacade;
 use PoP\ComponentModel\FieldResolvers\AbstractDBDataFieldResolver;
 
 class VariablesAsExpressionsRootFieldResolver extends AbstractDBDataFieldResolver
@@ -93,13 +94,14 @@ class VariablesAsExpressionsRootFieldResolver extends AbstractDBDataFieldResolve
 
     public function resolveValue(TypeResolverInterface $typeResolver, $resultItem, string $fieldName, array $fieldArgs = [], ?array $variables = null, ?array $expressions = null, array $options = [])
     {
+        $graphQLQueryConvertor = GraphQLQueryConvertorFacade::getInstance();
         switch ($fieldName) {
             case 'exportedVariables':
                 // All the variables starting with "_" are treated as expressions
                 return array_filter(
                     $variables ?? [],
-                    function($variableName) {
-                        return substr($variableName, 0, strlen(QuerySymbols::VARIABLE_AS_EXPRESSION_NAME_PREFIX)) == QuerySymbols::VARIABLE_AS_EXPRESSION_NAME_PREFIX;
+                    function ($variableName) use ($graphQLQueryConvertor) {
+                        return $graphQLQueryConvertor->treatVariableAsExpression($variableName);
                     },
                     ARRAY_FILTER_USE_KEY
                 );
