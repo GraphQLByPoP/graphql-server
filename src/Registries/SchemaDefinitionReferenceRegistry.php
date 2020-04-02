@@ -26,6 +26,7 @@ use PoP\Engine\DirectiveResolvers\AdvancePointerInArrayDirectiveResolver;
 use PoP\API\DirectiveResolvers\SetPropertiesAsExpressionsDirectiveResolver;
 use PoP\ComponentModel\DirectiveResolvers\ResolveValueAndMergeDirectiveResolver;
 use PoP\GraphQL\ComponentConfiguration;
+use PoP\ComponentModel\Engine_Vars;
 
 class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegistryInterface {
 
@@ -57,12 +58,18 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
             // Attempt to retrieve from the cache, if enabled
             if ($useCache = APIComponentConfiguration::useSchemaDefinitionCache()) {
                 $persistentCache = PersistentCacheFacade::getInstance();
+                // Use different caches for the normal and namespaced schemas,
+                // or it throws exception if switching without deleting the cache (eg: when passing ?use_namespace=1)
+                $vars = Engine_Vars::getVars();
+                $cacheType = $vars['namespace-types-and-interfaces'] ?
+                    CacheTypes::GRAPHQL_NAMESPACED_SCHEMA_DEFINITION :
+                    CacheTypes::GRAPHQL_SCHEMA_DEFINITION;
                 // For the persistentCache, use a hash to remove invalid characters (such as "()")
                 $cacheKey = hash('md5', json_encode($fieldArgs));
             }
             if ($useCache) {
-                if ($persistentCache->hasCache($cacheKey, CacheTypes::GRAPHQL_SCHEMA_DEFINITION)) {
-                    $this->fullSchemaDefinition = $persistentCache->getCache($cacheKey, CacheTypes::GRAPHQL_SCHEMA_DEFINITION);
+                if ($persistentCache->hasCache($cacheKey, $cacheType)) {
+                    $this->fullSchemaDefinition = $persistentCache->getCache($cacheKey, $cacheType);
                 }
             }
 
@@ -79,7 +86,7 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
 
                 // Store in the cache
                 if ($useCache) {
-                    $persistentCache->storeCache($cacheKey, CacheTypes::GRAPHQL_SCHEMA_DEFINITION, $this->fullSchemaDefinition);
+                    $persistentCache->storeCache($cacheKey, $cacheType, $this->fullSchemaDefinition);
                 }
             }
         }
