@@ -36,4 +36,12 @@ class Field extends AbstractSchemaDefinitionReferenceObject
     {
         return $this->schemaDefinition[SchemaDefinition::ARGNAME_DEPRECATIONDESCRIPTION];
     }
+    public function getExtensions(): array
+    {
+        $extensions = [];
+        if ($version = $this->schemaDefinition[SchemaDefinition::ARGNAME_VERSION]) {
+            $extensions[SchemaDefinition::ARGNAME_VERSION] = $version;
+        }
+        return $extensions;
+    }
 }

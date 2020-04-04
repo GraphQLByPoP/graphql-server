@@ -55,4 +55,13 @@ abstract class AbstractType extends AbstractSchemaDefinitionReferenceObject
     {
         return $this->schemaDefinition[SchemaDefinition::ARGNAME_DESCRIPTION];
     }
+    /**
+     * There are no extensions currently implemented for the Type
+     *
+     * @return array
+     */
+    public function getExtensions(): array
+    {
+        return [];
+    }
 }

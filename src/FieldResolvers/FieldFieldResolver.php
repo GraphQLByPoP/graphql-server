@@ -26,6 +26,7 @@ class FieldFieldResolver extends AbstractDBDataFieldResolver
             'type',
             'isDeprecated',
             'deprecationReason',
+            'extensions',
         ];
     }
 
@@ -38,6 +39,7 @@ class FieldFieldResolver extends AbstractDBDataFieldResolver
             'type' => SchemaDefinition::TYPE_STRING,
             'isDeprecated' => SchemaDefinition::TYPE_BOOL,
             'deprecationReason' => SchemaDefinition::TYPE_STRING,
+            'extensions' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
         ];
         return $types[$fieldName] ?? parent::getSchemaFieldType($typeResolver, $fieldName);
     }
@@ -52,6 +54,7 @@ class FieldFieldResolver extends AbstractDBDataFieldResolver
             'type' => $translationAPI->__('Type to which the field belongs', 'graphql'),
             'isDeprecated' => $translationAPI->__('Is the field deprecated?', 'graphql'),
             'deprecationReason' => $translationAPI->__('Why was the field deprecated?', 'graphql'),
+            'extensions' => $translationAPI->__('Custom metadata added to the field (see: https://github.com/graphql/graphql-spec/issues/300#issuecomment-504734306 and below comments, and https://github.com/graphql/graphql-js/issues/1527)', 'graphql'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($typeResolver, $fieldName);
     }
@@ -72,6 +75,8 @@ class FieldFieldResolver extends AbstractDBDataFieldResolver
                 return $field->isDeprecated();
             case 'deprecationReason':
                 return $field->getDeprecationDescription();
+            case 'extensions':
+                return $field->getExtensions();
         }
 
         return parent::resolveValue($typeResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);

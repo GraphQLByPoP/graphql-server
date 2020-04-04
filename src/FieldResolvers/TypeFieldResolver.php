@@ -40,6 +40,7 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
             'enumValues',
             'inputFields',
             'ofType',
+            'extensions',
         ];
     }
 
@@ -55,6 +56,7 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
             'enumValues' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_ID),
             'inputFields' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_ID),
             'ofType' => SchemaDefinition::TYPE_ID,
+            'extensions' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
         ];
         return $types[$fieldName] ?? parent::getSchemaFieldType($typeResolver, $fieldName);
     }
@@ -90,6 +92,7 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
             'enumValues' => $translationAPI->__('Type\'s enum values (available for Enum type only) as defined by the GraphQL spec (https://graphql.github.io/graphql-spec/draft/#sel-FAJbLAC9CDD_CAA2lB)', 'graphql'),
             'inputFields' => $translationAPI->__('Type\'s input Fields (available for InputObject type only) as defined by the GraphQL spec (https://graphql.github.io/graphql-spec/draft/#sel-HAJbLAuDABCBIu9N)', 'graphql'),
             'ofType' => $translationAPI->__('The type of the nested type (available for NonNull and List types only) as defined by the GraphQL spec (https://graphql.github.io/graphql-spec/draft/#sel-HAJbLA4DABCBIu9N)', 'graphql'),
+            'extensions' => $translationAPI->__('Custom metadata added to the field (see: https://github.com/graphql/graphql-spec/issues/300#issuecomment-504734306 and below comments, and https://github.com/graphql/graphql-js/issues/1527)', 'graphql'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($typeResolver, $fieldName);
     }
@@ -171,6 +174,8 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
                     return $type->getNestedTypeID();
                 }
                 return null;
+            case 'extensions':
+                return $type->getExtensions();
         }
 
         return parent::resolveValue($typeResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
