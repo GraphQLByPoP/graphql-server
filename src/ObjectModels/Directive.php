@@ -1,6 +1,7 @@
 <?php
 namespace PoP\GraphQL\ObjectModels;
 
+use PoP\ComponentModel\Directives\DirectiveTypes;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\GraphQL\ObjectModels\DirectiveLocations;
 use PoP\GraphQL\ObjectModels\HasArgsSchemaDefinitionReferenceTrait;
@@ -26,11 +27,19 @@ class Directive extends AbstractSchemaDefinitionReferenceObject
     }
     public function getLocations(): array
     {
-        // They apply to the field (these are the same DirectiveLocations as used by "@skip": https://graphql.github.io/graphql-spec/draft/#sec--skip)
-        return [
-            DirectiveLocations::FIELD,
-            DirectiveLocations::FRAGMENT_SPREAD,
-            DirectiveLocations::INLINE_FRAGMENT,
-        ];
+        $directiveType = $this->schemaDefinition[SchemaDefinition::ARGNAME_DIRECTIVE_TYPE];
+        if ($directiveType == DirectiveTypes::QUERY) {
+            // Same DirectiveLocations as used by "@skip": https://graphql.github.io/graphql-spec/draft/#sec--skip
+            return [
+                DirectiveLocations::FIELD,
+                DirectiveLocations::FRAGMENT_SPREAD,
+                DirectiveLocations::INLINE_FRAGMENT,
+            ];
+        } elseif ($directiveType == DirectiveTypes::SCHEMA) {
+            return [
+                DirectiveLocations::FIELD_DEFINITION,
+            ];
+        }
+        return [];
     }
 }
