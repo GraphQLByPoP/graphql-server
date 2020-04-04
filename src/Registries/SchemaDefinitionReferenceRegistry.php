@@ -26,7 +26,7 @@ use PoP\Engine\DirectiveResolvers\AdvancePointerInArrayDirectiveResolver;
 use PoP\API\DirectiveResolvers\SetPropertiesAsExpressionsDirectiveResolver;
 use PoP\ComponentModel\DirectiveResolvers\ResolveValueAndMergeDirectiveResolver;
 use PoP\GraphQL\ComponentConfiguration;
-use PoP\ComponentModel\Engine_Vars;
+use PoP\ComponentModel\State\ApplicationState;
 
 class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegistryInterface {
 
@@ -60,7 +60,7 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                 $persistentCache = PersistentCacheFacade::getInstance();
                 // Use different caches for the normal and namespaced schemas,
                 // or it throws exception if switching without deleting the cache (eg: when passing ?use_namespace=1)
-                $vars = Engine_Vars::getVars();
+                $vars = ApplicationState::getVars();
                 $cacheType = $vars['namespace-types-and-interfaces'] ?
                     CacheTypes::GRAPHQL_NAMESPACED_SCHEMA_DEFINITION :
                     CacheTypes::GRAPHQL_SCHEMA_DEFINITION;
