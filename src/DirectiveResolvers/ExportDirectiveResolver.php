@@ -1,7 +1,7 @@
 <?php
 namespace PoP\GraphQL\DirectiveResolvers;
 
-use PoP\ComponentModel\GeneralUtils;
+use PoP\ComponentModel\Misc\GeneralUtils;
 use PoP\ComponentModel\Feedback\Tokens;
 use PoP\GraphQLAPIQuery\Schema\QuerySymbols;
 use PoP\ComponentModel\Schema\SchemaDefinition;
