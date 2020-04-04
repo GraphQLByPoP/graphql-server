@@ -5,6 +5,11 @@ use PoP\API\Facades\PersistedQueryManagerFacade;
 use PoP\API\Facades\PersistedFragmentManagerFacade;
 use PoP\GraphQLAPIQuery\Facades\GraphQLQueryConvertorFacade;
 
+/**
+ * Watch out! The GraphqL queries will be parsed ALWAYS, for every request!
+ * So it's not a good idea to add them... Should add
+ * some other layer that parses the query only if it is requested (TODO!)
+ */
 class GraphQLPersistedQueryUtils
 {
     public static function addPersistedQuery(string $queryName, string $graphQLQuery, ?string $description = null): void
