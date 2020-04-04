@@ -25,6 +25,7 @@ use PoP\Engine\DirectiveResolvers\SetSelfAsExpressionDirectiveResolver;
 use PoP\Engine\DirectiveResolvers\AdvancePointerInArrayDirectiveResolver;
 use PoP\API\DirectiveResolvers\SetPropertiesAsExpressionsDirectiveResolver;
 use PoP\ComponentModel\DirectiveResolvers\ResolveValueAndMergeDirectiveResolver;
+use PoP\ComponentModel\Directives\DirectiveTypes;
 use PoP\GraphQL\ComponentConfiguration;
 use PoP\ComponentModel\State\ApplicationState;
 
@@ -154,27 +155,20 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                 }
             }
         }
-        // Directives: not all of them must be shown in the schema
-        $hiddenDirectiveClasses = [];
-        // Maybe remove the Extended GraphQL directives
-        if (!Environment::addExtendedGraphQLDirectivesToSchema()) {
-            $hiddenDirectiveClasses = array_merge(
-                $hiddenDirectiveClasses,
-                [
-                    AdvancePointerInArrayDirectiveResolver::class,
-                    ApplyFunctionDirectiveResolver::class,
-                    ForEachDirectiveResolver::class,
-                    SetSelfAsExpressionDirectiveResolver::class,
-                    CopyRelationalResultsDirectiveResolver::class,
-                    DuplicatePropertyDirectiveResolver::class,
-                    RenamePropertyDirectiveResolver::class,
-                    SetPropertiesAsExpressionsDirectiveResolver::class,
-                    TransformArrayItemsDirectiveResolver::class,
-                ]
-            );
+        // Remove all directives of types other than "Query" and "Schema"
+        // since GraphQL only supports these 2
+        $supportedDirectiveTypes = [
+            DirectiveTypes::SCHEMA,
+            DirectiveTypes::QUERY,
+        ];
+        $directivesNamesToRemove = [];
+        foreach (array_keys($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_GLOBAL_DIRECTIVES]) as $directiveName) {
+            if (!in_array($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_GLOBAL_DIRECTIVES][$directiveName][SchemaDefinition::ARGNAME_DIRECTIVE_TYPE], $supportedDirectiveTypes)) {
+                $directivesNamesToRemove[] = $directiveName;
+            }
         }
-        foreach ($hiddenDirectiveClasses as $directiveClass) {
-            unset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_GLOBAL_DIRECTIVES][$directiveClass::getDirectiveName()]);
+        foreach ($directivesNamesToRemove as $directiveName) {
+            unset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_GLOBAL_DIRECTIVES][$directiveName]);
         }
         // Add the directives
         foreach (array_keys($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_GLOBAL_DIRECTIVES]) as $directiveName) {
