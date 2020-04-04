@@ -156,13 +156,6 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
         }
         // Directives: not all of them must be shown in the schema
         $hiddenDirectiveClasses = [];
-        // Maybe remove the "system" directives
-        if (!Environment::addSystemDirectivesToSchema()) {
-            $hiddenDirectiveClasses = [
-                ResolveValueAndMergeDirectiveResolver::class,
-                ValidateDirectiveResolver::class,
-            ];
-        }
         // Maybe remove the Extended GraphQL directives
         if (!Environment::addExtendedGraphQLDirectivesToSchema()) {
             $hiddenDirectiveClasses = array_merge(
