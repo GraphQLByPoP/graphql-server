@@ -51,11 +51,16 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                 // Use different caches for the normal and namespaced schemas,
                 // or it throws exception if switching without deleting the cache (eg: when passing ?use_namespace=1)
                 $vars = ApplicationState::getVars();
-                $cacheType = $vars['namespace-types-and-interfaces'] ?
-                    CacheTypes::GRAPHQL_NAMESPACED_SCHEMA_DEFINITION :
-                    CacheTypes::GRAPHQL_SCHEMA_DEFINITION;
+                $cacheType = CacheTypes::GRAPHQL_SCHEMA_DEFINITION;
                 // For the persistentCache, use a hash to remove invalid characters (such as "()")
-                $cacheKey = hash('md5', json_encode($fieldArgs));
+                $cacheKeyComponents = array_merge(
+                    $fieldArgs,
+                    [
+                        'namespaced' => $vars['namespace-types-and-interfaces'],
+                        'edit-schema' => $vars['edit-schema'],
+                    ]
+                );
+                $cacheKey = hash('md5', json_encode($cacheKeyComponents));
             }
             if ($useCache) {
                 if ($persistentCache->hasCache($cacheKey, $cacheType)) {
