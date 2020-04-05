@@ -1,4 +1,9 @@
 services:
+    _defaults:
+        bind:
+            PoP\Hooks\HooksAPIInterface: '@hooks_api'
+            PoP\Translation\TranslationAPIInterface: '@translation_api'
+
     schema_definition_reference_registry:
         class: \PoP\GraphQL\Registries\SchemaDefinitionReferenceRegistry
         public: true
@@ -17,4 +22,8 @@ services:
 
     PoP\GraphQL\TypeResolvers\:
         resource: '../src/TypeResolvers/*'
+        public: true
+
+    PoP\GraphQL\Hooks\:
+        resource: '../src/Hooks/*'
         public: true

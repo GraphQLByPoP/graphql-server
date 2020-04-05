@@ -9,22 +9,11 @@ use PoP\GraphQL\Schema\SchemaDefinitionHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\API\Facades\SchemaDefinitionRegistryFacade;
 use PoP\ComponentModel\Facades\Cache\PersistentCacheFacade;
-use PoP\Engine\DirectiveResolvers\ForEachDirectiveResolver;
 use PoP\GraphQL\Facades\Schema\SchemaDefinitionServiceFacade;
-use PoP\API\DirectiveResolvers\RenamePropertyDirectiveResolver;
 use PoP\API\ComponentConfiguration as APIComponentConfiguration;
-use PoP\Engine\DirectiveResolvers\ApplyFunctionDirectiveResolver;
-use PoP\API\DirectiveResolvers\DuplicatePropertyDirectiveResolver;
 use PoP\GraphQL\Schema\SchemaDefinition as GraphQLSchemaDefinition;
-use PoP\API\DirectiveResolvers\TransformArrayItemsDirectiveResolver;
-use PoP\ComponentModel\DirectiveResolvers\ValidateDirectiveResolver;
 use PoP\GraphQL\ObjectModels\AbstractSchemaDefinitionReferenceObject;
-use PoP\API\DirectiveResolvers\CopyRelationalResultsDirectiveResolver;
 use PoP\GraphQL\Registries\SchemaDefinitionReferenceRegistryInterface;
-use PoP\Engine\DirectiveResolvers\SetSelfAsExpressionDirectiveResolver;
-use PoP\Engine\DirectiveResolvers\AdvancePointerInArrayDirectiveResolver;
-use PoP\API\DirectiveResolvers\SetPropertiesAsExpressionsDirectiveResolver;
-use PoP\ComponentModel\DirectiveResolvers\ResolveValueAndMergeDirectiveResolver;
 use PoP\ComponentModel\Directives\DirectiveTypes;
 use PoP\GraphQL\ComponentConfiguration;
 use PoP\ComponentModel\State\ApplicationState;
@@ -180,6 +169,7 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
             if ($addVersionToSchemaFieldDescription) {
                 $this->addVersionToSchemaFieldDescription($itemPath);
             }
+            $this->maybeAddTypeToSchemaDirectiveDescription($itemPath);
         }
         // 2. Each type's fields, connections and directives
         foreach ($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES] as $typeSchemaKey => $typeSchemaDefinition) {
@@ -297,6 +287,33 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                         }
                     }
                 }
+            }
+        }
+    }
+
+    /**
+     * When doing /?edit_schema=true, "Schema" type directives will also be added the FIELD location,
+     * so that they show up in GraphiQL and can be added to a persisted query
+     * When that happens, append '("Schema" type directive)' to the directive's description
+     *
+     * @param array $directiveSchemaDefinitionPath
+     * @return void
+     */
+    protected function maybeAddTypeToSchemaDirectiveDescription(array $directiveSchemaDefinitionPath): void
+    {
+        $vars = ApplicationState::getVars();
+        if ($vars['edit-schema']) {
+            $directiveSchemaDefinition = &SchemaDefinitionHelpers::advancePointerToPath($this->fullSchemaDefinition, $directiveSchemaDefinitionPath);
+            if ($directiveSchemaDefinition[SchemaDefinition::ARGNAME_DIRECTIVE_TYPE] == DirectiveTypes::SCHEMA) {
+                $translationAPI = TranslationAPIFacade::getInstance();
+                $directiveSchemaDefinition[SchemaDefinition::ARGNAME_DESCRIPTION] = sprintf(
+                    $translationAPI->__('%s %s', 'graphql'),
+                    sprintf(
+                        '_%s_', // Make it italic using markdown
+                        $translationAPI->__('("Schema" type directive)', 'graphql')
+                    ),
+                    $directiveSchemaDefinition[SchemaDefinition::ARGNAME_DESCRIPTION]
+                );
             }
         }
     }
