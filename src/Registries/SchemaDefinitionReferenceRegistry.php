@@ -327,11 +327,13 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
     protected function addVersionToSchemaFieldDescription(array $fieldOrDirectiveSchemaDefinitionPath): void
     {
         $fieldOrDirectiveSchemaDefinition = &SchemaDefinitionHelpers::advancePointerToPath($this->fullSchemaDefinition, $fieldOrDirectiveSchemaDefinitionPath);
-
         if ($schemaFieldVersion = $fieldOrDirectiveSchemaDefinition[SchemaDefinition::ARGNAME_VERSION]) {
             $translationAPI = TranslationAPIFacade::getInstance();
             $fieldOrDirectiveSchemaDefinition[SchemaDefinition::ARGNAME_DESCRIPTION] .= sprintf(
-                $translationAPI->__(' (Version: %s)', 'component-model'),
+                sprintf(
+                    $translationAPI->__(' _%s_', 'graphql'), // Make it italic using markdown
+                    $translationAPI->__('(Version: %s)', 'graphql')
+                ),
                 $schemaFieldVersion
             );
         }
