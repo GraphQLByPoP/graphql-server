@@ -52,7 +52,6 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                 // or it throws exception if switching without deleting the cache (eg: when passing ?use_namespace=1)
                 $vars = ApplicationState::getVars();
                 $cacheType = CacheTypes::GRAPHQL_SCHEMA_DEFINITION;
-                // For the persistentCache, use a hash to remove invalid characters (such as "()")
                 $cacheKeyComponents = array_merge(
                     $fieldArgs,
                     [
@@ -60,6 +59,7 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                         'edit-schema' => $vars['edit-schema'],
                     ]
                 );
+                // For the persistentCache, use a hash to remove invalid characters (such as "()")
                 $cacheKey = hash('md5', json_encode($cacheKeyComponents));
             }
             if ($useCache) {
