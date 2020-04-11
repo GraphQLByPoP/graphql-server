@@ -2,7 +2,7 @@
 namespace PoP\GraphQL\FieldResolvers;
 
 use PoP\API\Schema\SchemaDefinition;
-use PoP\API\TypeResolvers\RootTypeResolver;
+use PoP\Engine\TypeResolvers\RootTypeResolver;
 use PoP\ComponentModel\Facades\Instances\InstanceManagerFacade;
 use PoP\GraphQL\Schema\SchemaDefinitionHelpers;
 use PoP\GraphQL\TypeResolvers\TypeTypeResolver;

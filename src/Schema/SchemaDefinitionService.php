@@ -1,7 +1,7 @@
 <?php
 namespace PoP\GraphQL\Schema;
 
-use PoP\API\TypeResolvers\RootTypeResolver;
+use PoP\Engine\TypeResolvers\RootTypeResolver;
 use PoP\GraphQL\Schema\SchemaDefinitionServiceInterface;
 use PoP\ComponentModel\Facades\Instances\InstanceManagerFacade;
 

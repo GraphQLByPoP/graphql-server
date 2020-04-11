@@ -1,7 +1,7 @@
 <?php
 namespace PoP\GraphQL\FieldResolvers\ConditionalOnEnvironment\VariablesAsExpressions;
 
-use PoP\API\TypeResolvers\RootTypeResolver;
+use PoP\Engine\TypeResolvers\RootTypeResolver;
 use PoP\GraphQLAPIQuery\Schema\QuerySymbols;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
