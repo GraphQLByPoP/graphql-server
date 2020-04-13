@@ -36,7 +36,7 @@ class VarsHooks extends AbstractHookSet
     {
         $vars = ApplicationState::getVars();
         if (isset($vars['edit-schema'])) {
-            $components[] = TranslationAPIFacade::getInstance()->__('edit schema:', 'graphql').$vars['edit-schema'];
+            $components[] = TranslationAPIFacade::getInstance()->__('edit schema:', 'graphql') . $vars['edit-schema'];
         }
 
         return $components;

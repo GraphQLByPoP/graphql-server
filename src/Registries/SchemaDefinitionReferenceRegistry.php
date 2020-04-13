@@ -18,7 +18,8 @@ use PoP\ComponentModel\Directives\DirectiveTypes;
 use PoP\GraphQL\ComponentConfiguration;
 use PoP\ComponentModel\State\ApplicationState;
 
-class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegistryInterface {
+class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegistryInterface
+{
 
     protected $fullSchemaDefinition;
     protected $fullSchemaDefinitionReferenceMap;
@@ -346,8 +347,7 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
 
     public function registerSchemaDefinitionReference(
         AbstractSchemaDefinitionReferenceObject $referenceObject
-    ): string
-    {
+    ): string {
         $schemaDefinitionPath = $referenceObject->getSchemaDefinitionPath();
         $referenceObjectID = SchemaDefinitionHelpers::getID($schemaDefinitionPath);
         // Calculate and set the ID. If this is a nested type, its wrapping type will already have been registered under this ID
@@ -366,8 +366,7 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
     }
     public function getSchemaDefinitionReference(
         string $referenceObjectID
-    ): AbstractSchemaDefinitionReferenceObject
-    {
+    ): AbstractSchemaDefinitionReferenceObject {
         return $this->fullSchemaDefinitionReferenceDictionary[$referenceObjectID];
     }
 

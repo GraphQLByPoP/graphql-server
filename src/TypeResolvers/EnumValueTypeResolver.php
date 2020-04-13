@@ -31,4 +31,3 @@ class EnumValueTypeResolver extends AbstractIntrospectionTypeResolver
         return SchemaDefinitionReferenceTypeDataLoader::class;
     }
 }
-

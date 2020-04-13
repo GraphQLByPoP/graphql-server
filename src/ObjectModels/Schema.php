@@ -188,7 +188,8 @@ class Schema
         return new Directive($fullSchemaDefinition, $directiveSchemaDefinitionPath);
     }
 
-    public function getID() {
+    public function getID()
+    {
         return $this->id;
     }
     public function getQueryType(): AbstractType
@@ -229,7 +230,7 @@ class Schema
     public function getTypeIDs(): array
     {
         return array_map(
-            function(AbstractType $type) {
+            function (AbstractType $type) {
                 return $type->getID();
             },
             $this->getTypes()
@@ -242,7 +243,7 @@ class Schema
     public function getDirectiveIDs(): array
     {
         return array_map(
-            function(Directive $directive) {
+            function (Directive $directive) {
                 return $directive->getID();
             },
             $this->getDirectives()

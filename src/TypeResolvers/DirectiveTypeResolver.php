@@ -31,4 +31,3 @@ class DirectiveTypeResolver extends AbstractIntrospectionTypeResolver
         return SchemaDefinitionReferenceTypeDataLoader::class;
     }
 }
-

@@ -1,7 +1,8 @@
 <?php
 namespace PoP\GraphQL\Schema;
 
-class SchemaDefinition {
+class SchemaDefinition
+{
     const TYPE_MIXED = 'Mixed';
     const TYPE_ID = 'ID';
     // const TYPE_UNRESOLVED_ID = 'unresolvedID';

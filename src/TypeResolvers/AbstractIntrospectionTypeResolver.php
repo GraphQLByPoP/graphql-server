@@ -15,4 +15,3 @@ abstract class AbstractIntrospectionTypeResolver extends AbstractTypeResolver
         return '';
     }
 }
-

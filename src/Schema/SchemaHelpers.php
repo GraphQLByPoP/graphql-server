@@ -81,7 +81,7 @@ class SchemaHelpers
     protected static function convertTypeToSDLSyntax(int $arrayInstances, string $convertedType, ?bool $isMandatory = false): string
     {
         // Wrap the type with the array brackets
-        for ($i=0; $i<$arrayInstances; $i++) {
+        for ($i = 0; $i < $arrayInstances; $i++) {
             $convertedType = sprintf(
                 '[%s]',
                 $convertedType

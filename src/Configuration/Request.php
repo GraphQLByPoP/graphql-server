@@ -9,4 +9,3 @@ class Request
         return isset($_REQUEST[self::URLPARAM_EDIT_SCHEMA]) && $_REQUEST[self::URLPARAM_EDIT_SCHEMA];
     }
 }
-

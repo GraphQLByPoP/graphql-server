@@ -44,7 +44,7 @@ trait HasInterfacesTypeTrait
     public function getInterfaceIDs(): array
     {
         return array_map(
-            function(InterfaceType $interfaceType) {
+            function (InterfaceType $interfaceType) {
                 return $interfaceType->getID();
             },
             $this->getInterfaces()

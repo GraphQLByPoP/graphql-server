@@ -49,12 +49,11 @@ class InputObjectType extends AbstractType
     public function getInputFields(): array
     {
         return $this->inputValues;
-
     }
     public function getInputFieldIDs(): array
     {
         return array_map(
-            function(InputValue $inputValue) {
+            function (InputValue $inputValue) {
                 return $inputValue->getID();
             },
             $this->getInputFields()

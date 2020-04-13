@@ -30,7 +30,7 @@ trait HasPossibleTypesTypeTrait
     public function getPossibleTypeIDs(): array
     {
         return array_map(
-            function(AbstractType $type) {
+            function (AbstractType $type) {
                 return $type->getID();
             },
             $this->getPossibleTypes()

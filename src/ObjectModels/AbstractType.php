@@ -15,7 +15,6 @@ abstract class AbstractType extends AbstractSchemaDefinitionReferenceObject
      */
     public function initializeTypeDependencies(): void
     {
-
     }
 
     public function getNamespacedName(): string

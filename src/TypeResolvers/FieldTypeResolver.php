@@ -31,4 +31,3 @@ class FieldTypeResolver extends AbstractIntrospectionTypeResolver
         return SchemaDefinitionReferenceTypeDataLoader::class;
     }
 }
-

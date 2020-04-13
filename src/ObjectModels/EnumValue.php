@@ -4,7 +4,8 @@ namespace PoP\GraphQL\ObjectModels;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\GraphQL\ObjectModels\AbstractSchemaDefinitionReferenceObject;
 
-class EnumValue extends AbstractSchemaDefinitionReferenceObject {
+class EnumValue extends AbstractSchemaDefinitionReferenceObject
+{
 
     public function getName(): string
     {

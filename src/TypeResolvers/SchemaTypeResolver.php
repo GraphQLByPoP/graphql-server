@@ -31,4 +31,3 @@ class SchemaTypeResolver extends AbstractIntrospectionTypeResolver
         return SchemaTypeDataLoader::class;
     }
 }
-

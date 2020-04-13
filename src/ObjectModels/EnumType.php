@@ -52,16 +52,15 @@ class EnumType extends AbstractType
             $this->enumValues :
             array_filter(
                 $this->enumValues,
-                function(EnumValue $enumValue) {
+                function (EnumValue $enumValue) {
                     return !$enumValue->isDeprecated();
                 }
             );
-
     }
     public function getEnumValueIDs(bool $includeDeprecated = false): array
     {
         return array_map(
-            function(EnumValue $enumValue) {
+            function (EnumValue $enumValue) {
                 return $enumValue->getID();
             },
             $this->getEnumValues($includeDeprecated)

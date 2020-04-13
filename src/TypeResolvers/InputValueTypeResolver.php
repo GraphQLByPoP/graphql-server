@@ -31,4 +31,3 @@ class InputValueTypeResolver extends AbstractIntrospectionTypeResolver
         return SchemaDefinitionReferenceTypeDataLoader::class;
     }
 }
-
