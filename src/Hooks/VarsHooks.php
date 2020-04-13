@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace PoP\GraphQL\Hooks;
 
 use PoP\GraphQL\Configuration\Request;

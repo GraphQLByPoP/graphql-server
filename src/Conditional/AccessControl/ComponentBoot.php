@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace PoP\GraphQL\Conditional\AccessControl;
 
 use PoP\AccessControl\Environment;

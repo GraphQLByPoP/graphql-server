@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace PoP\GraphQL\Registries;
 
 use PoP\GraphQL\ObjectModels\AbstractSchemaDefinitionReferenceObject;

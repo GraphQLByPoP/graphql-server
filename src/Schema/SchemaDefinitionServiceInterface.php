@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace PoP\GraphQL\Schema;
 
 interface SchemaDefinitionServiceInterface extends \PoP\ComponentModel\Schema\SchemaDefinitionServiceInterface
