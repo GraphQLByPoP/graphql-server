@@ -19,7 +19,7 @@
     "prefer-stable": true,
     "require": {
         "php" : "~7.1",
-        "getpop/api-graphql-request": "^1.0@dev"
+        "getpop/api-graphql-request": "~0.1"
     },
     "require-dev": {
         "phpunit/phpunit" : ">=7.0",
