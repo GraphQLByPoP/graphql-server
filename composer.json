@@ -43,7 +43,7 @@
         "test": "phpunit",
         "check-style": "phpcs src tests",
         "fix-style": "phpcbf src tests",
-        "phpstan": "phpstan analyse -l 8 src tests"
+        "analyse": "phpstan analyse -l 8 src tests"
     },
     "extra": {
         "branch-alias": {
