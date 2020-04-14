@@ -106,6 +106,20 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 composer test
 ```
 
+## Static Analysis
+
+Execute [phpstan](https://github.com/phpstan/phpstan) with level 8 (strictest mode):
+
+``` bash
+composer analyse
+```
+
+To run checks for level 0 (or any level from 0 to 8), use:
+
+``` bash
+./vendor/bin/phpstan analyse -l 0 src tests
+```
+
 ## Contributing
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) and [CODE_OF_CONDUCT](CODE_OF_CONDUCT.md) for details.
