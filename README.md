@@ -96,6 +96,10 @@ You can play with it through the following clients:
 - GraphiQL: https://newapi.getpop.org/graphiql/
 - GraphQL Voyager: https://newapi.getpop.org/graphql-interactive/
 
+## Standards
+
+[PSR-1](https://www.php-fig.org/psr/psr-1), [PSR-4](https://www.php-fig.org/psr/psr-4) and [PSR-12](https://www.php-fig.org/psr/psr-12).
+
 ## Change log
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
