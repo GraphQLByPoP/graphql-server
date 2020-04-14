@@ -103,7 +103,7 @@ composer test
 
 ## Static Analysis
 
-Execute [phpstan](https://github.com/phpstan/phpstan) with level 8 (strictest mode):
+Execute [phpstan](https://github.com/phpstan/phpstan) with level 5:
 
 ``` bash
 composer analyse
