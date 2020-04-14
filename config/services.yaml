@@ -27,3 +27,7 @@ services:
     PoP\GraphQL\Hooks\:
         resource: '../src/Hooks/*'
         public: true
+
+    PoP\GraphQL\DataStructureFormatters\:
+        resource: '../src/DataStructureFormatters/*'
+        public: true
