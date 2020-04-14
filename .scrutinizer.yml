@@ -1,6 +1,9 @@
 build:
     nodes:
         analysis:
+            dependencies:
+                before:
+                    - composer require --dev getpop/access-control
             project_setup:
                 override: true
             tests:
