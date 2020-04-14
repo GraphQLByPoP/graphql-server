@@ -118,7 +118,7 @@ Execute [phpstan](https://github.com/phpstan/phpstan) with level 8 (strictest mo
 composer analyse
 ```
 
-To run checks for level 0 (or any level from 0 to 8), use:
+To run checks for level 0 (or any level from 0 to 8):
 
 ``` bash
 ./vendor/bin/phpstan analyse -l 0 src tests
