@@ -1,9 +1,6 @@
 build:
     nodes:
         analysis:
-            environment:
-                php:
-                    version: 7.1
             dependencies:
                 before:
                     - composer require --dev getpop/access-control
