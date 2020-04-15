@@ -1,5 +1,9 @@
 build:
     nodes:
+        my-tests:
+            environment:
+                php:
+                    version: 7.1
         analysis:
             dependencies:
                 before:
