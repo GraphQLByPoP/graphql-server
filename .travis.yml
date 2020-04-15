@@ -23,6 +23,7 @@ before_script:
 script:
   - vendor/bin/phpcs --standard=psr2 src/ tests/
   - vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
+  - vendor/bin/phpstan analyse -c phpstan.neon.dist
 
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar && php ocular.phar code-coverage:upload --format=php-clover coverage.clover
