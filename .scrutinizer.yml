@@ -1,10 +1,9 @@
 build:
     nodes:
-        my-tests:
+        analysis:
             environment:
                 php:
                     version: 7.1
-        analysis:
             dependencies:
                 before:
                     - composer require --dev getpop/access-control
