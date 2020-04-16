@@ -20,6 +20,7 @@ use PoP\GraphQL\Registries\SchemaDefinitionReferenceRegistryInterface;
 use PoP\ComponentModel\Directives\DirectiveTypes;
 use PoP\GraphQL\ComponentConfiguration;
 use PoP\ComponentModel\State\ApplicationState;
+use PoP\ComponentModel\Configuration\Request;
 
 class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegistryInterface
 {
@@ -61,6 +62,7 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                     [
                         'namespaced' => $vars['namespace-types-and-interfaces'],
                         'edit-schema' => $vars['edit-schema'],
+                        'version-constraint' => Request::getVersionConstraint() ?? '',
                     ]
                 );
                 // For the persistentCache, use a hash to remove invalid characters (such as "()")
