@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace PoP\GraphQL\Registries;
 
 use PoP\GraphQL\Environment;
+use PoP\API\Cache\CacheUtils;
 use PoP\GraphQL\Cache\CacheTypes;
 use PoP\GraphQL\Schema\SchemaHelpers;
+use PoP\GraphQL\ComponentConfiguration;
+use PoP\ComponentModel\State\ApplicationState;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\GraphQL\Schema\SchemaDefinitionHelpers;
+use PoP\ComponentModel\Directives\DirectiveTypes;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\API\Facades\SchemaDefinitionRegistryFacade;
 use PoP\ComponentModel\Facades\Cache\PersistentCacheFacade;
@@ -17,10 +21,6 @@ use PoP\API\ComponentConfiguration as APIComponentConfiguration;
 use PoP\GraphQL\Schema\SchemaDefinition as GraphQLSchemaDefinition;
 use PoP\GraphQL\ObjectModels\AbstractSchemaDefinitionReferenceObject;
 use PoP\GraphQL\Registries\SchemaDefinitionReferenceRegistryInterface;
-use PoP\ComponentModel\Directives\DirectiveTypes;
-use PoP\GraphQL\ComponentConfiguration;
-use PoP\ComponentModel\State\ApplicationState;
-use PoP\ComponentModel\Configuration\Request;
 
 class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegistryInterface
 {
@@ -31,7 +31,8 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
     protected $dynamicTypes = [];
 
     /**
-     * It returns the full schema, expanded with all data required to satisfy GraphQL's introspection fields (starting from "__schema")
+     * It returns the full schema, expanded with all data required to satisfy
+     * GraphQL's introspection fields (starting from "__schema")
      *
      * It can store the value in the cache.
      * Use cache with care: if the schema is dynamic, it should not be cached.
@@ -59,12 +60,9 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                 $cacheType = CacheTypes::GRAPHQL_SCHEMA_DEFINITION;
                 $cacheKeyComponents = array_merge(
                     $fieldArgs,
+                    CacheUtils::getSchemaCacheKeyComponents(),
                     [
-                        'namespaced' => $vars['namespace-types-and-interfaces'],
                         'edit-schema' => $vars['edit-schema'],
-                        'version-constraint' => Request::getVersionConstraint() ?? '',
-                        'field-version-constraints' => Request::getVersionConstraintsForFields() ?? [],
-                        'directive-version-constraints' => Request::getVersionConstraintsForDirectives() ?? [],
                     ]
                 );
                 // For the persistentCache, use a hash to remove invalid characters (such as "()")
