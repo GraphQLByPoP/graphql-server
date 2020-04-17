@@ -63,6 +63,8 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                         'namespaced' => $vars['namespace-types-and-interfaces'],
                         'edit-schema' => $vars['edit-schema'],
                         'version-constraint' => Request::getVersionConstraint() ?? '',
+                        'field-version-constraints' => Request::getVersionConstraintsForFields() ?? [],
+                        'directive-version-constraints' => Request::getVersionConstraintsForDirectives() ?? [],
                     ]
                 );
                 // For the persistentCache, use a hash to remove invalid characters (such as "()")
