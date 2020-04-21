@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PoP\GraphQL;
 
-use PoP\ComponentModel\AbstractComponentConfiguration;
+use PoP\ComponentModel\ComponentConfiguration\AbstractComponentConfiguration;
 use PoP\GraphQLAPIQuery\ComponentConfiguration as GraphQLAPIQueryComponentConfiguration;
 
 class ComponentConfiguration extends AbstractComponentConfiguration
