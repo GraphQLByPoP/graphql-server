@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PoP\GraphQL\Conditional\AccessControl;
 
-use PoP\AccessControl\Environment;
 use PoP\AccessControl\ComponentConfiguration;
 use PoP\ComponentModel\AttachableExtensions\AttachableExtensionGroups;
 use PoP\GraphQL\DirectiveResolvers\ConditionalOnEnvironment\SchemaNoCacheCacheControlDirectiveResolver;
@@ -40,7 +39,7 @@ class ComponentBoot
          * Then, the CacheControl for field "__schema" must be set to "no-cache"
          */
         if (ComponentConfiguration::enableIndividualControlForPublicPrivateSchemaMode() ||
-            Environment::usePrivateSchemaMode()
+            ComponentConfiguration::usePrivateSchemaMode()
         ) {
             SchemaNoCacheCacheControlDirectiveResolver::attach(AttachableExtensionGroups::DIRECTIVERESOLVERS);
         }
