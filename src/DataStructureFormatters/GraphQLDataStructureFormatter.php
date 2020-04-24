@@ -26,9 +26,12 @@ class GraphQLDataStructureFormatter extends \PoP\GraphQLAPI\DataStructureFormatt
     protected function addExtensions(array &$entry, array $extensions): void
     {
         parent::addExtensions($entry, $extensions);
-        if ($locations = $entry['extensions']['locations']) {
-            unset($entry['extensions']['locations']);
-            $entry['locations'] = $locations;
+        if ($location = $entry['extensions']['location']) {
+            unset($entry['extensions']['location']);
+            if (!$entry['extensions']) {
+                unset($entry['extensions']);
+            }
+            $entry['location'] = $location;
         }
     }
 }
