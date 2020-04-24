@@ -7,6 +7,16 @@ namespace PoP\GraphQL\DataStructureFormatters;
 class GraphQLDataStructureFormatter extends \PoP\GraphQLAPI\DataStructureFormatters\GraphQLDataStructureFormatter
 {
     /**
+     * Do not add the extensions naturally available to PoP.
+     *
+     * @return boolean
+     */
+    protected function addNativeExtensions(): bool
+    {
+        return false;
+    }
+
+    /**
      * Override the parent function, to place the locations from outside extensions
      *
      * @param array $entry
