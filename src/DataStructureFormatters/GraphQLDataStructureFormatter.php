@@ -4,16 +4,22 @@ declare(strict_types=1);
 
 namespace PoP\GraphQL\DataStructureFormatters;
 
+use PoP\ComponentModel\State\ApplicationState;
+
 class GraphQLDataStructureFormatter extends \PoP\GraphQLAPI\DataStructureFormatters\GraphQLDataStructureFormatter
 {
     /**
-     * Do not add the extensions naturally available to PoP.
+     * Do not add the extensions naturally available to PoP for standard GraphQL
      *
      * @return boolean
      */
     protected function addNativeExtensions(): bool
     {
-        return false;
+        $vars = ApplicationState::getVars();
+        if ($vars['standard-graphql']) {
+            return false;
+        }
+        return parent::addNativeExtensions();
     }
 
     /**
