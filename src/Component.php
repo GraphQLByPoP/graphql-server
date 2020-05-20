@@ -48,7 +48,7 @@ class Component extends AbstractComponent
         if (self::isEnabled()) {
             parent::doInitialize();
             self::initYAMLServices(dirname(__DIR__));
-            ServiceConfiguration::init();
+            ServiceConfiguration::initialize();
         }
     }
 
