@@ -27,6 +27,9 @@
         "phpunit/phpunit": ">=7.0",
         "squizlabs/php_codesniffer": "^3.0"
     },
+    "suggest": {
+        "getpop/access-control": "Integrates well with Access Control"
+    },
     "autoload": {
         "psr-4": {
             "PoP\\GraphQL\\": "src"

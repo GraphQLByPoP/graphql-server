@@ -1,2 +1,2 @@
 <?php
-\PoP\GraphQL\Component::init();
+//\PoP\GraphQL\Component::initialize();

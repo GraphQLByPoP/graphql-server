@@ -18,6 +18,13 @@ use PoP\GraphQLAPIQuery\ComponentConfiguration as GraphQLAPIQueryComponentConfig
 class Component extends AbstractComponent
 {
     // const VERSION = '0.1.0';
+
+    public static function getDependedComponentClasses(): array
+    {
+        return [
+            \PoP\GraphQLAPIRequest\Component::class,
+        ];
+    }
     use YAMLServicesTrait, CanDisableComponentTrait;
 
     /**
