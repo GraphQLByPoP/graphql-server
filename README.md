@@ -54,6 +54,14 @@ RewriteRule ^api/graphql/?$ /?scheme=api&datastructure=graphql [L,P,QSA]
 ```
 -->
 
+## Usage
+
+Initialize the component:
+
+``` php
+\PoP\GraphQL\Component::initialize();
+```
+
 ## 100% compliant of GraphQL syntax
 
 All [GraphQL queries](https://graphql.org/learn/queries/) are supported (click on the links below to try them out in [GraphiQL](https://newapi.getpop.org/graphiql/)):
