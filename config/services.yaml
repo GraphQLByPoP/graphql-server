@@ -12,18 +12,6 @@ services:
         class: \PoP\GraphQL\Schema\SchemaDefinitionService
         public: true
 
-    PoP\GraphQL\FieldResolvers\:
-        resource: '../src/FieldResolvers/*'
-        public: true
-
-    PoP\GraphQL\DirectiveResolvers\:
-        resource: '../src/DirectiveResolvers/*'
-        public: true
-
-    PoP\GraphQL\TypeResolvers\:
-        resource: '../src/TypeResolvers/*'
-        public: true
-
     PoP\GraphQL\Hooks\:
         resource: '../src/Hooks/*'
         public: true
