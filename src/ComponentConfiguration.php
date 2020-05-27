@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PoP\GraphQL;
 
+use PoP\ComponentModel\ComponentConfiguration\EnvironmentValueHelpers;
 use PoP\ComponentModel\ComponentConfiguration\ComponentConfigurationTrait;
 use PoP\GraphQLAPIQuery\ComponentConfiguration as GraphQLAPIQueryComponentConfiguration;
 
@@ -24,12 +25,14 @@ class ComponentConfiguration
         // Define properties
         $envVariable = Environment::ADD_SELF_FIELD_FOR_ROOT_TYPE_TO_SCHEMA;
         $selfProperty = &self::$addSelfFieldForRootTypeToSchema;
-        $callback = [Environment::class, 'addSelfFieldForRootTypeToSchema'];
+        $defaultValue = false;
+        $callback = [EnvironmentValueHelpers::class, 'toBool'];
 
         // Initialize property from the environment/hook
         self::maybeInitializeConfigurationValue(
             $envVariable,
             $selfProperty,
+            $defaultValue,
             $callback
         );
         return $selfProperty;
