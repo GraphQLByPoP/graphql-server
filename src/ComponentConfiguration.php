@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace PoP\GraphQL;
 
-use PoP\ComponentModel\ComponentConfiguration\AbstractComponentConfiguration;
+use PoP\ComponentModel\ComponentConfiguration\ComponentConfigurationTrait;
 use PoP\GraphQLAPIQuery\ComponentConfiguration as GraphQLAPIQueryComponentConfiguration;
 
-class ComponentConfiguration extends AbstractComponentConfiguration
+class ComponentConfiguration
 {
+    use ComponentConfigurationTrait;
+
     private static $addSelfFieldForRootTypeToSchema;
 
     public static function addSelfFieldForRootTypeToSchema(): bool
@@ -25,7 +27,7 @@ class ComponentConfiguration extends AbstractComponentConfiguration
         $callback = [Environment::class, 'addSelfFieldForRootTypeToSchema'];
 
         // Initialize property from the environment/hook
-        self::maybeInitEnvironmentVariable(
+        self::maybeInitializeConfigurationValue(
             $envVariable,
             $selfProperty,
             $callback
