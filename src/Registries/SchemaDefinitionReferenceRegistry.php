@@ -184,6 +184,10 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
         }
         // 2. Each type's fields, connections and directives
         foreach ($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES] as $typeSchemaKey => $typeSchemaDefinition) {
+            // No need for Union types
+            if ($typeSchemaDefinition[SchemaDefinition::ARGNAME_IS_UNION]) {
+                continue;
+            }
             foreach (array_keys($typeSchemaDefinition[SchemaDefinition::ARGNAME_FIELDS]) as $fieldName) {
                 $itemPath = [
                     SchemaDefinition::ARGNAME_TYPES,
