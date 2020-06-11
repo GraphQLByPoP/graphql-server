@@ -6,43 +6,25 @@ namespace PoP\GraphQL\Schema;
 
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\GraphQL\Schema\SchemaDefinition as GraphQLSchemaDefinition;
-use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
-use PoP\ComponentModel\Facades\Instances\InstanceManagerFacade;
 use PoP\ComponentModel\Schema\SchemaHelpers as ComponentModelSchemaHelpers;
 
 class SchemaHelpers
 {
     /**
-     * Convert the field type from its internal representation (eg: "array:id") to the GraphQL standard representation (eg: "[Post]")
+     * Convert the field type from its internal representation (eg: "array:id")
+     * to the GraphQL standard representation (eg: "[Post]")
      *
-     * @param TypeResolverInterface $typeResolver
-     * @param string $fieldName
+     * If $isNonNullableOrMandatory is `true`, a "!" is added to the type name,
+     * to handle both field response and field arguments:
+     *
+     * - field response: isNonNullable
+     * - field argument: isMandatory (its provided value can still be null)
+     *
      * @param string $type
-     * @return void
+     * @param boolean|null $isNonNullableOrMandatory
+     * @return string
      */
-    public static function getFieldTypeToOutputInSchema(string $type, TypeResolverInterface $typeResolver, string $fieldName, ?bool $isMandatory = false): string
-    {
-        list (
-            $arrayInstances,
-            $convertedType
-        ) = ComponentModelSchemaHelpers::getTypeComponents($type);
-
-        // If the type is an ID, replace it with the actual type the ID references
-        if ($convertedType == SchemaDefinition::TYPE_ID) {
-            $instanceManager = InstanceManagerFacade::getInstance();
-            // The convertedType may not be implemented yet (eg: Category), then skip
-            if ($fieldTypeResolverClass = $typeResolver->resolveFieldTypeResolverClass($fieldName)) {
-                $fieldTypeResolver = $instanceManager->getInstance((string)$fieldTypeResolverClass);
-                $convertedType = $fieldTypeResolver->getMaybeNamespacedTypeName();
-            }
-        }
-        // Convert the type name to standards by GraphQL
-        // If "id" was converted to a Type, nothing will happen. If it was not converted, it will now be converted to "ID", for which the type has been registered
-        $convertedType = self::convertTypeNameToGraphQLStandard($convertedType);
-
-        return self::convertTypeToSDLSyntax($arrayInstances, $convertedType, $isMandatory);
-    }
-    public static function getFieldOrDirectiveArgTypeToOutputInSchema(string $type, ?bool $isMandatory = false): string
+    public static function getTypeToOutputInSchema(string $type, ?bool $isNonNullableOrMandatory = false): string
     {
         list (
             $arrayInstances,
@@ -52,7 +34,7 @@ class SchemaHelpers
         // Convert the type name to standards by GraphQL
         $convertedType = self::convertTypeNameToGraphQLStandard($convertedType);
 
-        return self::convertTypeToSDLSyntax($arrayInstances, $convertedType, $isMandatory);
+        return self::convertTypeToSDLSyntax($arrayInstances, $convertedType, $isNonNullableOrMandatory);
     }
     public static function convertTypeNameToGraphQLStandard(string $typeName): string
     {
@@ -81,7 +63,7 @@ class SchemaHelpers
 
         return $typeName;
     }
-    protected static function convertTypeToSDLSyntax(int $arrayInstances, string $convertedType, ?bool $isMandatory = false): string
+    protected static function convertTypeToSDLSyntax(int $arrayInstances, string $convertedType, ?bool $isNonNullableOrMandatory = false): string
     {
         // Wrap the type with the array brackets
         for ($i = 0; $i < $arrayInstances; $i++) {
@@ -90,7 +72,7 @@ class SchemaHelpers
                 $convertedType
             );
         }
-        if ($isMandatory) {
+        if ($isNonNullableOrMandatory) {
             $convertedType .= '!';
         }
         return $convertedType;
