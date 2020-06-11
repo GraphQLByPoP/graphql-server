@@ -9,35 +9,42 @@ use PoP\ComponentModel\State\ApplicationState;
 class GraphQLDataStructureFormatter extends \PoP\GraphQLAPI\DataStructureFormatters\GraphQLDataStructureFormatter
 {
     /**
-     * Do not add the extensions naturally available to PoP for standard GraphQL
-     *
-     * @return boolean
-     */
-    protected function addNativeExtensions(): bool
-    {
-        $vars = ApplicationState::getVars();
-        if ($vars['standard-graphql']) {
-            return false;
-        }
-        return parent::addNativeExtensions();
-    }
-
-    /**
      * Override the parent function, to place the locations from outside extensions
      *
-     * @param array $entry
+     * @param string $message
      * @param array $extensions
      * @return void
      */
-    protected function addExtensions(array &$entry, array $extensions): void
+    protected function getQueryEntry(string $message, array $extensions): array
     {
-        parent::addExtensions($entry, $extensions);
-        if ($location = $entry['extensions']['location']) {
-            unset($entry['extensions']['location']);
-            if (!$entry['extensions']) {
-                unset($entry['extensions']);
-            }
+        $entry = [
+            'message' => $message,
+        ];
+        // Add the "location" directly, not under "extensions"
+        if ($location = $extensions['location']) {
+            unset($extensions['location']);
             $entry['location'] = $location;
         }
+        if ($extensions = array_merge(
+            $this->getQueryEntryExtensions(),
+            $extensions
+        )) {
+            $entry['extensions'] = $extensions;
+        };
+        return $entry;
+    }
+
+    /**
+     * Do not print "type" => "query"
+     *
+     * @return array
+     */
+    protected function getQueryEntryExtensions(): array
+    {
+        $vars = ApplicationState::getVars();
+        if ($vars['standard-graphql']) {
+            return [];
+        }
+        return parent::getQueryEntryExtensions();
     }
 }
