@@ -390,7 +390,7 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
         // that one from the interface's perspective.
         // Hence, this field may be registered several times, as coming
         // from different ObjectTypes implementing the same interface!
-        // (Eg: both Post and Page have field "status" from interface ContentEntity)
+        // (Eg: both Post and Page have field "status" from interface CustomPost)
         // If $filterRepeated is true, remove instances with a repeated name
         if ($filterRepeated) {
             $dynamicTypes = $typeNames = [];

@@ -49,7 +49,7 @@ class SchemaDefinitionHelpers
                 $interfaceFields = array_keys($interfaceSchemaDefinition[SchemaDefinition::ARGNAME_FIELDS]);
                 // Watch out (again)! An interface can itself implement interfaces,
                 // and a field can be shared across them
-                // (eg: field "status" for interfaces ContentEntity and ContentEntry)
+                // (eg: field "status" for interfaces CustomPost and ContentEntry)
                 // Then, check if the interface's interface also implements the field!
                 // Then, do not add it yet, leave it for its implemented interface to add it
                 if ($interfaceImplementedInterfaceNames = $fullSchemaDefinition[SchemaDefinition::ARGNAME_INTERFACES][$interfaceName][SchemaDefinition::ARGNAME_INTERFACES]) {
