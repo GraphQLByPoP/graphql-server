@@ -29,9 +29,12 @@ class SchemaDefinitionHelpers
         return $schemaDefinitionPointer;
     }
     /**
-     * If an ObjectType implements an interface, and the interface implements the same field, then we must return the field definition as from the perspective of the interface!
-     * Otherwise, when querying the schema in the GraphQL Playground (https://www.graphqlbin.com/v2/new/), it produces this error from a mismatched type:
-     * "Error: ContentEntry.status expects type "Interfaces_ContentEntry_Fields_Status" but Post.status provides type "Types_Post_Fields_Status"."
+     * If an ObjectType implements an interface, and the interface implements the same field,
+     * then we must return the field definition as from the perspective of the interface!
+     * Otherwise, when querying the schema in the GraphQL Playground (https://www.graphqlbin.com/v2/new/),
+     * it produces this error from a mismatched type:
+     * "Error: ContentEntry.status expects type "Interfaces_ContentEntry_Fields_Status"
+     * but Post.status provides type "Types_Post_Fields_Status"."
      *
      * @param array $fullSchemaDefinition
      * @param array $interfaceNames
@@ -44,8 +47,11 @@ class SchemaDefinitionHelpers
             foreach ($interfaceNames as $interfaceName) {
                 $interfaceSchemaDefinition = $fullSchemaDefinition[SchemaDefinition::ARGNAME_INTERFACES][$interfaceName];
                 $interfaceFields = array_keys($interfaceSchemaDefinition[SchemaDefinition::ARGNAME_FIELDS]);
-                // Watch out (again)! An interface can itself implement interfaces, and a field can be shared across them (eg: field "status" for interfaces ContentEntity and ContentEntry)
-                // Then, check if the interface's interface also implements the field! Then, do not add it yet, leave it for its implemented interface to add it
+                // Watch out (again)! An interface can itself implement interfaces,
+                // and a field can be shared across them
+                // (eg: field "status" for interfaces ContentEntity and ContentEntry)
+                // Then, check if the interface's interface also implements the field!
+                // Then, do not add it yet, leave it for its implemented interface to add it
                 if ($interfaceImplementedInterfaceNames = $fullSchemaDefinition[SchemaDefinition::ARGNAME_INTERFACES][$interfaceName][SchemaDefinition::ARGNAME_INTERFACES]) {
                     $interfaceImplementedInterfaceFields = [];
                     foreach ($interfaceImplementedInterfaceNames as $interfaceImplementedInterfaceName) {
