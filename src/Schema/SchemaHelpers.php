@@ -40,7 +40,6 @@ class SchemaHelpers
     {
         // If the type is a scalar value, we need to convert it to the official GraphQL type
         $conversionTypes = [
-            // SchemaDefinition::TYPE_UNRESOLVED_ID => GraphQLSchemaDefinition::TYPE_UNRESOLVED_ID',
             SchemaDefinition::TYPE_ID => GraphQLSchemaDefinition::TYPE_ID,
             SchemaDefinition::TYPE_STRING => GraphQLSchemaDefinition::TYPE_STRING,
             SchemaDefinition::TYPE_INT => GraphQLSchemaDefinition::TYPE_INT,

@@ -26,10 +26,10 @@ class Schema
     {
         $this->id = $id;
 
-        // Initialize the global elements before anything, since they will be references from the ObjectType: Fields/Connections/Directives
+        // Initialize the global elements before anything, since they will
+        // be references from the ObjectType: Fields/Connections/Directives
         // 1. Initialize all the Scalar types
         $scalarTypeNames = [
-            // GraphQLSchemaDefinition::TYPE_UNRESOLVED_ID,
             GraphQLSchemaDefinition::TYPE_ID,
             GraphQLSchemaDefinition::TYPE_STRING,
             GraphQLSchemaDefinition::TYPE_INT,

@@ -244,7 +244,6 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
         // Expand the full schema with more data that is needed for GraphQL
         // Add the scalar types
         $scalarTypeNames = [
-            // GraphQLSchemaDefinition::TYPE_UNRESOLVED_ID,
             GraphQLSchemaDefinition::TYPE_ID,
             GraphQLSchemaDefinition::TYPE_STRING,
             GraphQLSchemaDefinition::TYPE_INT,
