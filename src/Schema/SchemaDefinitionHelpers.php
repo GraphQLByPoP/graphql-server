@@ -45,6 +45,7 @@ class SchemaDefinitionHelpers
         $fieldInterfaces = [];
         if ($interfaceNames) {
             foreach ($interfaceNames as $interfaceName) {
+                // var_dump($interfaceName, $interfaceSchemaDefinition);
                 $interfaceSchemaDefinition = $fullSchemaDefinition[SchemaDefinition::ARGNAME_INTERFACES][$interfaceName];
                 $interfaceFields = array_keys($interfaceSchemaDefinition[SchemaDefinition::ARGNAME_FIELDS]);
                 // Watch out (again)! An interface can itself implement interfaces,
