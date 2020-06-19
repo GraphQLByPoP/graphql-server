@@ -19,6 +19,6 @@ interface SchemaDefinitionReferenceRegistryInterface
     ): string;
     public function getSchemaDefinitionReference(
         string $referenceObjectID
-    ): AbstractSchemaDefinitionReferenceObject;
+    ): ?AbstractSchemaDefinitionReferenceObject;
     public function getDynamicTypes(bool $filterRepeated = true): array;
 }

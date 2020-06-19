@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace PoP\GraphQL\ObjectModels;
 
+use Exception;
 use PoP\API\Schema\SchemaDefinition;
 use PoP\GraphQL\ObjectModels\InterfaceType;
 use PoP\GraphQL\Schema\SchemaDefinitionHelpers;
+use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\GraphQL\Facades\Registries\SchemaDefinitionReferenceRegistryFacade;
 
 trait HasInterfacesTypeTrait
@@ -29,14 +31,24 @@ trait HasInterfacesTypeTrait
         $schemaDefinitionReferenceRegistry = SchemaDefinitionReferenceRegistryFacade::getInstance();
         $interfaceSchemaDefinitionPointer = SchemaDefinitionHelpers::advancePointerToPath($fullSchemaDefinition, $interfaceSchemaDefinitionPath);
         foreach ($interfaceSchemaDefinitionPointer as $interfaceName) {
-            // The InterfaceType has already been registered on the root, under "interfaces"
+            // The InterfaceType must have already been registered on the root, under "interfaces"
             $schemaDefinitionID = SchemaDefinitionHelpers::getID(
                 [
                     SchemaDefinition::ARGNAME_INTERFACES,
                     $interfaceName
                 ]
             );
-            $this->interfaces[] = $schemaDefinitionReferenceRegistry->getSchemaDefinitionReference($schemaDefinitionID);
+            // If the interface was not registered, that means that no FieldResolver implements it
+            $interface = $schemaDefinitionReferenceRegistry->getSchemaDefinitionReference($schemaDefinitionID);
+            if (is_null($interface)) {
+                $translationAPI = TranslationAPIFacade::getInstance();
+                throw new Exception(sprintf(
+                    $translationAPI->__('No FieldResolver resolves Interface \'%s\' for schema definition path \'%s\'', 'graphql'),
+                    $interfaceName,
+                    implode(' => ', $schemaDefinitionPath)
+                ));
+            }
+            $this->interfaces[] = $interface;
         }
     }
 

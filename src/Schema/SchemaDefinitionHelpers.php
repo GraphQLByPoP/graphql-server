@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace PoP\GraphQL\Schema;
 
+use Exception;
 use PoP\GraphQL\Environment;
 use PoP\GraphQL\ObjectModels\Field;
 use PoP\ComponentModel\Schema\SchemaDefinition;
+use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\GraphQL\Facades\Registries\SchemaDefinitionReferenceRegistryFacade;
 
 class SchemaDefinitionHelpers
@@ -45,8 +47,16 @@ class SchemaDefinitionHelpers
         $fieldInterfaces = [];
         if ($interfaceNames) {
             foreach ($interfaceNames as $interfaceName) {
-                // var_dump($interfaceName, $interfaceSchemaDefinition);
                 $interfaceSchemaDefinition = $fullSchemaDefinition[SchemaDefinition::ARGNAME_INTERFACES][$interfaceName];
+                // If there is no definition for the interface, that means that it is not resolved by any FieldResolver
+                // That's an error, so throw a helpful exception
+                if (is_null($interfaceSchemaDefinition)) {
+                    $translationAPI = TranslationAPIFacade::getInstance();
+                    throw new Exception(sprintf(
+                        $translationAPI->__('Interface \'%s\' is not resolved by any FieldResolver', 'graphql'),
+                        $interfaceName
+                    ));
+                }
                 $interfaceFields = array_keys($interfaceSchemaDefinition[SchemaDefinition::ARGNAME_FIELDS]);
                 // Watch out (again)! An interface can itself implement interfaces,
                 // and a field can be shared across them

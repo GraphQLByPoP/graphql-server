@@ -377,7 +377,7 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
     }
     public function getSchemaDefinitionReference(
         string $referenceObjectID
-    ): AbstractSchemaDefinitionReferenceObject {
+    ): ?AbstractSchemaDefinitionReferenceObject {
         return $this->fullSchemaDefinitionReferenceDictionary[$referenceObjectID];
     }
 
