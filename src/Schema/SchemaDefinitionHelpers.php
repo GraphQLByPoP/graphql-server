@@ -38,6 +38,9 @@ class SchemaDefinitionHelpers
      * "Error: ContentEntry.status expects type "Interfaces_ContentEntry_Fields_Status"
      * but Post.status provides type "Types_Post_Fields_Status"."
      *
+     * @deprecated 0.1.0 The error above must be fixed for the Enum, by unifying its name wherever it is referenced
+     * This solution with the interfaces creates other issue: The type cannot customize its field schema definition
+     *
      * @param array $fullSchemaDefinition
      * @param array $interfaceNames
      * @return array
@@ -87,23 +90,38 @@ class SchemaDefinitionHelpers
     public static function initFieldsFromPath(array &$fullSchemaDefinition, array $fieldSchemaDefinitionPath, array $interfaceNames = []): array
     {
         $addVersionToSchemaFieldDescription = Environment::addVersionToSchemaFieldDescription();
-        $fieldInterfaces = self::getFieldInterfaces($fullSchemaDefinition, $interfaceNames);
+        // $fieldInterfaces = self::getFieldInterfaces($fullSchemaDefinition, $interfaceNames);
         $fieldSchemaDefinitionPointer = self::advancePointerToPath($fullSchemaDefinition, $fieldSchemaDefinitionPath);
         $fields = [];
         foreach (array_keys($fieldSchemaDefinitionPointer) as $fieldName) {
-            // If an ObjectType implements an interface, and the interface implements the same field, then we must return the field definition as from the perspective of the interface!
-            if ($interfaceName = $fieldInterfaces[$fieldName]) {
-                $targetFieldSchemaDefinitionPath = [
-                    SchemaDefinition::ARGNAME_INTERFACES,
-                    $interfaceName,
-                    SchemaDefinition::ARGNAME_FIELDS,
-                ];
-            } else {
-                $targetFieldSchemaDefinitionPath = $fieldSchemaDefinitionPath;
-            }
+            /**
+             * If an ObjectType implements an interface, and the interface
+             * implements the same field, then we must return the field definition as
+             * from the perspective of the interface!
+             *
+             * @deprecated 0.1.0 Actually, this creates another issue:
+             * the type is unable to override the schema definition for a field
+             * taken from an implemented interface.
+             * All properties (description, isDeprecated, etc) are initially retrieved from
+             * the interface, but then the type must be able to override/customize them.
+             * For instance, the description can be customized to the field,
+             * and the field can be deprecated just for that type (eg: Page.excerpt) and
+             * not everywhere (eg: IsCustomPost.excerpt)
+             */
+            // if ($interfaceName = $fieldInterfaces[$fieldName]) {
+            //     $targetFieldSchemaDefinitionPath = [
+            //         SchemaDefinition::ARGNAME_INTERFACES,
+            //         $interfaceName,
+            //         SchemaDefinition::ARGNAME_FIELDS,
+            //     ];
+            // } else {
+            $targetFieldSchemaDefinitionPath = $fieldSchemaDefinitionPath;
+            // }
+
             /**
              * Watch out! The version comes from the field, not from the interface, so if it is defined, do not override
-             * Same with the field, because in function `addVersionToSchemaFieldDescription` it may've added the version at the end of the description
+             * Same with the field, because in function `addVersionToSchemaFieldDescription` it may've added
+             * the version at the end of the description
              */
             $customDefinition = [];
             if ($addVersionToSchemaFieldDescription) {
