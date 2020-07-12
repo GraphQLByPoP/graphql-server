@@ -18,6 +18,8 @@ class DirectiveFieldResolver extends AbstractDBDataFieldResolver
 {
     use EnumTypeSchemaDefinitionResolverTrait;
 
+    public const ENUM_DIRECTIVE_LOCATION = 'DirectiveLocation';
+
     public static function getClassesToAttachTo(): array
     {
         return array(DirectiveTypeResolver::class);
@@ -55,6 +57,15 @@ class DirectiveFieldResolver extends AbstractDBDataFieldResolver
             return true;
         }
         return parent::isSchemaFieldResponseNonNullable($typeResolver, $fieldName);
+    }
+
+    protected function getSchemaDefinitionEnumName(TypeResolverInterface $typeResolver, string $fieldName): ?string
+    {
+        switch ($fieldName) {
+            case 'locations':
+                return self::ENUM_DIRECTIVE_LOCATION;
+        }
+        return null;
     }
 
     protected function getSchemaDefinitionEnumValues(TypeResolverInterface $typeResolver, string $fieldName): ?array

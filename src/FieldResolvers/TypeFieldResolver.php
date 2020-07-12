@@ -26,6 +26,8 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
 {
     use EnumTypeSchemaDefinitionResolverTrait;
 
+    public const ENUM_TYPE_KIND = 'TypeKind';
+
     public static function getClassesToAttachTo(): array
     {
         return array(TypeTypeResolver::class);
@@ -73,6 +75,15 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
             return true;
         }
         return parent::isSchemaFieldResponseNonNullable($typeResolver, $fieldName);
+    }
+
+    protected function getSchemaDefinitionEnumName(TypeResolverInterface $typeResolver, string $fieldName): ?string
+    {
+        switch ($fieldName) {
+            case 'kind':
+                return self::ENUM_TYPE_KIND;
+        }
+        return null;
     }
 
     protected function getSchemaDefinitionEnumValues(TypeResolverInterface $typeResolver, string $fieldName): ?array

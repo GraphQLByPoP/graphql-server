@@ -18,6 +18,8 @@ use PoP\ComponentModel\Facades\Registries\DirectiveRegistryFacade;
 
 class FilterSystemDirectiveSchemaFieldResolver extends SchemaFieldResolver
 {
+    public const ENUM_DIRECTIVE_TYPES = 'DirectiveTypes';
+
     public static function getClassesToAttachTo(): array
     {
         return array(SchemaTypeResolver::class);
@@ -70,6 +72,7 @@ class FilterSystemDirectiveSchemaFieldResolver extends SchemaFieldResolver
                             // SchemaDefinition::ARGNAME_DEFAULT_VALUE => [
                             //     DirectiveTypes::QUERY,
                             // ],
+                            SchemaDefinition::ARGNAME_ENUMNAME => self::ENUM_DIRECTIVE_TYPES,
                             SchemaDefinition::ARGNAME_ENUMVALUES => SchemaHelpers::convertToSchemaFieldArgEnumValueDefinitions(
                                 [
                                     DirectiveTypes::QUERY,
