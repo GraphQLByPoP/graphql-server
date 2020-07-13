@@ -72,8 +72,8 @@ class FilterSystemDirectiveSchemaFieldResolver extends SchemaFieldResolver
                             // SchemaDefinition::ARGNAME_DEFAULT_VALUE => [
                             //     DirectiveTypes::QUERY,
                             // ],
-                            SchemaDefinition::ARGNAME_ENUMNAME => $directiveTypeEnum->getName(),
-                            SchemaDefinition::ARGNAME_ENUMVALUES => SchemaHelpers::convertToSchemaFieldArgEnumValueDefinitions(
+                            SchemaDefinition::ARGNAME_ENUM_NAME => $directiveTypeEnum->getName(),
+                            SchemaDefinition::ARGNAME_ENUM_VALUES => SchemaHelpers::convertToSchemaFieldArgEnumValueDefinitions(
                                 $directiveTypeEnum->getValues()
                             ),
                         ],

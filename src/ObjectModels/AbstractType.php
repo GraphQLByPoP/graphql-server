@@ -43,7 +43,7 @@ abstract class AbstractType extends AbstractSchemaDefinitionReferenceObject
         // Otherwise, field of type "enum" with name "status" but under types "User" and "Post" would have the same name and collide
         if ($this->isDynamicType()) {
             // If they have provided a name, use it
-            if ($dynamicName = $this->schemaDefinition[SchemaDefinition::ARGNAME_ENUMNAME]) {
+            if ($dynamicName = $this->schemaDefinition[SchemaDefinition::ARGNAME_ENUM_NAME]) {
                 return $dynamicName;
             }
             // Otherwise, generate a unique name

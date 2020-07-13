@@ -24,12 +24,12 @@ class EnumType extends AbstractType
     protected function initEnumValues(array &$fullSchemaDefinition, array $schemaDefinitionPath): void
     {
         $this->enumValues = [];
-        if ($enumValues = $this->schemaDefinition[SchemaDefinition::ARGNAME_ENUMVALUES]) {
+        if ($enumValues = $this->schemaDefinition[SchemaDefinition::ARGNAME_ENUM_VALUES]) {
             foreach (array_keys($enumValues) as $enumValueName) {
                 $enumValueSchemaDefinitionPath = array_merge(
                     $schemaDefinitionPath,
                     [
-                        SchemaDefinition::ARGNAME_ENUMVALUES,
+                        SchemaDefinition::ARGNAME_ENUM_VALUES,
                         $enumValueName,
                     ]
                 );
