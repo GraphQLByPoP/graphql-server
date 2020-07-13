@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace PoP\GraphQL\FieldResolvers\Extensions;
 
 use PoP\API\Schema\SchemaDefinition;
+use PoP\GraphQL\Enums\DirectiveTypeEnum;
 use PoP\ComponentModel\Schema\SchemaHelpers;
 use PoP\GraphQL\Schema\SchemaDefinitionHelpers;
-use PoP\ComponentModel\Directives\DirectiveTypes;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\GraphQL\TypeResolvers\SchemaTypeResolver;
 use PoP\Translation\Facades\TranslationAPIFacade;
@@ -18,8 +18,6 @@ use PoP\ComponentModel\Facades\Registries\DirectiveRegistryFacade;
 
 class FilterSystemDirectiveSchemaFieldResolver extends SchemaFieldResolver
 {
-    public const ENUM_DIRECTIVE_TYPES = 'DirectiveTypes';
-
     public static function getClassesToAttachTo(): array
     {
         return array(SchemaTypeResolver::class);
@@ -59,8 +57,10 @@ class FilterSystemDirectiveSchemaFieldResolver extends SchemaFieldResolver
     {
         $schemaFieldArgs = parent::getSchemaFieldArgs($typeResolver, $fieldName);
         $translationAPI = TranslationAPIFacade::getInstance();
+        $instanceManager = InstanceManagerFacade::getInstance();
         switch ($fieldName) {
             case 'directives':
+                $directiveTypeEnum = $instanceManager->getInstance(DirectiveTypeEnum::class);
                 return array_merge(
                     $schemaFieldArgs,
                     [
@@ -72,12 +72,9 @@ class FilterSystemDirectiveSchemaFieldResolver extends SchemaFieldResolver
                             // SchemaDefinition::ARGNAME_DEFAULT_VALUE => [
                             //     DirectiveTypes::QUERY,
                             // ],
-                            SchemaDefinition::ARGNAME_ENUMNAME => self::ENUM_DIRECTIVE_TYPES,
+                            SchemaDefinition::ARGNAME_ENUMNAME => $directiveTypeEnum->getName(),
                             SchemaDefinition::ARGNAME_ENUMVALUES => SchemaHelpers::convertToSchemaFieldArgEnumValueDefinitions(
-                                [
-                                    DirectiveTypes::QUERY,
-                                    DirectiveTypes::SCHEMA,
-                                ]
+                                $directiveTypeEnum->getValues()
                             ),
                         ],
                     ]

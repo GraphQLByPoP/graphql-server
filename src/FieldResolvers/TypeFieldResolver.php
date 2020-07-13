@@ -4,29 +4,28 @@ declare(strict_types=1);
 
 namespace PoP\GraphQL\FieldResolvers;
 
+use PoP\GraphQL\Enums\TypeKindEnum;
 use PoP\GraphQL\ObjectModels\EnumType;
-use PoP\GraphQL\ObjectModels\TypeKinds;
 use PoP\GraphQL\ObjectModels\InputObjectType;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\GraphQL\TypeResolvers\TypeTypeResolver;
 use PoP\GraphQL\TypeResolvers\FieldTypeResolver;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
+use PoP\GraphQL\ObjectModels\AbstractNestableType;
 use PoP\GraphQL\ObjectModels\HasFieldsTypeInterface;
 use PoP\GraphQL\TypeResolvers\EnumValueTypeResolver;
 use PoP\GraphQL\TypeResolvers\InputValueTypeResolver;
-use PoP\GraphQL\ObjectModels\AbstractNestableType;
 use PoP\GraphQL\ObjectModels\HasInterfacesTypeInterface;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\GraphQL\ObjectModels\HasPossibleTypesTypeInterface;
+use PoP\ComponentModel\Facades\Instances\InstanceManagerFacade;
 use PoP\ComponentModel\FieldResolvers\AbstractDBDataFieldResolver;
 use PoP\ComponentModel\FieldResolvers\EnumTypeSchemaDefinitionResolverTrait;
 
 class TypeFieldResolver extends AbstractDBDataFieldResolver
 {
     use EnumTypeSchemaDefinitionResolverTrait;
-
-    public const ENUM_TYPE_KIND = 'TypeKind';
 
     public static function getClassesToAttachTo(): array
     {
@@ -79,27 +78,22 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
 
     protected function getSchemaDefinitionEnumName(TypeResolverInterface $typeResolver, string $fieldName): ?string
     {
+        $instanceManager = InstanceManagerFacade::getInstance();
         switch ($fieldName) {
             case 'kind':
-                return self::ENUM_TYPE_KIND;
+                $typeKindEnum = $instanceManager->getInstance(TypeKindEnum::class);
+                return $typeKindEnum->getName();
         }
         return null;
     }
 
     protected function getSchemaDefinitionEnumValues(TypeResolverInterface $typeResolver, string $fieldName): ?array
     {
+        $instanceManager = InstanceManagerFacade::getInstance();
         switch ($fieldName) {
             case 'kind':
-                return [
-                    TypeKinds::SCALAR,
-                    TypeKinds::OBJECT,
-                    TypeKinds::INTERFACE,
-                    TypeKinds::UNION,
-                    TypeKinds::ENUM,
-                    TypeKinds::INPUT_OBJECT,
-                    TypeKinds::LIST,
-                    TypeKinds::NON_NULL,
-                ];
+                $typeKindEnum = $instanceManager->getInstance(TypeKindEnum::class);
+                return $typeKindEnum->getValues();
         }
         return null;
     }

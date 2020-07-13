@@ -4,21 +4,20 @@ declare(strict_types=1);
 
 namespace PoP\GraphQL\FieldResolvers;
 
+use PoP\GraphQL\Enums\DirectiveLocationEnum;
 use PoP\ComponentModel\Schema\SchemaDefinition;
-use PoP\GraphQL\ObjectModels\DirectiveLocations;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\GraphQL\TypeResolvers\DirectiveTypeResolver;
 use PoP\GraphQL\TypeResolvers\InputValueTypeResolver;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
+use PoP\ComponentModel\Facades\Instances\InstanceManagerFacade;
 use PoP\ComponentModel\FieldResolvers\AbstractDBDataFieldResolver;
 use PoP\ComponentModel\FieldResolvers\EnumTypeSchemaDefinitionResolverTrait;
 
 class DirectiveFieldResolver extends AbstractDBDataFieldResolver
 {
     use EnumTypeSchemaDefinitionResolverTrait;
-
-    public const ENUM_DIRECTIVE_LOCATION = 'DirectiveLocation';
 
     public static function getClassesToAttachTo(): array
     {
@@ -61,37 +60,22 @@ class DirectiveFieldResolver extends AbstractDBDataFieldResolver
 
     protected function getSchemaDefinitionEnumName(TypeResolverInterface $typeResolver, string $fieldName): ?string
     {
+        $instanceManager = InstanceManagerFacade::getInstance();
         switch ($fieldName) {
             case 'locations':
-                return self::ENUM_DIRECTIVE_LOCATION;
+                $directiveLocationEnum = $instanceManager->getInstance(DirectiveLocationEnum::class);
+                return $directiveLocationEnum->getName();
         }
         return null;
     }
 
     protected function getSchemaDefinitionEnumValues(TypeResolverInterface $typeResolver, string $fieldName): ?array
     {
+        $instanceManager = InstanceManagerFacade::getInstance();
         switch ($fieldName) {
             case 'locations':
-                return [
-                    DirectiveLocations::QUERY,
-                    DirectiveLocations::MUTATION,
-                    DirectiveLocations::SUBSCRIPTION,
-                    DirectiveLocations::FIELD,
-                    DirectiveLocations::FRAGMENT_DEFINITION,
-                    DirectiveLocations::FRAGMENT_SPREAD,
-                    DirectiveLocations::INLINE_FRAGMENT,
-                    DirectiveLocations::SCHEMA,
-                    DirectiveLocations::SCALAR,
-                    DirectiveLocations::OBJECT,
-                    DirectiveLocations::FIELD_DEFINITION,
-                    DirectiveLocations::ARGUMENT_DEFINITION,
-                    DirectiveLocations::INTERFACE,
-                    DirectiveLocations::UNION,
-                    DirectiveLocations::ENUM,
-                    DirectiveLocations::ENUM_VALUE,
-                    DirectiveLocations::INPUT_OBJECT,
-                    DirectiveLocations::INPUT_FIELD_DEFINITION,
-                ];
+                $directiveLocationEnum = $instanceManager->getInstance(DirectiveLocationEnum::class);
+                return $directiveLocationEnum->getValues();
         }
         return null;
     }
