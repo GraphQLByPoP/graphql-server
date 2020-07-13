@@ -7,6 +7,16 @@ namespace PoP\GraphQL\DataStructureFormatters;
 use PoP\ComponentModel\State\ApplicationState;
 use PoP\ComponentModel\Feedback\Tokens;
 
+/**
+ * Change the properties printed for the standard GraphQL response:
+ *
+ * - extension "entityDBKey" is renamed as "type"
+ * - extension "fields" (or "field" if there's one item) instead of "path",
+ *   because there are no composable fields
+ * - move "location" up from under "extensions"
+ *
+ * @author Leonardo Losoviz <leo@getpop.org>
+ */
 class GraphQLDataStructureFormatter extends \PoP\GraphQLAPI\DataStructureFormatters\GraphQLDataStructureFormatter
 {
     /**
@@ -21,10 +31,11 @@ class GraphQLDataStructureFormatter extends \PoP\GraphQLAPI\DataStructureFormatt
     {
         $vars = ApplicationState::getVars();
         if ($vars['standard-graphql']) {
+            $isSinglePath = count($item[Tokens::PATH]) == 1;
             return [
                 'type' => $dbKey,
                 'id' => $id,
-                'path' => $item[Tokens::PATH],
+                $isSinglePath ? 'field' : 'fields' => $isSinglePath ? $item[Tokens::PATH][0] : $item[Tokens::PATH],
             ];
         }
         return parent::getDBEntryExtensions($dbKey, $id, $item);
@@ -41,9 +52,10 @@ class GraphQLDataStructureFormatter extends \PoP\GraphQLAPI\DataStructureFormatt
     {
         $vars = ApplicationState::getVars();
         if ($vars['standard-graphql']) {
+            $isSinglePath = count($item[Tokens::PATH]) == 1;
             return [
                 'type' => $dbKey,
-                'path' => $item[Tokens::PATH],
+                $isSinglePath ? 'field' : 'fields' => $isSinglePath ? $item[Tokens::PATH][0] : $item[Tokens::PATH],
             ];
         }
         return parent::getSchemaEntryExtensions($dbKey, $item);
