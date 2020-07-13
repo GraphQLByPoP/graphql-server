@@ -40,6 +40,11 @@ abstract class AbstractSchemaDefinitionReferenceObject
         $this->id = $schemaDefinitionReferenceRegistry->registerSchemaDefinitionReference($this);
     }
 
+    /**
+     * By default, types are static
+     *
+     * @return boolean
+     */
     public function isDynamicType(): bool
     {
         return false;

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace PoP\GraphQL\ObjectModels;
 
 use PoP\GraphQL\ObjectModels\InputValue;
-use PoP\GraphQL\ObjectModels\AbstractType;
+use PoP\GraphQL\ObjectModels\AbstractDynamicType;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 
-class InputObjectType extends AbstractType
+class InputObjectType extends AbstractDynamicType
 {
     protected $inputValues;
 
@@ -41,9 +41,9 @@ class InputObjectType extends AbstractType
         }
     }
 
-    public function isDynamicType(): bool
+    protected function getDynamicTypeNamePropertyInSchema(): string
     {
-        return true;
+        return SchemaDefinition::ARGNAME_INPUT_OBJECT_NAME;
     }
     public function getKind(): string
     {

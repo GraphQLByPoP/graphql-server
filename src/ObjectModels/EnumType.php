@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace PoP\GraphQL\ObjectModels;
 
 use PoP\GraphQL\ObjectModels\EnumValue;
-use PoP\GraphQL\ObjectModels\AbstractType;
+use PoP\GraphQL\ObjectModels\AbstractDynamicType;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\GraphQL\ObjectModels\NonDocumentableTypeTrait;
 
-class EnumType extends AbstractType
+class EnumType extends AbstractDynamicType
 {
     use NonDocumentableTypeTrait;
 
@@ -41,9 +41,9 @@ class EnumType extends AbstractType
         }
     }
 
-    public function isDynamicType(): bool
+    protected function getDynamicTypeNamePropertyInSchema(): string
     {
-        return true;
+        return SchemaDefinition::ARGNAME_ENUM_NAME;
     }
     public function getKind(): string
     {
