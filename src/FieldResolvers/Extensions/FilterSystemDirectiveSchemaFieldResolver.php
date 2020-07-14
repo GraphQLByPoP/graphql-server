@@ -92,6 +92,12 @@ class FilterSystemDirectiveSchemaFieldResolver extends SchemaFieldResolver
                 $directiveIDs = $schema->getDirectiveIDs();
                 if ($ofTypes = $fieldArgs['ofTypes']) {
                     $instanceManager = InstanceManagerFacade::getInstance();
+                    $directiveTypeEnum = $instanceManager->getInstance(DirectiveTypeEnum::class);
+                    // Convert the enum from uppercase (as exposed in the API) to lowercase (as is its real value)
+                    $ofTypes = array_map(
+                        [$directiveTypeEnum, 'getCoreValue'],
+                        $ofTypes
+                    );
                     $directiveRegistry = DirectiveRegistryFacade::getInstance();
                     $ofTypeDirectiveResolverClasses = array_filter(
                         $directiveRegistry->getDirectiveResolverClasses(),
