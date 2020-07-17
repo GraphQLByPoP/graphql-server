@@ -9,11 +9,11 @@ use PoP\GraphQL\TypeResolvers\TypeTypeResolver;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\FieldResolvers\AbstractDBDataFieldResolver;
-use PoP\ComponentModel\FieldResolvers\EnumTypeSchemaDefinitionResolverTrait;
+use PoP\ComponentModel\FieldResolvers\EnumTypeFieldSchemaDefinitionResolverTrait;
 
 class NamespacedTypeFieldResolver extends AbstractDBDataFieldResolver
 {
-    use EnumTypeSchemaDefinitionResolverTrait;
+    use EnumTypeFieldSchemaDefinitionResolverTrait;
 
     public static function getClassesToAttachTo(): array
     {
