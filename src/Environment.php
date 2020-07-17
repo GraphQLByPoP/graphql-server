@@ -7,6 +7,7 @@ namespace PoP\GraphQL;
 class Environment
 {
     public const ADD_SELF_FIELD_FOR_ROOT_TYPE_TO_SCHEMA = 'ADD_SELF_FIELD_FOR_ROOT_TYPE_TO_SCHEMA';
+    public const SORT_SCHEMA_ALPHABETICALLY = 'SORT_SCHEMA_ALPHABETICALLY';
 
     public static function addGlobalFieldsToSchema(): bool
     {

@@ -241,6 +241,33 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
             }
         }
 
+        // Sort the elements in the schema alphabetically
+        if (ComponentConfiguration::sortSchemaAlphabetically()) {
+            // Sort types
+            ksort($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES]);
+
+            // Sort fields, connections and interfaces for each type
+            foreach ($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES] as $typeSchemaKey => $typeSchemaDefinition) {
+                if (!is_null($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$typeSchemaKey][SchemaDefinition::ARGNAME_FIELDS])) {
+                    ksort($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$typeSchemaKey][SchemaDefinition::ARGNAME_FIELDS]);
+                }
+                if (!is_null($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$typeSchemaKey][SchemaDefinition::ARGNAME_CONNECTIONS])) {
+                    ksort($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$typeSchemaKey][SchemaDefinition::ARGNAME_CONNECTIONS]);
+                }
+                if (!is_null($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$typeSchemaKey][SchemaDefinition::ARGNAME_INTERFACES])) {
+                    sort($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$typeSchemaKey][SchemaDefinition::ARGNAME_INTERFACES]);
+                }
+            }
+
+            // Sort interface and directives
+            if (!is_null($this->fullschemaDefinition[SchemaDefinition::ARGNAME_INTERFACES])) {
+                ksort($this->fullschemaDefinition[SchemaDefinition::ARGNAME_INTERFACES]);
+            }
+            if (!is_null($this->fullschemaDefinition[SchemaDefinition::ARGNAME_GLOBAL_DIRECTIVES])) {
+                ksort($this->fullschemaDefinition[SchemaDefinition::ARGNAME_GLOBAL_DIRECTIVES]);
+            }
+        }
+
         // Expand the full schema with more data that is needed for GraphQL
         // Add the scalar types
         $scalarTypeNames = [
