@@ -18,18 +18,8 @@ trait HasFieldsTypeTrait
         $interfaceNames = $this->getInterfaceNames();
 
         // Iterate to the definition of the fields in the schema, and create an object for each of them
-        // 1. Fields under this type
-        $this->initFieldsFromPath(
-            $fullSchemaDefinition,
-            array_merge(
-                $schemaDefinitionPath,
-                [
-                    SchemaDefinition::ARGNAME_FIELDS,
-                ]
-            ),
-            $interfaceNames
-        );
-        // 2. Connections under this type
+        // Print connections and then fields, it looks better in the Interactive Schema
+        // 1. Connections under this type
         if ($includeConnections) {
             $this->initFieldsFromPath(
                 $fullSchemaDefinition,
@@ -42,6 +32,17 @@ trait HasFieldsTypeTrait
                 $interfaceNames
             );
         }
+        // 2. Fields under this type
+        $this->initFieldsFromPath(
+            $fullSchemaDefinition,
+            array_merge(
+                $schemaDefinitionPath,
+                [
+                    SchemaDefinition::ARGNAME_FIELDS,
+                ]
+            ),
+            $interfaceNames
+        );
         if (Environment::addGlobalFieldsToSchema()) {
             // Global fields and connections have already been initialized, simply get the reference to the existing objects from the registryMap
             // 1. Global fields
