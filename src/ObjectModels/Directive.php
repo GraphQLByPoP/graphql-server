@@ -60,4 +60,8 @@ class Directive extends AbstractSchemaDefinitionReferenceObject
         }
         return $directives;
     }
+    public function isRepeatable(): bool
+    {
+        return $this->schemaDefinition[SchemaDefinition::ARGNAME_DIRECTIVE_IS_REPEATABLE];
+    }
 }

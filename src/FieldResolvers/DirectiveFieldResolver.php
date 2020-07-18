@@ -31,6 +31,7 @@ class DirectiveFieldResolver extends AbstractDBDataFieldResolver
             'description',
             'args',
             'locations',
+            'isRepeatable',
         ];
     }
 
@@ -41,6 +42,7 @@ class DirectiveFieldResolver extends AbstractDBDataFieldResolver
             'description' => SchemaDefinition::TYPE_STRING,
             'args' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_ID),
             'locations' => SchemaDefinition::TYPE_ENUM,
+            'locations' => SchemaDefinition::TYPE_BOOL,
         ];
         return $types[$fieldName] ?? parent::getSchemaFieldType($typeResolver, $fieldName);
     }
@@ -51,6 +53,7 @@ class DirectiveFieldResolver extends AbstractDBDataFieldResolver
             'name',
             'args',
             'locations',
+            'isRepeatable',
         ];
         if (in_array($fieldName, $nonNullableFieldNames)) {
             return true;
@@ -88,6 +91,7 @@ class DirectiveFieldResolver extends AbstractDBDataFieldResolver
             'description' => $translationAPI->__('Directive\'s description', 'graphql'),
             'args' => $translationAPI->__('Directive\'s arguments', 'graphql'),
             'locations' => $translationAPI->__('The locations where the directive may be placed', 'graphql'),
+            'isRepeatable' => $translationAPI->__('Can the directive be executed more than once in the same field?', 'graphql'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($typeResolver, $fieldName);
     }
@@ -104,6 +108,8 @@ class DirectiveFieldResolver extends AbstractDBDataFieldResolver
                 return $directive->getArgIDs();
             case 'locations':
                 return $directive->getLocations();
+            case 'isRepeatable':
+                return $directive->isRepeatable();
         }
 
         return parent::resolveValue($typeResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
