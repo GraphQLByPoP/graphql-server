@@ -6,6 +6,7 @@ namespace PoP\GraphQL\ObjectModels;
 
 use PoP\GraphQL\Environment;
 use PoP\API\Schema\SchemaDefinition;
+use PoP\GraphQL\ComponentConfiguration;
 use PoP\GraphQL\ObjectModels\Directive;
 use PoP\GraphQL\ObjectModels\ScalarType;
 use PoP\GraphQL\ObjectModels\AbstractType;
@@ -149,7 +150,14 @@ class Schema
             ];
             $resolvableTypes[] = $this->getTypeInstance($fullSchemaDefinition, $typeSchemaDefinitionPath);
         }
-        foreach (array_keys($fullSchemaDefinition[SchemaDefinition::ARGNAME_INTERFACES]) as $interfaceName) {
+        $interfaceNames = array_keys($fullSchemaDefinition[SchemaDefinition::ARGNAME_INTERFACES]);
+        // Now we can sort the interfaces, after creating new `InterfaceType`
+        // Everything else was already sorted in `SchemaDefinitionReferenceRegistry`
+        // Sort the elements in the schema alphabetically
+        if (ComponentConfiguration::sortSchemaAlphabetically()) {
+            sort($interfaceNames);
+        }
+        foreach ($interfaceNames as $interfaceName) {
             $interfaceSchemaDefinitionPath = [
                 SchemaDefinition::ARGNAME_INTERFACES,
                 $interfaceName,

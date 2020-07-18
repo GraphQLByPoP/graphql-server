@@ -259,13 +259,18 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                 }
             }
 
-            // Sort interface and directives
-            if (!is_null($this->fullschemaDefinition[SchemaDefinition::ARGNAME_INTERFACES])) {
-                ksort($this->fullschemaDefinition[SchemaDefinition::ARGNAME_INTERFACES]);
+            // Sort directives
+            if (!is_null($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_GLOBAL_DIRECTIVES])) {
+                ksort($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_GLOBAL_DIRECTIVES]);
             }
-            if (!is_null($this->fullschemaDefinition[SchemaDefinition::ARGNAME_GLOBAL_DIRECTIVES])) {
-                ksort($this->fullschemaDefinition[SchemaDefinition::ARGNAME_GLOBAL_DIRECTIVES]);
-            }
+            /**
+             * Can NOT sort interfaces yet! Because interfaces may depend on other interfaces,
+             * they must follow their current order to be initialized,
+             * which happens when creating instances of `InterfaceType` in type `Schema`
+             */
+            // if (!is_null($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_INTERFACES])) {
+            //     ksort($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_INTERFACES]);
+            // }
         }
 
         // Expand the full schema with more data that is needed for GraphQL
