@@ -262,9 +262,15 @@ class Schema
     }
     public function getType(string $typeName): ?AbstractType
     {
+        // If the provided typeName contains the namespace separator, then compare by qualifiedType
+        $useQualifiedName = strpos($typeName, SchemaDefinition::TOKEN_NAMESPACE_SEPARATOR) !== false;
         // From all the types, get the one that has this name
         foreach ($this->types as $type) {
-            if ($type->getName() == $typeName) {
+            // The provided `$typeName` can include namespaces or not
+            $nameMatches = $useQualifiedName ?
+                $typeName == $type->getNamespacedName() :
+                $typeName == $type->getElementName();
+            if ($nameMatches) {
                 return $type;
             }
         }
