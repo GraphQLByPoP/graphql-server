@@ -6,6 +6,7 @@ namespace PoP\GraphQL\DataStructureFormatters;
 
 use PoP\ComponentModel\State\ApplicationState;
 use PoP\ComponentModel\Feedback\Tokens;
+use PoP\ComponentModel\TypeResolvers\UnionTypeHelpers;
 
 /**
  * Change the properties printed for the standard GraphQL response:
@@ -20,6 +21,21 @@ use PoP\ComponentModel\Feedback\Tokens;
 class GraphQLDataStructureFormatter extends \PoP\GraphQLAPI\DataStructureFormatters\GraphQLDataStructureFormatter
 {
     /**
+     * If it is a Union Type, we must remove the "*" from the name
+     *
+     * @param string $dbKey
+     * @return string
+     */
+    protected function getTypeName(string $dbKey): string
+    {
+        // The type name is the same as the $dbKey
+        $typeName = $dbKey;
+        if (UnionTypeHelpers::isUnionType($typeName)) {
+            return UnionTypeHelpers::removePrefixFromUnionTypeName($typeName);
+        }
+        return $typeName;
+    }
+    /**
      * Change properties for GraphQL
      *
      * @param string $dbKey
@@ -33,7 +49,7 @@ class GraphQLDataStructureFormatter extends \PoP\GraphQLAPI\DataStructureFormatt
         if ($vars['standard-graphql']) {
             $isSinglePath = count($item[Tokens::PATH]) == 1;
             return [
-                'type' => $dbKey,
+                'type' => $this->getTypeName($dbKey),
                 'id' => $id,
                 $isSinglePath ? 'field' : 'fields' => $isSinglePath ? $item[Tokens::PATH][0] : $item[Tokens::PATH],
             ];
@@ -54,7 +70,7 @@ class GraphQLDataStructureFormatter extends \PoP\GraphQLAPI\DataStructureFormatt
         if ($vars['standard-graphql']) {
             $isSinglePath = count($item[Tokens::PATH]) == 1;
             return [
-                'type' => $dbKey,
+                'type' => $this->getTypeName($dbKey),
                 $isSinglePath ? 'field' : 'fields' => $isSinglePath ? $item[Tokens::PATH][0] : $item[Tokens::PATH],
             ];
         }
