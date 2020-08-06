@@ -26,5 +26,18 @@ class ComponentConfigurationHookSet extends AbstractHookSet
                 return true;
             }
         );
+        /**
+         * @export requires the queries to be executed in order
+         */
+        $hookName = ComponentConfigurationHelpers::getHookName(
+            ComponentConfiguration::class,
+            Environment::EXECUTE_QUERY_BATCH_IN_STRICT_ORDER
+        );
+        $this->hooksAPI->addFilter(
+            $hookName,
+            function () {
+                return true;
+            }
+        );
     }
 }
