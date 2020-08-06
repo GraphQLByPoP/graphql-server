@@ -19,7 +19,7 @@ class GraphQLPersistedQueryUtils
     {
         $queryCatalogueManager = PersistedQueryManagerFacade::getInstance();
         $graphQLQueryConvertor = GraphQLQueryConvertorFacade::getInstance();
-        $fieldQuery = $graphQLQueryConvertor->convertFromGraphQLToFieldQuery($graphQLQuery);
+        $fieldQuery = $graphQLQueryConvertor->convertFromGraphQLToRequestedFieldQuery($graphQLQuery);
         $queryCatalogueManager->add($queryName, $fieldQuery, $description);
     }
 
@@ -27,7 +27,7 @@ class GraphQLPersistedQueryUtils
     {
         $fragmentCatalogueManager = PersistedFragmentManagerFacade::getInstance();
         $graphQLQueryConvertor = GraphQLQueryConvertorFacade::getInstance();
-        $fieldQuery = $graphQLQueryConvertor->convertFromGraphQLToFieldQuery($graphQLFragment);
+        $fieldQuery = $graphQLQueryConvertor->convertFromGraphQLToRequestedFieldQuery($graphQLFragment);
         $fragmentCatalogueManager->add($fragmentName, $fieldQuery, $description);
     }
 }
