@@ -17,12 +17,6 @@ class ComponentConfiguration
 
     public static function addSelfFieldForRootTypeToSchema(): bool
     {
-        // By default, if enabling to pass variables as expressions for the @export directive,
-        // then must add the `self` field to Root
-        if (GraphQLAPIQueryComponentConfiguration::enableVariablesAsExpressions()) {
-            return true;
-        }
-
         // Define properties
         $envVariable = Environment::ADD_SELF_FIELD_FOR_ROOT_TYPE_TO_SCHEMA;
         $selfProperty = &self::$addSelfFieldForRootTypeToSchema;
