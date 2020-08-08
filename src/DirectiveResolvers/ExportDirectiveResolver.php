@@ -294,7 +294,7 @@ class ExportDirectiveResolver extends AbstractGlobalDirectiveResolver
     public function getSchemaDirectiveDescription(TypeResolverInterface $typeResolver): ?string
     {
         $translationAPI = TranslationAPIFacade::getInstance();
-        return $translationAPI->__('Exports a field value as a variable', 'graphql');
+        return $translationAPI->__('Exports a field value as a variable', 'graphql-server');
     }
     public function getSchemaDirectiveArgs(TypeResolverInterface $typeResolver): array
     {
@@ -304,7 +304,7 @@ class ExportDirectiveResolver extends AbstractGlobalDirectiveResolver
                 SchemaDefinition::ARGNAME_NAME => 'as',
                 SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
                 SchemaDefinition::ARGNAME_DESCRIPTION => sprintf(
-                    $translationAPI->__('Name of the variable. It must start with \'%s\', or the directive will not work', 'graphql'),
+                    $translationAPI->__('Name of the variable. It must start with \'%s\', or the directive will not work', 'graphql-server'),
                     QuerySymbols::VARIABLE_AS_EXPRESSION_NAME_PREFIX
                 ),
                 SchemaDefinition::ARGNAME_MANDATORY => true,

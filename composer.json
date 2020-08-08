@@ -1,12 +1,13 @@
 {
-    "name": "getpop/graphql",
+    "name": "getpop/graphql-server",
     "type": "library",
     "description": "GraphQL server in PHP, implemented through the PoP API",
     "keywords": [
         "PoP",
-        "graphql"
+        "graphql",
+        "server"
     ],
-    "homepage": "https://github.com/GraphQLByPoP/graphql",
+    "homepage": "https://github.com/GraphQLByPoP/graphql-server",
     "license": "MIT",
     "authors": [
         {

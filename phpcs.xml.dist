@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<ruleset name="graphql">
-    <description>The coding standard of graphql package</description>
+<ruleset name="graphql-server">
+    <description>The coding standard of graphql-server package</description>
     <arg value="p" />
 
     <config name="ignore_warnings_on_exit" value="1" />

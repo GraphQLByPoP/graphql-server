@@ -65,13 +65,13 @@ class FieldFieldResolver extends AbstractDBDataFieldResolver
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         $descriptions = [
-            'name' => $translationAPI->__('Field\'s name', 'graphql'),
-            'description' => $translationAPI->__('Field\'s description', 'graphql'),
-            'args' => $translationAPI->__('Field arguments', 'graphql'),
-            'type' => $translationAPI->__('Type to which the field belongs', 'graphql'),
-            'isDeprecated' => $translationAPI->__('Is the field deprecated?', 'graphql'),
-            'deprecationReason' => $translationAPI->__('Why was the field deprecated?', 'graphql'),
-            'extensions' => $translationAPI->__('Custom metadata added to the field (see: https://github.com/graphql/graphql-spec/issues/300#issuecomment-504734306 and below comments, and https://github.com/graphql/graphql-js/issues/1527)', 'graphql'),
+            'name' => $translationAPI->__('Field\'s name', 'graphql-server'),
+            'description' => $translationAPI->__('Field\'s description', 'graphql-server'),
+            'args' => $translationAPI->__('Field arguments', 'graphql-server'),
+            'type' => $translationAPI->__('Type to which the field belongs', 'graphql-server'),
+            'isDeprecated' => $translationAPI->__('Is the field deprecated?', 'graphql-server'),
+            'deprecationReason' => $translationAPI->__('Why was the field deprecated?', 'graphql-server'),
+            'extensions' => $translationAPI->__('Custom metadata added to the field (see: https://github.com/graphql/graphql-spec/issues/300#issuecomment-504734306 and below comments, and https://github.com/graphql/graphql-js/issues/1527)', 'graphql-server'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($typeResolver, $fieldName);
     }

@@ -56,7 +56,7 @@ class SchemaDefinitionHelpers
                 if (is_null($interfaceSchemaDefinition)) {
                     $translationAPI = TranslationAPIFacade::getInstance();
                     throw new Exception(sprintf(
-                        $translationAPI->__('Interface \'%s\' is not resolved by any FieldResolver', 'graphql'),
+                        $translationAPI->__('Interface \'%s\' is not resolved by any FieldResolver', 'graphql-server'),
                         $interfaceName
                     ));
                 }

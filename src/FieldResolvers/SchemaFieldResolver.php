@@ -62,12 +62,12 @@ class SchemaFieldResolver extends AbstractDBDataFieldResolver
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         $descriptions = [
-            'queryType' => $translationAPI->__('The type, accessible from the root, that resolves queries', 'graphql'),
-            'mutationType' => $translationAPI->__('The type, accessible from the root, that resolves mutations', 'graphql'),
-            'subscriptionType' => $translationAPI->__('The type, accessible from the root, that resolves subscriptions', 'graphql'),
-            'types' => $translationAPI->__('All types registered in the data graph', 'graphql'),
-            'directives' => $translationAPI->__('All directives registered in the data graph', 'graphql'),
-            'type' => $translationAPI->__('Obtain a specific type from the schema', 'graphql'),
+            'queryType' => $translationAPI->__('The type, accessible from the root, that resolves queries', 'graphql-server'),
+            'mutationType' => $translationAPI->__('The type, accessible from the root, that resolves mutations', 'graphql-server'),
+            'subscriptionType' => $translationAPI->__('The type, accessible from the root, that resolves subscriptions', 'graphql-server'),
+            'types' => $translationAPI->__('All types registered in the data graph', 'graphql-server'),
+            'directives' => $translationAPI->__('All directives registered in the data graph', 'graphql-server'),
+            'type' => $translationAPI->__('Obtain a specific type from the schema', 'graphql-server'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($typeResolver, $fieldName);
     }
@@ -84,7 +84,7 @@ class SchemaFieldResolver extends AbstractDBDataFieldResolver
                         [
                             SchemaDefinition::ARGNAME_NAME => 'name',
                             SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
-                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The name of the type', 'graphql'),
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The name of the type', 'graphql-server'),
                             SchemaDefinition::ARGNAME_MANDATORY => true,
                         ],
                     ]

@@ -20,7 +20,7 @@ class EnumValueTypeResolver extends AbstractIntrospectionTypeResolver
     public function getSchemaTypeDescription(): ?string
     {
         $translationAPI = TranslationAPIFacade::getInstance();
-        return $translationAPI->__('Representation of an Enum value in GraphQL', 'graphql');
+        return $translationAPI->__('Representation of an Enum value in GraphQL', 'graphql-server');
     }
 
     public function getID($resultItem)

@@ -20,7 +20,7 @@ class InputValueTypeResolver extends AbstractIntrospectionTypeResolver
     public function getSchemaTypeDescription(): ?string
     {
         $translationAPI = TranslationAPIFacade::getInstance();
-        return $translationAPI->__('Representation of an input object in GraphQL', 'graphql');
+        return $translationAPI->__('Representation of an input object in GraphQL', 'graphql-server');
     }
 
     public function getID($resultItem)

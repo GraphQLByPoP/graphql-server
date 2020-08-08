@@ -20,7 +20,7 @@ class TypeTypeResolver extends AbstractIntrospectionTypeResolver
     public function getSchemaTypeDescription(): ?string
     {
         $translationAPI = TranslationAPIFacade::getInstance();
-        return $translationAPI->__('Representation of each GraphQL type in the graph', 'graphql');
+        return $translationAPI->__('Representation of each GraphQL type in the graph', 'graphql-server');
     }
 
     public function getID($resultItem)

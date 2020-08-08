@@ -356,10 +356,10 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
             if ($directiveSchemaDefinition[SchemaDefinition::ARGNAME_DIRECTIVE_TYPE] == DirectiveTypes::SCHEMA) {
                 $translationAPI = TranslationAPIFacade::getInstance();
                 $directiveSchemaDefinition[SchemaDefinition::ARGNAME_DESCRIPTION] = sprintf(
-                    $translationAPI->__('%s %s', 'graphql'),
+                    $translationAPI->__('%s %s', 'graphql-server'),
                     sprintf(
                         '_%s_', // Make it italic using markdown
-                        $translationAPI->__('("Schema" type directive)', 'graphql')
+                        $translationAPI->__('("Schema" type directive)', 'graphql-server')
                     ),
                     $directiveSchemaDefinition[SchemaDefinition::ARGNAME_DESCRIPTION]
                 );
@@ -380,8 +380,8 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
             $translationAPI = TranslationAPIFacade::getInstance();
             $fieldOrDirectiveSchemaDefinition[SchemaDefinition::ARGNAME_DESCRIPTION] .= sprintf(
                 sprintf(
-                    $translationAPI->__(' _%s_', 'graphql'), // Make it italic using markdown
-                    $translationAPI->__('(Version: %s)', 'graphql')
+                    $translationAPI->__(' _%s_', 'graphql-server'), // Make it italic using markdown
+                    $translationAPI->__('(Version: %s)', 'graphql-server')
                 ),
                 $schemaFieldVersion
             );

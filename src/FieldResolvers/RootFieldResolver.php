@@ -56,8 +56,8 @@ class RootFieldResolver extends AbstractDBDataFieldResolver
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         $descriptions = [
-            '__schema' => $translationAPI->__('The GraphQL schema, exposing what fields can be queried', 'graphql'),
-            '__type' => $translationAPI->__('Obtain a specific type from the schema', 'graphql'),
+            '__schema' => $translationAPI->__('The GraphQL schema, exposing what fields can be queried', 'graphql-server'),
+            '__type' => $translationAPI->__('Obtain a specific type from the schema', 'graphql-server'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($typeResolver, $fieldName);
     }
@@ -74,7 +74,7 @@ class RootFieldResolver extends AbstractDBDataFieldResolver
                         [
                             SchemaDefinition::ARGNAME_NAME => 'name',
                             SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
-                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The name of the type', 'graphql'),
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The name of the type', 'graphql-server'),
                             SchemaDefinition::ARGNAME_MANDATORY => true,
                         ],
                     ]

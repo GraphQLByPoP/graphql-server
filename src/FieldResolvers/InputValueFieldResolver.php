@@ -55,10 +55,10 @@ class InputValueFieldResolver extends AbstractDBDataFieldResolver
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         $descriptions = [
-            'name' => $translationAPI->__('Input value\'s name as defined by the GraphQL spec', 'graphql'),
-            'description' => $translationAPI->__('Input value\'s description', 'graphql'),
-            'type' => $translationAPI->__('Type of the input value', 'graphql'),
-            'defaultValue' => $translationAPI->__('Default value of the input value', 'graphql'),
+            'name' => $translationAPI->__('Input value\'s name as defined by the GraphQL spec', 'graphql-server'),
+            'description' => $translationAPI->__('Input value\'s description', 'graphql-server'),
+            'type' => $translationAPI->__('Type of the input value', 'graphql-server'),
+            'defaultValue' => $translationAPI->__('Default value of the input value', 'graphql-server'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($typeResolver, $fieldName);
     }

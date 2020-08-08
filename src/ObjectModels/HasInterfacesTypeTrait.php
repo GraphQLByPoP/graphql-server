@@ -43,7 +43,7 @@ trait HasInterfacesTypeTrait
             if (is_null($interface)) {
                 $translationAPI = TranslationAPIFacade::getInstance();
                 throw new Exception(sprintf(
-                    $translationAPI->__('No FieldResolver resolves Interface \'%s\' for schema definition path \'%s\'', 'graphql'),
+                    $translationAPI->__('No FieldResolver resolves Interface \'%s\' for schema definition path \'%s\'', 'graphql-server'),
                     $interfaceName,
                     implode(' => ', $schemaDefinitionPath)
                 ));

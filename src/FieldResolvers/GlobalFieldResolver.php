@@ -41,7 +41,7 @@ class GlobalFieldResolver extends AbstractGlobalFieldResolver
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         $descriptions = [
-            '__typename' => $translationAPI->__('The object\'s type', 'graphql'),
+            '__typename' => $translationAPI->__('The object\'s type', 'graphql-server'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($typeResolver, $fieldName);
     }
