@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace PoP\GraphQLServer\Hooks;
 
-use PoP\GraphQLAPIQuery\Environment as GraphQLAPIQueryEnvironment;
+use GraphQLByPoP\GraphQLAPIQuery\Environment as GraphQLAPIQueryEnvironment;
 use PoP\API\Environment as APIEnvironment;
-use PoP\GraphQLAPIQuery\ComponentConfiguration as GraphQLAPIQueryComponentConfiguration;
+use GraphQLByPoP\GraphQLAPIQuery\ComponentConfiguration as GraphQLAPIQueryComponentConfiguration;
 use PoP\API\ComponentConfiguration as APIComponentConfiguration;
 use PoP\Engine\Hooks\AbstractHookSet;
 use PoP\ComponentModel\ComponentConfiguration\ComponentConfigurationHelpers;

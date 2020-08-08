@@ -10,7 +10,7 @@ use PoP\GraphQLServer\Config\ServiceConfiguration;
 use PoP\Root\Component\CanDisableComponentTrait;
 use PoP\ComponentModel\Container\ContainerBuilderUtils;
 use PoP\GraphQLAPIRequest\Component as GraphQLAPIRequestComponent;
-use PoP\GraphQLAPIQuery\ComponentConfiguration as GraphQLAPIQueryComponentConfiguration;
+use GraphQLByPoP\GraphQLAPIQuery\ComponentConfiguration as GraphQLAPIQueryComponentConfiguration;
 
 /**
  * Initialize component

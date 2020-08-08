@@ -6,7 +6,7 @@ namespace PoP\GraphQLServer\PersistedQueries;
 
 use PoP\API\Facades\PersistedQueryManagerFacade;
 use PoP\API\Facades\PersistedFragmentManagerFacade;
-use PoP\GraphQLAPIQuery\Facades\GraphQLQueryConvertorFacade;
+use GraphQLByPoP\GraphQLAPIQuery\Facades\GraphQLQueryConvertorFacade;
 
 /**
  * Watch out! The GraphqL queries will be parsed ALWAYS, for every request!
