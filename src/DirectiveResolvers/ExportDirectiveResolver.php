@@ -6,7 +6,7 @@ namespace PoP\GraphQLServer\DirectiveResolvers;
 
 use PoP\ComponentModel\Misc\GeneralUtils;
 use PoP\ComponentModel\Feedback\Tokens;
-use GraphQLByPoP\GraphQLAPIQuery\Schema\QuerySymbols;
+use GraphQLByPoP\GraphQLQuery\Schema\QuerySymbols;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
