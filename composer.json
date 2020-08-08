@@ -1,5 +1,5 @@
 {
-    "name": "getpop/graphql-server",
+    "name": "graphql-by-pop/graphql-server",
     "type": "library",
     "description": "GraphQL server in PHP, implemented through the PoP API",
     "keywords": [
@@ -20,7 +20,7 @@
     "prefer-stable": true,
     "require": {
         "php": "~7.2",
-        "getpop/graphql-request": "dev-master"
+        "graphql-by-pop/graphql-request": "dev-master"
     },
     "require-dev": {
         "getpop/access-control": "dev-master",

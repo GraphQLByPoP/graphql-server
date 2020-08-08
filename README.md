@@ -23,7 +23,7 @@ Follow the instructions in the [GraphQL by PoP installation page](https://graphq
 Via Composer
 
 ``` bash
-composer require getpop/graphql-server
+composer require graphql-by-pop/graphql-server
 ```
 
 To enable pretty API endpoint `/api/graphql/`, follow the instructions [here](https://github.com/getpop/api#enable-pretty-permalinks)
@@ -151,17 +151,17 @@ If you discover any security related issues, please email leo@getpop.org instead
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
 
-[ico-version]: https://img.shields.io/packagist/v/getpop/graphql-server.svg?style=flat-square
+[ico-version]: https://img.shields.io/packagist/v/graphql-by-pop/graphql-server.svg?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
-[ico-travis]: https://img.shields.io/travis/getpop/graphql-server/master.svg?style=flat-square
-[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/getpop/graphql-server.svg?style=flat-square
-[ico-code-quality]: https://img.shields.io/scrutinizer/g/getpop/graphql-server.svg?style=flat-square
-[ico-downloads]: https://img.shields.io/packagist/dt/getpop/graphql-server.svg?style=flat-square
+[ico-travis]: https://img.shields.io/travis/graphql-by-pop/graphql-server/master.svg?style=flat-square
+[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/graphql-by-pop/graphql-server.svg?style=flat-square
+[ico-code-quality]: https://img.shields.io/scrutinizer/g/graphql-by-pop/graphql-server.svg?style=flat-square
+[ico-downloads]: https://img.shields.io/packagist/dt/graphql-by-pop/graphql-server.svg?style=flat-square
 
-[link-packagist]: https://packagist.org/packages/getpop/graphql-server
-[link-travis]: https://travis-ci.org/getpop/graphql-server
-[link-scrutinizer]: https://scrutinizer-ci.com/g/getpop/graphql-server/code-structure
-[link-code-quality]: https://scrutinizer-ci.com/g/getpop/graphql-server
-[link-downloads]: https://packagist.org/packages/getpop/graphql-server
+[link-packagist]: https://packagist.org/packages/graphql-by-pop/graphql-server
+[link-travis]: https://travis-ci.org/graphql-by-pop/graphql-server
+[link-scrutinizer]: https://scrutinizer-ci.com/g/graphql-by-pop/graphql-server/code-structure
+[link-code-quality]: https://scrutinizer-ci.com/g/graphql-by-pop/graphql-server
+[link-downloads]: https://packagist.org/packages/graphql-by-pop/graphql-server
 [link-author]: https://github.com/leoloso
 [link-contributors]: ../../contributors
