@@ -19,7 +19,7 @@
     "prefer-stable": true,
     "require": {
         "php": "~7.2",
-        "getpop/api-graphql-request": "dev-master"
+        "getpop/graphql-request": "dev-master"
     },
     "require-dev": {
         "getpop/access-control": "dev-master",
