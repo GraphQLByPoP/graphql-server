@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQL\ObjectModels;
+namespace PoP\GraphQLServer\ObjectModels;
 
-use PoP\GraphQL\ObjectModels\EnumValue;
-use PoP\GraphQL\ObjectModels\AbstractDynamicType;
+use PoP\GraphQLServer\ObjectModels\EnumValue;
+use PoP\GraphQLServer\ObjectModels\AbstractDynamicType;
 use PoP\ComponentModel\Schema\SchemaDefinition;
-use PoP\GraphQL\ObjectModels\NonDocumentableTypeTrait;
+use PoP\GraphQLServer\ObjectModels\NonDocumentableTypeTrait;
 
 class EnumType extends AbstractDynamicType
 {

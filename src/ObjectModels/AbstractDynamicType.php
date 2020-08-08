@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQL\ObjectModels;
+namespace PoP\GraphQLServer\ObjectModels;
 
-use PoP\GraphQL\ObjectModels\AbstractType;
+use PoP\GraphQLServer\ObjectModels\AbstractType;
 
 abstract class AbstractDynamicType extends AbstractType
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQL\Hooks;
+namespace PoP\GraphQLServer\Hooks;
 
 use PoP\Engine\Hooks\AbstractHookSet;
 

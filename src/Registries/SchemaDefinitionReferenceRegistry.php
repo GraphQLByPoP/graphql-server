@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQL\Registries;
+namespace PoP\GraphQLServer\Registries;
 
-use PoP\GraphQL\Environment;
+use PoP\GraphQLServer\Environment;
 use PoP\API\Cache\CacheUtils;
-use PoP\GraphQL\Cache\CacheTypes;
-use PoP\GraphQL\Schema\SchemaHelpers;
-use PoP\GraphQL\ComponentConfiguration;
+use PoP\GraphQLServer\Cache\CacheTypes;
+use PoP\GraphQLServer\Schema\SchemaHelpers;
+use PoP\GraphQLServer\ComponentConfiguration;
 use PoP\ComponentModel\State\ApplicationState;
 use PoP\ComponentModel\Schema\SchemaDefinition;
-use PoP\GraphQL\Schema\SchemaDefinitionHelpers;
+use PoP\GraphQLServer\Schema\SchemaDefinitionHelpers;
 use PoP\ComponentModel\Directives\DirectiveTypes;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\API\Facades\SchemaDefinitionRegistryFacade;
 use PoP\ComponentModel\Facades\Cache\PersistentCacheFacade;
-use PoP\GraphQL\Facades\Schema\SchemaDefinitionServiceFacade;
+use PoP\GraphQLServer\Facades\Schema\SchemaDefinitionServiceFacade;
 use PoP\API\ComponentConfiguration as APIComponentConfiguration;
-use PoP\GraphQL\Schema\SchemaDefinition as GraphQLSchemaDefinition;
-use PoP\GraphQL\ObjectModels\AbstractSchemaDefinitionReferenceObject;
-use PoP\GraphQL\Registries\SchemaDefinitionReferenceRegistryInterface;
+use PoP\GraphQLServer\Schema\SchemaDefinition as GraphQLServerSchemaDefinition;
+use PoP\GraphQLServer\ObjectModels\AbstractSchemaDefinitionReferenceObject;
+use PoP\GraphQLServer\Registries\SchemaDefinitionReferenceRegistryInterface;
 
 class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegistryInterface
 {
@@ -276,18 +276,18 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
         // Expand the full schema with more data that is needed for GraphQL
         // Add the scalar types
         $scalarTypeNames = [
-            GraphQLSchemaDefinition::TYPE_ID,
-            GraphQLSchemaDefinition::TYPE_STRING,
-            GraphQLSchemaDefinition::TYPE_INT,
-            GraphQLSchemaDefinition::TYPE_FLOAT,
-            GraphQLSchemaDefinition::TYPE_BOOL,
-            GraphQLSchemaDefinition::TYPE_OBJECT,
-            GraphQLSchemaDefinition::TYPE_MIXED,
-            GraphQLSchemaDefinition::TYPE_DATE,
-            GraphQLSchemaDefinition::TYPE_TIME,
-            GraphQLSchemaDefinition::TYPE_URL,
-            GraphQLSchemaDefinition::TYPE_EMAIL,
-            GraphQLSchemaDefinition::TYPE_IP,
+            GraphQLServerSchemaDefinition::TYPE_ID,
+            GraphQLServerSchemaDefinition::TYPE_STRING,
+            GraphQLServerSchemaDefinition::TYPE_INT,
+            GraphQLServerSchemaDefinition::TYPE_FLOAT,
+            GraphQLServerSchemaDefinition::TYPE_BOOL,
+            GraphQLServerSchemaDefinition::TYPE_OBJECT,
+            GraphQLServerSchemaDefinition::TYPE_MIXED,
+            GraphQLServerSchemaDefinition::TYPE_DATE,
+            GraphQLServerSchemaDefinition::TYPE_TIME,
+            GraphQLServerSchemaDefinition::TYPE_URL,
+            GraphQLServerSchemaDefinition::TYPE_EMAIL,
+            GraphQLServerSchemaDefinition::TYPE_IP,
         ];
         foreach ($scalarTypeNames as $scalarTypeName) {
             $this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$scalarTypeName] = [

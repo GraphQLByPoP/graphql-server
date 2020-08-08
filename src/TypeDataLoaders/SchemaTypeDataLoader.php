@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQL\TypeDataLoaders;
+namespace PoP\GraphQLServer\TypeDataLoaders;
 
-use PoP\GraphQL\ObjectModels\Schema;
-use PoP\GraphQL\TypeResolvers\SchemaTypeResolver;
+use PoP\GraphQLServer\ObjectModels\Schema;
+use PoP\GraphQLServer\TypeResolvers\SchemaTypeResolver;
 use PoP\ComponentModel\TypeDataLoaders\AbstractTypeDataLoader;
-use PoP\GraphQL\Facades\Registries\SchemaDefinitionReferenceRegistryFacade;
+use PoP\GraphQLServer\Facades\Registries\SchemaDefinitionReferenceRegistryFacade;
 use PoP\ComponentModel\TypeDataLoaders\UseObjectDictionaryTypeDataLoaderTrait;
 
 class SchemaTypeDataLoader extends AbstractTypeDataLoader

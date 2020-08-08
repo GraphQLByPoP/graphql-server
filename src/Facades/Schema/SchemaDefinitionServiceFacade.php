@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQL\Facades\Schema;
+namespace PoP\GraphQLServer\Facades\Schema;
 
-use PoP\GraphQL\Schema\SchemaDefinitionServiceInterface;
+use PoP\GraphQLServer\Schema\SchemaDefinitionServiceInterface;
 use PoP\Root\Container\ContainerBuilderFactory;
 
 class SchemaDefinitionServiceFacade

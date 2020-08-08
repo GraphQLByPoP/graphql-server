@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQL\Configuration;
+namespace PoP\GraphQLServer\Configuration;
 
 class Request
 {

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQL\ObjectModels;
+namespace PoP\GraphQLServer\ObjectModels;
 
-use PoP\GraphQL\ObjectModels\InputValue;
-use PoP\GraphQL\ObjectModels\AbstractDynamicType;
+use PoP\GraphQLServer\ObjectModels\InputValue;
+use PoP\GraphQLServer\ObjectModels\AbstractDynamicType;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 
 class InputObjectType extends AbstractDynamicType

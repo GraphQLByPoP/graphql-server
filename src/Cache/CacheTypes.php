@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQL\Cache;
+namespace PoP\GraphQLServer\Cache;
 
 class CacheTypes
 {

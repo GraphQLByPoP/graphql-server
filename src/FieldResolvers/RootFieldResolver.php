@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQL\FieldResolvers;
+namespace PoP\GraphQLServer\FieldResolvers;
 
 use PoP\API\Schema\SchemaDefinition;
 use PoP\Engine\TypeResolvers\RootTypeResolver;
 use PoP\ComponentModel\Facades\Instances\InstanceManagerFacade;
-use PoP\GraphQL\TypeResolvers\TypeTypeResolver;
-use PoP\GraphQL\TypeResolvers\SchemaTypeResolver;
+use PoP\GraphQLServer\TypeResolvers\TypeTypeResolver;
+use PoP\GraphQLServer\TypeResolvers\SchemaTypeResolver;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 use PoP\ComponentModel\FieldResolvers\AbstractDBDataFieldResolver;
 use PoP\ComponentModel\Misc\GeneralUtils;
-use PoP\GraphQL\TypeDataLoaders\SchemaTypeDataLoader;
+use PoP\GraphQLServer\TypeDataLoaders\SchemaTypeDataLoader;
 
 class RootFieldResolver extends AbstractDBDataFieldResolver
 {

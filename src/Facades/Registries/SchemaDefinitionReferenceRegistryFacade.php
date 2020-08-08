@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQL\Facades\Registries;
+namespace PoP\GraphQLServer\Facades\Registries;
 
-use PoP\GraphQL\Registries\SchemaDefinitionReferenceRegistryInterface;
+use PoP\GraphQLServer\Registries\SchemaDefinitionReferenceRegistryInterface;
 use PoP\Root\Container\ContainerBuilderFactory;
 
 class SchemaDefinitionReferenceRegistryFacade

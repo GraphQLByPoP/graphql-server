@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQL\ObjectModels;
+namespace PoP\GraphQLServer\ObjectModels;
 
-use PoP\GraphQL\ObjectModels\AbstractType;
-use PoP\GraphQL\ObjectModels\HasPossibleTypesTypeTrait;
-use PoP\GraphQL\ObjectModels\HasPossibleTypesTypeInterface;
+use PoP\GraphQLServer\ObjectModels\AbstractType;
+use PoP\GraphQLServer\ObjectModels\HasPossibleTypesTypeTrait;
+use PoP\GraphQLServer\ObjectModels\HasPossibleTypesTypeInterface;
 
 class UnionType extends AbstractType implements HasPossibleTypesTypeInterface
 {

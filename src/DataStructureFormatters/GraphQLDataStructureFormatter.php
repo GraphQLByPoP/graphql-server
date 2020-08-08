@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQL\DataStructureFormatters;
+namespace PoP\GraphQLServer\DataStructureFormatters;
 
 use PoP\ComponentModel\State\ApplicationState;
 use PoP\ComponentModel\Feedback\Tokens;

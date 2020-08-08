@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQL\ObjectModels;
+namespace PoP\GraphQLServer\ObjectModels;
 
-use PoP\GraphQL\Facades\Registries\SchemaDefinitionReferenceRegistryFacade;
+use PoP\GraphQLServer\Facades\Registries\SchemaDefinitionReferenceRegistryFacade;
 
 abstract class AbstractSchemaDefinitionReferenceObject
 {

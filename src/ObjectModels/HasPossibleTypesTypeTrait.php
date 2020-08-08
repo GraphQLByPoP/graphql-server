@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQL\ObjectModels;
+namespace PoP\GraphQLServer\ObjectModels;
 
 use PoP\API\Schema\SchemaDefinition;
-use PoP\GraphQL\ObjectModels\ResolveTypeSchemaDefinitionReferenceTrait;
+use PoP\GraphQLServer\ObjectModels\ResolveTypeSchemaDefinitionReferenceTrait;
 
 trait HasPossibleTypesTypeTrait
 {

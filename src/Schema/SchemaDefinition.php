@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQL\Schema;
+namespace PoP\GraphQLServer\Schema;
 
 class SchemaDefinition
 {

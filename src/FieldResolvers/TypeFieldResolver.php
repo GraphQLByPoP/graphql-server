@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQL\FieldResolvers;
+namespace PoP\GraphQLServer\FieldResolvers;
 
-use PoP\GraphQL\Enums\TypeKindEnum;
-use PoP\GraphQL\ObjectModels\EnumType;
-use PoP\GraphQL\ObjectModels\InputObjectType;
+use PoP\GraphQLServer\Enums\TypeKindEnum;
+use PoP\GraphQLServer\ObjectModels\EnumType;
+use PoP\GraphQLServer\ObjectModels\InputObjectType;
 use PoP\ComponentModel\Schema\SchemaDefinition;
-use PoP\GraphQL\TypeResolvers\TypeTypeResolver;
-use PoP\GraphQL\TypeResolvers\FieldTypeResolver;
+use PoP\GraphQLServer\TypeResolvers\TypeTypeResolver;
+use PoP\GraphQLServer\TypeResolvers\FieldTypeResolver;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
-use PoP\GraphQL\ObjectModels\AbstractNestableType;
-use PoP\GraphQL\ObjectModels\HasFieldsTypeInterface;
-use PoP\GraphQL\TypeResolvers\EnumValueTypeResolver;
-use PoP\GraphQL\TypeResolvers\InputValueTypeResolver;
-use PoP\GraphQL\ObjectModels\HasInterfacesTypeInterface;
+use PoP\GraphQLServer\ObjectModels\AbstractNestableType;
+use PoP\GraphQLServer\ObjectModels\HasFieldsTypeInterface;
+use PoP\GraphQLServer\TypeResolvers\EnumValueTypeResolver;
+use PoP\GraphQLServer\TypeResolvers\InputValueTypeResolver;
+use PoP\GraphQLServer\ObjectModels\HasInterfacesTypeInterface;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
-use PoP\GraphQL\ObjectModels\HasPossibleTypesTypeInterface;
+use PoP\GraphQLServer\ObjectModels\HasPossibleTypesTypeInterface;
 use PoP\ComponentModel\Facades\Instances\InstanceManagerFacade;
 use PoP\ComponentModel\FieldResolvers\AbstractDBDataFieldResolver;
 use PoP\ComponentModel\FieldResolvers\EnumTypeFieldSchemaDefinitionResolverTrait;

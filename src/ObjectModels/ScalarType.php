@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQL\ObjectModels;
+namespace PoP\GraphQLServer\ObjectModels;
 
-use PoP\GraphQL\ObjectModels\AbstractType;
-use PoP\GraphQL\ObjectModels\NonDocumentableTypeTrait;
+use PoP\GraphQLServer\ObjectModels\AbstractType;
+use PoP\GraphQLServer\ObjectModels\NonDocumentableTypeTrait;
 
 class ScalarType extends AbstractType
 {

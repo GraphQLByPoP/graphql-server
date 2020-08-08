@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQL\TypeResolvers;
+namespace PoP\GraphQLServer\TypeResolvers;
 
 use PoP\Translation\Facades\TranslationAPIFacade;
-use PoP\GraphQL\TypeResolvers\AbstractIntrospectionTypeResolver;
-use PoP\GraphQL\TypeDataLoaders\SchemaDefinitionReferenceTypeDataLoader;
+use PoP\GraphQLServer\TypeResolvers\AbstractIntrospectionTypeResolver;
+use PoP\GraphQLServer\TypeDataLoaders\SchemaDefinitionReferenceTypeDataLoader;
 
 class EnumValueTypeResolver extends AbstractIntrospectionTypeResolver
 {

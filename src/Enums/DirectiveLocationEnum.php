@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQL\Enums;
+namespace PoP\GraphQLServer\Enums;
 
 use PoP\ComponentModel\Enums\AbstractEnum;
-use PoP\GraphQL\ObjectModels\DirectiveLocations;
+use PoP\GraphQLServer\ObjectModels\DirectiveLocations;
 
 class DirectiveLocationEnum extends AbstractEnum
 {

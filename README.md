@@ -60,7 +60,7 @@ Initialize the component:
 
 ``` php
 \PoP\Root\ComponentLoader::initializeComponents([
-    \PoP\GraphQL\Component::class,
+    \PoP\GraphQLServer\Component::class,
 ]);
 ```
 

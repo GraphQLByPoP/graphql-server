@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQL\Config;
+namespace PoP\GraphQLServer\Config;
 
 use PoP\Root\Component\PHPServiceConfigurationTrait;
 use PoP\ComponentModel\Container\ContainerBuilderUtils;
@@ -18,7 +18,7 @@ class ServiceConfiguration
          */
         ContainerBuilderUtils::injectServicesIntoService(
             'data_structure_manager',
-            'PoP\\GraphQL\\DataStructureFormatters',
+            'PoP\\GraphQLServer\\DataStructureFormatters',
             'add'
         );
     }

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQL\ObjectModels;
+namespace PoP\GraphQLServer\ObjectModels;
 
 use PoP\ComponentModel\Schema\SchemaDefinition;
-use PoP\GraphQL\ObjectModels\AbstractSchemaDefinitionReferenceObject;
+use PoP\GraphQLServer\ObjectModels\AbstractSchemaDefinitionReferenceObject;
 
 abstract class AbstractType extends AbstractSchemaDefinitionReferenceObject
 {

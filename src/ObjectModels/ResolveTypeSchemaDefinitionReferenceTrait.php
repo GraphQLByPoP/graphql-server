@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQL\ObjectModels;
+namespace PoP\GraphQLServer\ObjectModels;
 
 use PoP\API\Schema\SchemaDefinition;
-use PoP\GraphQL\Schema\SchemaDefinition as GraphQLSchemaDefinition;
-use PoP\GraphQL\Syntax\SyntaxHelpers;
-use PoP\GraphQL\ObjectModels\AbstractType;
-use PoP\GraphQL\ObjectModels\InputObjectType;
-use PoP\GraphQL\Schema\SchemaDefinitionHelpers;
-use PoP\GraphQL\Facades\Registries\SchemaDefinitionReferenceRegistryFacade;
+use PoP\GraphQLServer\Schema\SchemaDefinition as GraphQLServerSchemaDefinition;
+use PoP\GraphQLServer\Syntax\SyntaxHelpers;
+use PoP\GraphQLServer\ObjectModels\AbstractType;
+use PoP\GraphQLServer\ObjectModels\InputObjectType;
+use PoP\GraphQLServer\Schema\SchemaDefinitionHelpers;
+use PoP\GraphQLServer\Facades\Registries\SchemaDefinitionReferenceRegistryFacade;
 
 trait ResolveTypeSchemaDefinitionReferenceTrait
 {
@@ -39,7 +39,7 @@ trait ResolveTypeSchemaDefinitionReferenceTrait
         }
 
         // Check if it is an enum type
-        if ($typeName == GraphQLSchemaDefinition::TYPE_ENUM) {
+        if ($typeName == GraphQLServerSchemaDefinition::TYPE_ENUM) {
             return new EnumType(
                 $this->fullSchemaDefinition,
                 $this->schemaDefinitionPath
@@ -47,7 +47,7 @@ trait ResolveTypeSchemaDefinitionReferenceTrait
         }
 
         // Check if it is an inputObject type
-        if ($typeName == GraphQLSchemaDefinition::TYPE_INPUT_OBJECT) {
+        if ($typeName == GraphQLServerSchemaDefinition::TYPE_INPUT_OBJECT) {
             return new InputObjectType(
                 $this->fullSchemaDefinition,
                 $this->schemaDefinitionPath

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQL\ObjectModels;
+namespace PoP\GraphQLServer\ObjectModels;
 
-use PoP\GraphQL\ObjectModels\NonDocumentableTypeTrait;
-use PoP\GraphQL\ObjectModels\AbstractNestableType;
+use PoP\GraphQLServer\ObjectModels\NonDocumentableTypeTrait;
+use PoP\GraphQLServer\ObjectModels\AbstractNestableType;
 
 class ListType extends AbstractNestableType
 {

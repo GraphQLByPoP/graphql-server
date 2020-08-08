@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQL\Schema;
+namespace PoP\GraphQLServer\Schema;
 
 use Exception;
-use PoP\GraphQL\Environment;
-use PoP\GraphQL\ObjectModels\Field;
+use PoP\GraphQLServer\Environment;
+use PoP\GraphQLServer\ObjectModels\Field;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\Translation\Facades\TranslationAPIFacade;
-use PoP\GraphQL\Facades\Registries\SchemaDefinitionReferenceRegistryFacade;
+use PoP\GraphQLServer\Facades\Registries\SchemaDefinitionReferenceRegistryFacade;
 
 class SchemaDefinitionHelpers
 {

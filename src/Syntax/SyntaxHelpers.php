@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQL\Syntax;
+namespace PoP\GraphQLServer\Syntax;
 
 class SyntaxHelpers
 {
