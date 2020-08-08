@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQLServer\TypeResolvers;
+namespace GraphQLByPoP\GraphQLServer\TypeResolvers;
 
 use PoP\Translation\Facades\TranslationAPIFacade;
-use PoP\GraphQLServer\TypeResolvers\AbstractIntrospectionTypeResolver;
-use PoP\GraphQLServer\TypeDataLoaders\SchemaDefinitionReferenceTypeDataLoader;
+use GraphQLByPoP\GraphQLServer\TypeResolvers\AbstractIntrospectionTypeResolver;
+use GraphQLByPoP\GraphQLServer\TypeDataLoaders\SchemaDefinitionReferenceTypeDataLoader;
 
 class TypeTypeResolver extends AbstractIntrospectionTypeResolver
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQLServer\Schema;
+namespace GraphQLByPoP\GraphQLServer\Schema;
 
 interface SchemaDefinitionServiceInterface extends \PoP\ComponentModel\Schema\SchemaDefinitionServiceInterface
 {

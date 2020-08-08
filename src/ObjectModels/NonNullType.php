@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQLServer\ObjectModels;
+namespace GraphQLByPoP\GraphQLServer\ObjectModels;
 
-use PoP\GraphQLServer\ObjectModels\TypeKinds;
-use PoP\GraphQLServer\ObjectModels\AbstractNestableType;
+use GraphQLByPoP\GraphQLServer\ObjectModels\TypeKinds;
+use GraphQLByPoP\GraphQLServer\ObjectModels\AbstractNestableType;
 
 class NonNullType extends AbstractNestableType
 {

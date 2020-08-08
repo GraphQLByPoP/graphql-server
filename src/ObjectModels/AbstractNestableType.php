@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQLServer\ObjectModels;
+namespace GraphQLByPoP\GraphQLServer\ObjectModels;
 
-use PoP\GraphQLServer\ObjectModels\AbstractType;
+use GraphQLByPoP\GraphQLServer\ObjectModels\AbstractType;
 
 abstract class AbstractNestableType extends AbstractType
 {

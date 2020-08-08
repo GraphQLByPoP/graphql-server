@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQLServer\ObjectModels;
+namespace GraphQLByPoP\GraphQLServer\ObjectModels;
 
 use PoP\ComponentModel\Schema\SchemaDefinition;
-use PoP\GraphQLServer\ObjectModels\AbstractSchemaDefinitionReferenceObject;
-use PoP\GraphQLServer\ObjectModels\HasTypeSchemaDefinitionReferenceTrait;
+use GraphQLByPoP\GraphQLServer\ObjectModels\AbstractSchemaDefinitionReferenceObject;
+use GraphQLByPoP\GraphQLServer\ObjectModels\HasTypeSchemaDefinitionReferenceTrait;
 
 class InputValue extends AbstractSchemaDefinitionReferenceObject
 {

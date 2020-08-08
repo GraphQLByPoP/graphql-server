@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQLServer\FieldResolvers\ConditionalOnEnvironment\VariablesAsExpressions;
+namespace GraphQLByPoP\GraphQLServer\FieldResolvers\ConditionalOnEnvironment\VariablesAsExpressions;
 
 use PoP\Engine\TypeResolvers\RootTypeResolver;
 use GraphQLByPoP\GraphQLQuery\Schema\QuerySymbols;
@@ -10,7 +10,7 @@ use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
-use PoP\GraphQLServer\DirectiveResolvers\ExportDirectiveResolver;
+use GraphQLByPoP\GraphQLServer\DirectiveResolvers\ExportDirectiveResolver;
 use GraphQLByPoP\GraphQLQuery\Facades\GraphQLQueryConvertorFacade;
 use PoP\ComponentModel\FieldResolvers\AbstractDBDataFieldResolver;
 

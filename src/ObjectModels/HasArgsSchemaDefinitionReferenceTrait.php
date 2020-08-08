@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQLServer\ObjectModels;
+namespace GraphQLByPoP\GraphQLServer\ObjectModels;
 
 use PoP\API\Schema\SchemaDefinition;
-use PoP\GraphQLServer\ObjectModels\InputValue;
+use GraphQLByPoP\GraphQLServer\ObjectModels\InputValue;
 
 trait HasArgsSchemaDefinitionReferenceTrait
 {

@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQLServer\Registries;
+namespace GraphQLByPoP\GraphQLServer\Registries;
 
-use PoP\GraphQLServer\Environment;
+use GraphQLByPoP\GraphQLServer\Environment;
 use PoP\API\Cache\CacheUtils;
-use PoP\GraphQLServer\Cache\CacheTypes;
-use PoP\GraphQLServer\Schema\SchemaHelpers;
-use PoP\GraphQLServer\ComponentConfiguration;
+use GraphQLByPoP\GraphQLServer\Cache\CacheTypes;
+use GraphQLByPoP\GraphQLServer\Schema\SchemaHelpers;
+use GraphQLByPoP\GraphQLServer\ComponentConfiguration;
 use PoP\ComponentModel\State\ApplicationState;
 use PoP\ComponentModel\Schema\SchemaDefinition;
-use PoP\GraphQLServer\Schema\SchemaDefinitionHelpers;
+use GraphQLByPoP\GraphQLServer\Schema\SchemaDefinitionHelpers;
 use PoP\ComponentModel\Directives\DirectiveTypes;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\API\Facades\SchemaDefinitionRegistryFacade;
 use PoP\ComponentModel\Facades\Cache\PersistentCacheFacade;
-use PoP\GraphQLServer\Facades\Schema\SchemaDefinitionServiceFacade;
+use GraphQLByPoP\GraphQLServer\Facades\Schema\SchemaDefinitionServiceFacade;
 use PoP\API\ComponentConfiguration as APIComponentConfiguration;
-use PoP\GraphQLServer\Schema\SchemaDefinition as GraphQLServerSchemaDefinition;
-use PoP\GraphQLServer\ObjectModels\AbstractSchemaDefinitionReferenceObject;
-use PoP\GraphQLServer\Registries\SchemaDefinitionReferenceRegistryInterface;
+use GraphQLByPoP\GraphQLServer\Schema\SchemaDefinition as GraphQLServerSchemaDefinition;
+use GraphQLByPoP\GraphQLServer\ObjectModels\AbstractSchemaDefinitionReferenceObject;
+use GraphQLByPoP\GraphQLServer\Registries\SchemaDefinitionReferenceRegistryInterface;
 
 class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegistryInterface
 {

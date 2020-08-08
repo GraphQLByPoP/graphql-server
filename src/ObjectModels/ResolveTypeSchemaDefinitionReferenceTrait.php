@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQLServer\ObjectModels;
+namespace GraphQLByPoP\GraphQLServer\ObjectModels;
 
 use PoP\API\Schema\SchemaDefinition;
-use PoP\GraphQLServer\Schema\SchemaDefinition as GraphQLServerSchemaDefinition;
-use PoP\GraphQLServer\Syntax\SyntaxHelpers;
-use PoP\GraphQLServer\ObjectModels\AbstractType;
-use PoP\GraphQLServer\ObjectModels\InputObjectType;
-use PoP\GraphQLServer\Schema\SchemaDefinitionHelpers;
-use PoP\GraphQLServer\Facades\Registries\SchemaDefinitionReferenceRegistryFacade;
+use GraphQLByPoP\GraphQLServer\Schema\SchemaDefinition as GraphQLServerSchemaDefinition;
+use GraphQLByPoP\GraphQLServer\Syntax\SyntaxHelpers;
+use GraphQLByPoP\GraphQLServer\ObjectModels\AbstractType;
+use GraphQLByPoP\GraphQLServer\ObjectModels\InputObjectType;
+use GraphQLByPoP\GraphQLServer\Schema\SchemaDefinitionHelpers;
+use GraphQLByPoP\GraphQLServer\Facades\Registries\SchemaDefinitionReferenceRegistryFacade;
 
 trait ResolveTypeSchemaDefinitionReferenceTrait
 {

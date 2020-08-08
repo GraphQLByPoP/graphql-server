@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQLServer\Hooks;
+namespace GraphQLByPoP\GraphQLServer\Hooks;
 
 use GraphQLByPoP\GraphQLQuery\Environment as GraphQLAPIQueryEnvironment;
 use PoP\API\Environment as APIEnvironment;

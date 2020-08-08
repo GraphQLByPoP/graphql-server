@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQLServer\ObjectModels;
+namespace GraphQLByPoP\GraphQLServer\ObjectModels;
 
 use PoP\ComponentModel\State\ApplicationState;
 use PoP\ComponentModel\Schema\SchemaDefinition;
-use PoP\GraphQLServer\ObjectModels\DirectiveLocations;
+use GraphQLByPoP\GraphQLServer\ObjectModels\DirectiveLocations;
 use PoP\ComponentModel\Directives\DirectiveTypes;
-use PoP\GraphQLServer\ObjectModels\HasArgsSchemaDefinitionReferenceTrait;
+use GraphQLByPoP\GraphQLServer\ObjectModels\HasArgsSchemaDefinitionReferenceTrait;
 
 class Directive extends AbstractSchemaDefinitionReferenceObject
 {

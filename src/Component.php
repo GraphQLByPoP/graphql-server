@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQLServer;
+namespace GraphQLByPoP\GraphQLServer;
 
 use PoP\Root\Component\AbstractComponent;
 use PoP\Root\Component\YAMLServicesTrait;
-use PoP\GraphQLServer\Config\ServiceConfiguration;
+use GraphQLByPoP\GraphQLServer\Config\ServiceConfiguration;
 use PoP\Root\Component\CanDisableComponentTrait;
 use PoP\ComponentModel\Container\ContainerBuilderUtils;
 use GraphQLByPoP\GraphQLRequest\Component as GraphQLAPIRequestComponent;
@@ -81,7 +81,7 @@ class Component extends AbstractComponent
 
         // Boot conditional on API package being installed
         if (class_exists('\PoP\AccessControl\Component')) {
-            \PoP\GraphQLServer\Conditional\AccessControl\ComponentBoot::beforeBoot();
+            \GraphQLByPoP\GraphQLServer\Conditional\AccessControl\ComponentBoot::beforeBoot();
         }
 
         // Boot conditional on having variables treated as expressions for @export directive

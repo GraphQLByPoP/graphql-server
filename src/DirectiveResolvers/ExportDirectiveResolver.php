@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQLServer\DirectiveResolvers;
+namespace GraphQLByPoP\GraphQLServer\DirectiveResolvers;
 
 use PoP\ComponentModel\Misc\GeneralUtils;
 use PoP\ComponentModel\Feedback\Tokens;

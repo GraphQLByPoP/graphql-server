@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQLServer\Schema;
+namespace GraphQLByPoP\GraphQLServer\Schema;
 
 use PoP\Engine\TypeResolvers\RootTypeResolver;
-use PoP\GraphQLServer\Schema\SchemaDefinitionServiceInterface;
+use GraphQLByPoP\GraphQLServer\Schema\SchemaDefinitionServiceInterface;
 use PoP\ComponentModel\Facades\Instances\InstanceManagerFacade;
 
 class SchemaDefinitionService extends \PoP\ComponentModel\Schema\SchemaDefinitionService implements SchemaDefinitionServiceInterface

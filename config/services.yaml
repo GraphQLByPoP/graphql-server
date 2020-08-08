@@ -5,17 +5,17 @@ services:
             PoP\Translation\TranslationAPIInterface: '@translation_api'
 
     schema_definition_reference_registry:
-        class: \PoP\GraphQLServer\Registries\SchemaDefinitionReferenceRegistry
+        class: \GraphQLByPoP\GraphQLServer\Registries\SchemaDefinitionReferenceRegistry
         public: true
 
     schema_definition_service:
-        class: \PoP\GraphQLServer\Schema\SchemaDefinitionService
+        class: \GraphQLByPoP\GraphQLServer\Schema\SchemaDefinitionService
         public: true
 
-    PoP\GraphQLServer\Hooks\:
+    GraphQLByPoP\GraphQLServer\Hooks\:
         resource: '../src/Hooks/*'
         public: true
 
-    PoP\GraphQLServer\DataStructureFormatters\:
+    GraphQLByPoP\GraphQLServer\DataStructureFormatters\:
         resource: '../src/DataStructureFormatters/*'
         public: true

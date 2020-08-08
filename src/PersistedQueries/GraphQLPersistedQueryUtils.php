@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQLServer\PersistedQueries;
+namespace GraphQLByPoP\GraphQLServer\PersistedQueries;
 
 use PoP\API\Facades\PersistedQueryManagerFacade;
 use PoP\API\Facades\PersistedFragmentManagerFacade;

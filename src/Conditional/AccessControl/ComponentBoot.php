@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQLServer\Conditional\AccessControl;
+namespace GraphQLByPoP\GraphQLServer\Conditional\AccessControl;
 
 use PoP\AccessControl\ComponentConfiguration;
 use PoP\ComponentModel\AttachableExtensions\AttachableExtensionGroups;
-use PoP\GraphQLServer\DirectiveResolvers\ConditionalOnEnvironment\SchemaNoCacheCacheControlDirectiveResolver;
+use GraphQLByPoP\GraphQLServer\DirectiveResolvers\ConditionalOnEnvironment\SchemaNoCacheCacheControlDirectiveResolver;
 
 /**
  * Initialize component

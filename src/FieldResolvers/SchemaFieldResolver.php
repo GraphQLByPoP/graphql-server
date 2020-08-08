@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQLServer\FieldResolvers;
+namespace GraphQLByPoP\GraphQLServer\FieldResolvers;
 
 use PoP\API\Schema\SchemaDefinition;
-use PoP\GraphQLServer\TypeResolvers\TypeTypeResolver;
+use GraphQLByPoP\GraphQLServer\TypeResolvers\TypeTypeResolver;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
-use PoP\GraphQLServer\TypeResolvers\SchemaTypeResolver;
+use GraphQLByPoP\GraphQLServer\TypeResolvers\SchemaTypeResolver;
 use PoP\Translation\Facades\TranslationAPIFacade;
-use PoP\GraphQLServer\TypeResolvers\DirectiveTypeResolver;
+use GraphQLByPoP\GraphQLServer\TypeResolvers\DirectiveTypeResolver;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\FieldResolvers\AbstractDBDataFieldResolver;
 

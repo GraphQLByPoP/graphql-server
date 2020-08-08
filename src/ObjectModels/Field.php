@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQLServer\ObjectModels;
+namespace GraphQLByPoP\GraphQLServer\ObjectModels;
 
 use PoP\API\Schema\SchemaDefinition;
-use PoP\GraphQLServer\ObjectModels\HasArgsSchemaDefinitionReferenceTrait;
-use PoP\GraphQLServer\ObjectModels\HasTypeSchemaDefinitionReferenceTrait;
+use GraphQLByPoP\GraphQLServer\ObjectModels\HasArgsSchemaDefinitionReferenceTrait;
+use GraphQLByPoP\GraphQLServer\ObjectModels\HasTypeSchemaDefinitionReferenceTrait;
 
 class Field extends AbstractSchemaDefinitionReferenceObject
 {

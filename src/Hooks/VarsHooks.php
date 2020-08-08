@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQLServer\Hooks;
+namespace GraphQLByPoP\GraphQLServer\Hooks;
 
-use PoP\GraphQLServer\Configuration\Request;
+use GraphQLByPoP\GraphQLServer\Configuration\Request;
 use PoP\Engine\Hooks\AbstractHookSet;
 use PoP\ComponentModel\State\ApplicationState;
 use PoP\Translation\Facades\TranslationAPIFacade;

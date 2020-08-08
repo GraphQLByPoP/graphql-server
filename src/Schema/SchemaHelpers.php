@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQLServer\Schema;
+namespace GraphQLByPoP\GraphQLServer\Schema;
 
 use PoP\ComponentModel\Schema\SchemaDefinition;
-use PoP\GraphQLServer\Schema\SchemaDefinition as GraphQLServerSchemaDefinition;
+use GraphQLByPoP\GraphQLServer\Schema\SchemaDefinition as GraphQLServerSchemaDefinition;
 use PoP\ComponentModel\Schema\SchemaHelpers as ComponentModelSchemaHelpers;
 
 class SchemaHelpers

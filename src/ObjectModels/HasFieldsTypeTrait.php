@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQLServer\ObjectModels;
+namespace GraphQLByPoP\GraphQLServer\ObjectModels;
 
-use PoP\GraphQLServer\Environment;
-use PoP\GraphQLServer\ObjectModels\Field;
+use GraphQLByPoP\GraphQLServer\Environment;
+use GraphQLByPoP\GraphQLServer\ObjectModels\Field;
 use PoP\API\Schema\SchemaDefinition;
-use PoP\GraphQLServer\Schema\SchemaDefinitionHelpers;
+use GraphQLByPoP\GraphQLServer\Schema\SchemaDefinitionHelpers;
 
 trait HasFieldsTypeTrait
 {

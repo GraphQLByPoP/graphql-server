@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQLServer\ObjectModels;
+namespace GraphQLByPoP\GraphQLServer\ObjectModels;
 
-use PoP\GraphQLServer\ObjectModels\AbstractType;
-use PoP\GraphQLServer\ObjectModels\HasFieldsTypeTrait;
-use PoP\GraphQLServer\ObjectModels\HasFieldsTypeInterface;
-use PoP\GraphQLServer\ObjectModels\HasInterfacesTypeTrait;
-use PoP\GraphQLServer\ObjectModels\HasInterfacesTypeInterface;
+use GraphQLByPoP\GraphQLServer\ObjectModels\AbstractType;
+use GraphQLByPoP\GraphQLServer\ObjectModels\HasFieldsTypeTrait;
+use GraphQLByPoP\GraphQLServer\ObjectModels\HasFieldsTypeInterface;
+use GraphQLByPoP\GraphQLServer\ObjectModels\HasInterfacesTypeTrait;
+use GraphQLByPoP\GraphQLServer\ObjectModels\HasInterfacesTypeInterface;
 
 class ObjectType extends AbstractType implements HasFieldsTypeInterface, HasInterfacesTypeInterface
 {

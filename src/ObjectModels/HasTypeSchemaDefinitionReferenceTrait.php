@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQLServer\ObjectModels;
+namespace GraphQLByPoP\GraphQLServer\ObjectModels;
 
 use PoP\API\Schema\SchemaDefinition;
-use PoP\GraphQLServer\ObjectModels\AbstractType;
-use PoP\GraphQLServer\ObjectModels\ResolveTypeSchemaDefinitionReferenceTrait;
+use GraphQLByPoP\GraphQLServer\ObjectModels\AbstractType;
+use GraphQLByPoP\GraphQLServer\ObjectModels\ResolveTypeSchemaDefinitionReferenceTrait;
 
 trait HasTypeSchemaDefinitionReferenceTrait
 {

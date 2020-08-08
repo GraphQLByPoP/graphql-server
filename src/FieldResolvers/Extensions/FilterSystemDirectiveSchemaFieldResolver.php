@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQLServer\FieldResolvers\Extensions;
+namespace GraphQLByPoP\GraphQLServer\FieldResolvers\Extensions;
 
 use PoP\API\Schema\SchemaDefinition;
-use PoP\GraphQLServer\Enums\DirectiveTypeEnum;
+use GraphQLByPoP\GraphQLServer\Enums\DirectiveTypeEnum;
 use PoP\ComponentModel\Schema\SchemaHelpers;
-use PoP\GraphQLServer\Schema\SchemaDefinitionHelpers;
+use GraphQLByPoP\GraphQLServer\Schema\SchemaDefinitionHelpers;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
-use PoP\GraphQLServer\TypeResolvers\SchemaTypeResolver;
+use GraphQLByPoP\GraphQLServer\TypeResolvers\SchemaTypeResolver;
 use PoP\Translation\Facades\TranslationAPIFacade;
-use PoP\GraphQLServer\FieldResolvers\SchemaFieldResolver;
+use GraphQLByPoP\GraphQLServer\FieldResolvers\SchemaFieldResolver;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\Facades\Instances\InstanceManagerFacade;
 use PoP\ComponentModel\Facades\Registries\DirectiveRegistryFacade;

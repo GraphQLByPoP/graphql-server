@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQLServer\ObjectModels;
+namespace GraphQLByPoP\GraphQLServer\ObjectModels;
 
 use Exception;
 use PoP\API\Schema\SchemaDefinition;
-use PoP\GraphQLServer\ObjectModels\InterfaceType;
-use PoP\GraphQLServer\Schema\SchemaDefinitionHelpers;
+use GraphQLByPoP\GraphQLServer\ObjectModels\InterfaceType;
+use GraphQLByPoP\GraphQLServer\Schema\SchemaDefinitionHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
-use PoP\GraphQLServer\Facades\Registries\SchemaDefinitionReferenceRegistryFacade;
+use GraphQLByPoP\GraphQLServer\Facades\Registries\SchemaDefinitionReferenceRegistryFacade;
 
 trait HasInterfacesTypeTrait
 {

@@ -1,12 +1,12 @@
 services:
-    PoP\GraphQLServer\FieldResolvers\:
+    GraphQLByPoP\GraphQLServer\FieldResolvers\:
         resource: '../src/FieldResolvers/*'
         public: true
 
-    PoP\GraphQLServer\DirectiveResolvers\:
+    GraphQLByPoP\GraphQLServer\DirectiveResolvers\:
         resource: '../src/DirectiveResolvers/*'
         public: true
 
-    PoP\GraphQLServer\TypeResolvers\:
+    GraphQLByPoP\GraphQLServer\TypeResolvers\:
         resource: '../src/TypeResolvers/*'
         public: true

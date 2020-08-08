@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQLServer\DirectiveResolvers\ConditionalOnEnvironment;
+namespace GraphQLByPoP\GraphQLServer\DirectiveResolvers\ConditionalOnEnvironment;
 
 use PoP\CacheControl\DirectiveResolvers\AbstractCacheControlDirectiveResolver;
 

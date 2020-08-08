@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQLServer\FieldResolvers;
+namespace GraphQLByPoP\GraphQLServer\FieldResolvers;
 
-use PoP\GraphQLServer\Enums\DirectiveLocationEnum;
+use GraphQLByPoP\GraphQLServer\Enums\DirectiveLocationEnum;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
-use PoP\GraphQLServer\TypeResolvers\DirectiveTypeResolver;
-use PoP\GraphQLServer\TypeResolvers\InputValueTypeResolver;
+use GraphQLByPoP\GraphQLServer\TypeResolvers\DirectiveTypeResolver;
+use GraphQLByPoP\GraphQLServer\TypeResolvers\InputValueTypeResolver;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\Facades\Instances\InstanceManagerFacade;
 use PoP\ComponentModel\FieldResolvers\AbstractDBDataFieldResolver;

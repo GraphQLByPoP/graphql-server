@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQLServer\FieldResolvers;
+namespace GraphQLByPoP\GraphQLServer\FieldResolvers;
 
 use PoP\ComponentModel\Schema\SchemaDefinition;
-use PoP\GraphQLServer\TypeResolvers\TypeTypeResolver;
-use PoP\GraphQLServer\TypeResolvers\FieldTypeResolver;
-use PoP\GraphQLServer\TypeResolvers\InputValueTypeResolver;
+use GraphQLByPoP\GraphQLServer\TypeResolvers\TypeTypeResolver;
+use GraphQLByPoP\GraphQLServer\TypeResolvers\FieldTypeResolver;
+use GraphQLByPoP\GraphQLServer\TypeResolvers\InputValueTypeResolver;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;

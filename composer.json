@@ -33,12 +33,12 @@
     },
     "autoload": {
         "psr-4": {
-            "PoP\\GraphQLServer\\": "src"
+            "GraphQLByPoP\\GraphQLServer\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "PoP\\GraphQLServer\\": "tests"
+            "GraphQLByPoP\\GraphQLServer\\": "tests"
         }
     },
     "scripts": {

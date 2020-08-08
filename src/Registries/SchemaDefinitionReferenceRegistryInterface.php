@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQLServer\Registries;
+namespace GraphQLByPoP\GraphQLServer\Registries;
 
-use PoP\GraphQLServer\ObjectModels\AbstractSchemaDefinitionReferenceObject;
+use GraphQLByPoP\GraphQLServer\ObjectModels\AbstractSchemaDefinitionReferenceObject;
 
 interface SchemaDefinitionReferenceRegistryInterface
 {

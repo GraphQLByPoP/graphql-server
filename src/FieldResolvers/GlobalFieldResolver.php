@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQLServer\FieldResolvers;
+namespace GraphQLByPoP\GraphQLServer\FieldResolvers;
 
 use PoP\API\Schema\SchemaDefinition;
 use PoP\Translation\Facades\TranslationAPIFacade;

@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace PoP\GraphQLServer\ObjectModels;
+namespace GraphQLByPoP\GraphQLServer\ObjectModels;
 
-use PoP\GraphQLServer\Environment;
+use GraphQLByPoP\GraphQLServer\Environment;
 use PoP\API\Schema\SchemaDefinition;
-use PoP\GraphQLServer\ComponentConfiguration;
-use PoP\GraphQLServer\ObjectModels\Directive;
-use PoP\GraphQLServer\ObjectModels\ScalarType;
-use PoP\GraphQLServer\ObjectModels\AbstractType;
-use PoP\GraphQLServer\Schema\SchemaDefinitionHelpers;
-use PoP\GraphQLServer\Facades\Schema\SchemaDefinitionServiceFacade;
-use PoP\GraphQLServer\Schema\SchemaDefinition as GraphQLServerSchemaDefinition;
-use PoP\GraphQLServer\Facades\Registries\SchemaDefinitionReferenceRegistryFacade;
+use GraphQLByPoP\GraphQLServer\ComponentConfiguration;
+use GraphQLByPoP\GraphQLServer\ObjectModels\Directive;
+use GraphQLByPoP\GraphQLServer\ObjectModels\ScalarType;
+use GraphQLByPoP\GraphQLServer\ObjectModels\AbstractType;
+use GraphQLByPoP\GraphQLServer\Schema\SchemaDefinitionHelpers;
+use GraphQLByPoP\GraphQLServer\Facades\Schema\SchemaDefinitionServiceFacade;
+use GraphQLByPoP\GraphQLServer\Schema\SchemaDefinition as GraphQLServerSchemaDefinition;
+use GraphQLByPoP\GraphQLServer\Facades\Registries\SchemaDefinitionReferenceRegistryFacade;
 
 class Schema
 {
