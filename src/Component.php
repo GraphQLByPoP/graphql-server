@@ -9,7 +9,7 @@ use PoP\Root\Component\YAMLServicesTrait;
 use PoP\GraphQLServer\Config\ServiceConfiguration;
 use PoP\Root\Component\CanDisableComponentTrait;
 use PoP\ComponentModel\Container\ContainerBuilderUtils;
-use PoP\GraphQLAPIRequest\Component as GraphQLAPIRequestComponent;
+use GraphQLByPoP\GraphQLRequest\Component as GraphQLAPIRequestComponent;
 use GraphQLByPoP\GraphQLQuery\ComponentConfiguration as GraphQLAPIQueryComponentConfiguration;
 
 /**
@@ -24,7 +24,7 @@ class Component extends AbstractComponent
     public static function getDependedComponentClasses(): array
     {
         return [
-            \PoP\GraphQLAPIRequest\Component::class,
+            \GraphQLByPoP\GraphQLRequest\Component::class,
         ];
     }
 
