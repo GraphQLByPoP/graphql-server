@@ -9,8 +9,8 @@ use PoP\Root\Component\YAMLServicesTrait;
 use GraphQLByPoP\GraphQLServer\Config\ServiceConfiguration;
 use PoP\Root\Component\CanDisableComponentTrait;
 use PoP\ComponentModel\Container\ContainerBuilderUtils;
-use GraphQLByPoP\GraphQLRequest\Component as GraphQLAPIRequestComponent;
-use GraphQLByPoP\GraphQLQuery\ComponentConfiguration as GraphQLAPIQueryComponentConfiguration;
+use GraphQLByPoP\GraphQLRequest\Component as GraphQLRequestComponent;
+use GraphQLByPoP\GraphQLQuery\ComponentConfiguration as GraphQLQueryComponentConfiguration;
 
 /**
  * Initialize component
@@ -59,7 +59,7 @@ class Component extends AbstractComponent
 
     protected static function resolveEnabled()
     {
-        return GraphQLAPIRequestComponent::isEnabled();
+        return GraphQLRequestComponent::isEnabled();
     }
 
     /**
@@ -85,7 +85,7 @@ class Component extends AbstractComponent
         }
 
         // Boot conditional on having variables treated as expressions for @export directive
-        if (GraphQLAPIQueryComponentConfiguration::enableVariablesAsExpressions()) {
+        if (GraphQLQueryComponentConfiguration::enableVariablesAsExpressions()) {
             ContainerBuilderUtils::attachFieldResolversFromNamespace(__NAMESPACE__ . '\\FieldResolvers\\ConditionalOnEnvironment\\VariablesAsExpressions');
         }
     }

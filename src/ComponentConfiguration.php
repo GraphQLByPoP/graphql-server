@@ -6,7 +6,6 @@ namespace GraphQLByPoP\GraphQLServer;
 
 use PoP\ComponentModel\ComponentConfiguration\EnvironmentValueHelpers;
 use PoP\ComponentModel\ComponentConfiguration\ComponentConfigurationTrait;
-use GraphQLByPoP\GraphQLQuery\ComponentConfiguration as GraphQLAPIQueryComponentConfiguration;
 
 class ComponentConfiguration
 {
