@@ -10,6 +10,7 @@ use PoP\ComponentModel\State\ApplicationState;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\ModelInstance\ModelInstance;
 use PoP\GraphQLAPI\DataStructureFormatters\GraphQLDataStructureFormatter;
+use PoP\API\Response\Schemes as APISchemes;
 
 class VarsHooks extends AbstractHookSet
 {
@@ -30,7 +31,7 @@ class VarsHooks extends AbstractHookSet
     public function addVars($vars_in_array)
     {
         $vars = &$vars_in_array[0];
-        if ($vars['scheme'] == \POP_SCHEME_API && $vars['datastructure'] == GraphQLDataStructureFormatter::getName()) {
+        if ($vars['scheme'] == APISchemes::API && $vars['datastructure'] == GraphQLDataStructureFormatter::getName()) {
             $vars['edit-schema'] = Request::editSchema();
         }
     }
