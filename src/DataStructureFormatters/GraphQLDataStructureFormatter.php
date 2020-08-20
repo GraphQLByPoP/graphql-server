@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace GraphQLByPoP\GraphQLServer\DataStructureFormatters;
 
-use PoP\ComponentModel\State\ApplicationState;
 use PoP\ComponentModel\Feedback\Tokens;
+use PoP\ComponentModel\State\ApplicationState;
 use PoP\ComponentModel\TypeResolvers\UnionTypeHelpers;
+use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 
 /**
  * Change the properties printed for the standard GraphQL response:
@@ -43,16 +44,49 @@ class GraphQLDataStructureFormatter extends \PoP\GraphQLAPI\DataStructureFormatt
      * @param array $item
      * @return array
      */
+    protected function addFieldOrDirectiveEntryToExtensions(array &$extensions, array $item): void
+    {
+        // Single field
+        if (count($item[Tokens::PATH]) == 1) {
+            $extensions['field'] = $item[Tokens::PATH][0];
+            return;
+        }
+        // Two fields: it may be a directive
+        if (count($item[Tokens::PATH]) == 2) {
+            $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
+            $maybeField = $item[Tokens::PATH][0];
+            $maybeDirective = $item[Tokens::PATH][1];
+            $maybeFieldDirectives = array_map(
+                [$fieldQueryInterpreter, 'convertDirectiveToFieldDirective'],
+                $fieldQueryInterpreter->getDirectives($maybeField)
+            );
+            // Find out if the directive is contained in the field
+            if (in_array($maybeDirective, $maybeFieldDirectives)) {
+                $extensions['directive'] = $maybeDirective;
+                return;
+            }
+        }
+        // Many fields
+        $extensions['fields'] = $item[Tokens::PATH];
+    }
+    /**
+     * Change properties for GraphQL
+     *
+     * @param string $dbKey
+     * @param [type] $id
+     * @param array $item
+     * @return array
+     */
     protected function getDBEntryExtensions(string $dbKey, $id, array $item): array
     {
         $vars = ApplicationState::getVars();
         if ($vars['standard-graphql']) {
-            $isSinglePath = count($item[Tokens::PATH]) == 1;
-            return [
+            $extensions = [
                 'type' => $this->getTypeName($dbKey),
                 'id' => $id,
-                $isSinglePath ? 'field' : 'fields' => $isSinglePath ? $item[Tokens::PATH][0] : $item[Tokens::PATH],
             ];
+            $this->addFieldOrDirectiveEntryToExtensions($extensions, $item);
+            return $extensions;
         }
         return parent::getDBEntryExtensions($dbKey, $id, $item);
     }
@@ -68,11 +102,11 @@ class GraphQLDataStructureFormatter extends \PoP\GraphQLAPI\DataStructureFormatt
     {
         $vars = ApplicationState::getVars();
         if ($vars['standard-graphql']) {
-            $isSinglePath = count($item[Tokens::PATH]) == 1;
-            return [
+            $extensions = [
                 'type' => $this->getTypeName($dbKey),
-                $isSinglePath ? 'field' : 'fields' => $isSinglePath ? $item[Tokens::PATH][0] : $item[Tokens::PATH],
             ];
+            $this->addFieldOrDirectiveEntryToExtensions($extensions, $item);
+            return $extensions;
         }
         return parent::getSchemaEntryExtensions($dbKey, $item);
     }
