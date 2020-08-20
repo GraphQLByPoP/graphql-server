@@ -13,6 +13,7 @@ class ComponentConfiguration
 
     private static $addSelfFieldForRootTypeToSchema;
     private static $sortSchemaAlphabetically;
+    private static $enableRemoveIfNullDirective;
 
     public static function addSelfFieldForRootTypeToSchema(): bool
     {
@@ -38,6 +39,24 @@ class ComponentConfiguration
         $envVariable = Environment::SORT_SCHEMA_ALPHABETICALLY;
         $selfProperty = &self::$sortSchemaAlphabetically;
         $defaultValue = true;
+        $callback = [EnvironmentValueHelpers::class, 'toBool'];
+
+        // Initialize property from the environment/hook
+        self::maybeInitializeConfigurationValue(
+            $envVariable,
+            $selfProperty,
+            $defaultValue,
+            $callback
+        );
+        return $selfProperty;
+    }
+
+    public static function enableRemoveIfNullDirective(): bool
+    {
+        // Define properties
+        $envVariable = Environment::ENABLE_REMOVE_IF_NULL_DIRECTIVE;
+        $selfProperty = &self::$enableRemoveIfNullDirective;
+        $defaultValue = false;
         $callback = [EnvironmentValueHelpers::class, 'toBool'];
 
         // Initialize property from the environment/hook

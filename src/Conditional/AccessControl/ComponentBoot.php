@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace GraphQLByPoP\GraphQLServer\Conditional\AccessControl;
 
-use GraphQLByPoP\GraphQLRequest\ComponentConfiguration as GraphQLRequestComponentConfiguration;
-use GraphQLByPoP\GraphQLServer\DirectiveResolvers\ConditionalOnEnvironment\ExportDirectiveResolver;
 use PoP\AccessControl\ComponentConfiguration as AccessControlComponentConfiguration;
 use PoP\ComponentModel\AttachableExtensions\AttachableExtensionGroups;
 use GraphQLByPoP\GraphQLServer\DirectiveResolvers\ConditionalOnEnvironment\SchemaNoCacheCacheControlDirectiveResolver;
@@ -33,12 +31,6 @@ class ComponentBoot
      */
     protected static function attachDynamicDirectiveResolvers()
     {
-        /**
-         * The @export directive depends on the Multiple Query Execution being enabled
-         */
-        if (GraphQLRequestComponentConfiguration::enableMultipleQueryExecution()) {
-            ExportDirectiveResolver::attach(AttachableExtensionGroups::DIRECTIVERESOLVERS);
-        }
         /**
          * If either constant `USE_PRIVATE_SCHEMA_MODE` or `ENABLE_INDIVIDUAL_CONTROL_FOR_PUBLIC_PRIVATE_SCHEMA_MODE`
          * (which enables to define the private schema mode for a specific entry) is true,

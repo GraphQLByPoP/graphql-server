@@ -11,6 +11,11 @@ use PoP\Root\Component\CanDisableComponentTrait;
 use PoP\ComponentModel\Container\ContainerBuilderUtils;
 use GraphQLByPoP\GraphQLRequest\Component as GraphQLRequestComponent;
 use GraphQLByPoP\GraphQLQuery\ComponentConfiguration as GraphQLQueryComponentConfiguration;
+use GraphQLByPoP\GraphQLServer\ComponentConfiguration;
+use GraphQLByPoP\GraphQLRequest\ComponentConfiguration as GraphQLRequestComponentConfiguration;
+use GraphQLByPoP\GraphQLServer\DirectiveResolvers\ConditionalOnEnvironment\ExportDirectiveResolver;
+use GraphQLByPoP\GraphQLServer\DirectiveResolvers\ConditionalOnEnvironment\RemoveIfNullDirectiveResolver;
+use PoP\ComponentModel\AttachableExtensions\AttachableExtensionGroups;
 
 /**
  * Initialize component
@@ -75,9 +80,19 @@ class Component extends AbstractComponent
         ContainerBuilderUtils::registerTypeResolversFromNamespace(__NAMESPACE__ . '\\TypeResolvers');
         ContainerBuilderUtils::instantiateNamespaceServices(__NAMESPACE__ . '\\Hooks');
         ContainerBuilderUtils::attachFieldResolversFromNamespace(__NAMESPACE__ . '\\FieldResolvers', false);
-        ContainerBuilderUtils::attachAndRegisterDirectiveResolversFromNamespace(__NAMESPACE__ . '\\DirectiveResolvers', false);
+        // ContainerBuilderUtils::attachAndRegisterDirectiveResolversFromNamespace(__NAMESPACE__ . '\\DirectiveResolvers', false);
         // Attach the Extensions with a higher priority, so it executes first
         ContainerBuilderUtils::attachFieldResolversFromNamespace(__NAMESPACE__ . '\\FieldResolvers\\Extensions', false, 100);
+
+        // Conditional on Environment
+        // The @export directive depends on the Multiple Query Execution being enabled
+        if (GraphQLRequestComponentConfiguration::enableMultipleQueryExecution()) {
+            ExportDirectiveResolver::attach(AttachableExtensionGroups::DIRECTIVERESOLVERS);
+        }
+        // Attach @removeIfNull?
+        if (ComponentConfiguration::enableRemoveIfNullDirective()) {
+            RemoveIfNullDirectiveResolver::attach(AttachableExtensionGroups::DIRECTIVERESOLVERS);
+        }
 
         // Boot conditional on API package being installed
         if (class_exists('\PoP\AccessControl\Component')) {
