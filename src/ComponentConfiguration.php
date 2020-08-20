@@ -56,7 +56,7 @@ class ComponentConfiguration
         // Define properties
         $envVariable = Environment::ENABLE_REMOVE_IF_NULL_DIRECTIVE;
         $selfProperty = &self::$enableRemoveIfNullDirective;
-        $defaultValue = false;
+        $defaultValue = true;
         $callback = [EnvironmentValueHelpers::class, 'toBool'];
 
         // Initialize property from the environment/hook
