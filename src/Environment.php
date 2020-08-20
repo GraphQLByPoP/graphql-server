@@ -9,6 +9,7 @@ class Environment
     public const ADD_SELF_FIELD_FOR_ROOT_TYPE_TO_SCHEMA = 'ADD_SELF_FIELD_FOR_ROOT_TYPE_TO_SCHEMA';
     public const SORT_SCHEMA_ALPHABETICALLY = 'SORT_SCHEMA_ALPHABETICALLY';
     public const ENABLE_REMOVE_IF_NULL_DIRECTIVE = 'ENABLE_REMOVE_IF_NULL_DIRECTIVE';
+    public const ENABLE_PROACTIVE_FEEDBACK = 'ENABLE_PROACTIVE_FEEDBACK';
 
     public static function addGlobalFieldsToSchema(): bool
     {

@@ -14,6 +14,7 @@ class ComponentConfiguration
     private static $addSelfFieldForRootTypeToSchema;
     private static $sortSchemaAlphabetically;
     private static $enableRemoveIfNullDirective;
+    private static $enableProactiveFeedback;
 
     public static function addSelfFieldForRootTypeToSchema(): bool
     {
@@ -56,6 +57,24 @@ class ComponentConfiguration
         // Define properties
         $envVariable = Environment::ENABLE_REMOVE_IF_NULL_DIRECTIVE;
         $selfProperty = &self::$enableRemoveIfNullDirective;
+        $defaultValue = true;
+        $callback = [EnvironmentValueHelpers::class, 'toBool'];
+
+        // Initialize property from the environment/hook
+        self::maybeInitializeConfigurationValue(
+            $envVariable,
+            $selfProperty,
+            $defaultValue,
+            $callback
+        );
+        return $selfProperty;
+    }
+
+    public static function enableProactiveFeedback(): bool
+    {
+        // Define properties
+        $envVariable = Environment::ENABLE_PROACTIVE_FEEDBACK;
+        $selfProperty = &self::$enableProactiveFeedback;
         $defaultValue = true;
         $callback = [EnvironmentValueHelpers::class, 'toBool'];
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GraphQLByPoP\GraphQLServer\DataStructureFormatters;
 
+use GraphQLByPoP\GraphQLServer\ComponentConfiguration;
 use PoP\ComponentModel\Feedback\Tokens;
 use PoP\ComponentModel\State\ApplicationState;
 use PoP\ComponentModel\TypeResolvers\UnionTypeHelpers;
@@ -36,6 +37,20 @@ class GraphQLDataStructureFormatter extends \PoP\GraphQLAPI\DataStructureFormatt
         }
         return $typeName;
     }
+
+
+    /**
+     * Indicate if to add entry "extensions" as a top-level entry
+     */
+    protected function addTopLevelExtensionsEntryToResponse(): bool
+    {
+        $vars = ApplicationState::getVars();
+        if ($vars['standard-graphql']) {
+            return ComponentConfiguration::enableProactiveFeedback();
+        }
+        return parent::addTopLevelExtensionsEntryToResponse();
+    }
+
     /**
      * Change properties for GraphQL
      *
@@ -127,12 +142,14 @@ class GraphQLDataStructureFormatter extends \PoP\GraphQLAPI\DataStructureFormatt
             unset($extensions['location']);
             $entry['location'] = $location;
         }
-        if ($extensions = array_merge(
-            $this->getQueryEntryExtensions(),
-            $extensions
-        )) {
-            $entry['extensions'] = $extensions;
-        };
+        if ($this->addTopLevelExtensionsEntryToResponse()) {
+            if ($extensions = array_merge(
+                $this->getQueryEntryExtensions(),
+                $extensions
+            )) {
+                $entry['extensions'] = $extensions;
+            };
+        }
         return $entry;
     }
 
