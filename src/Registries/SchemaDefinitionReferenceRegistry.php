@@ -267,6 +267,8 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
              * Can NOT sort interfaces yet! Because interfaces may depend on other interfaces,
              * they must follow their current order to be initialized,
              * which happens when creating instances of `InterfaceType` in type `Schema`
+             *
+             * @todo Find a workaround if interfaces need to be sorted
              */
             // if (!is_null($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_INTERFACES])) {
             //     ksort($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_INTERFACES]);
