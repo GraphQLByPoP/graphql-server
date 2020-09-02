@@ -66,6 +66,9 @@ class DirectiveFieldResolver extends AbstractDBDataFieldResolver
         $instanceManager = InstanceManagerFacade::getInstance();
         switch ($fieldName) {
             case 'locations':
+                /**
+                 * @var DirectiveLocationEnum
+                 */
                 $directiveLocationEnum = $instanceManager->getInstance(DirectiveLocationEnum::class);
                 return $directiveLocationEnum->getName();
         }
@@ -77,6 +80,9 @@ class DirectiveFieldResolver extends AbstractDBDataFieldResolver
         $instanceManager = InstanceManagerFacade::getInstance();
         switch ($fieldName) {
             case 'locations':
+                /**
+                 * @var DirectiveLocationEnum
+                 */
                 $directiveLocationEnum = $instanceManager->getInstance(DirectiveLocationEnum::class);
                 return $directiveLocationEnum->getValues();
         }

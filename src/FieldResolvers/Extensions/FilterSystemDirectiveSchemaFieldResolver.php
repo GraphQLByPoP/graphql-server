@@ -61,6 +61,9 @@ class FilterSystemDirectiveSchemaFieldResolver extends SchemaFieldResolver
         $instanceManager = InstanceManagerFacade::getInstance();
         switch ($fieldName) {
             case 'directives':
+                /**
+                 * @var DirectiveTypeEnum
+                 */
                 $directiveTypeEnum = $instanceManager->getInstance(DirectiveTypeEnum::class);
                 return array_merge(
                     $schemaFieldArgs,
@@ -107,6 +110,9 @@ class FilterSystemDirectiveSchemaFieldResolver extends SchemaFieldResolver
                 $directiveIDs = $schema->getDirectiveIDs();
                 if ($ofTypes = $fieldArgs['ofTypes']) {
                     $instanceManager = InstanceManagerFacade::getInstance();
+                    /**
+                     * @var DirectiveTypeEnum
+                     */
                     $directiveTypeEnum = $instanceManager->getInstance(DirectiveTypeEnum::class);
                     // Convert the enum from uppercase (as exposed in the API) to lowercase (as is its real value)
                     $ofTypes = array_map(

@@ -81,6 +81,9 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
         $instanceManager = InstanceManagerFacade::getInstance();
         switch ($fieldName) {
             case 'kind':
+                /**
+                 * @var TypeKindEnum
+                 */
                 $typeKindEnum = $instanceManager->getInstance(TypeKindEnum::class);
                 return $typeKindEnum->getName();
         }
@@ -92,6 +95,9 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
         $instanceManager = InstanceManagerFacade::getInstance();
         switch ($fieldName) {
             case 'kind':
+                /**
+                 * @var TypeKindEnum
+                 */
                 $typeKindEnum = $instanceManager->getInstance(TypeKindEnum::class);
                 return $typeKindEnum->getValues();
         }

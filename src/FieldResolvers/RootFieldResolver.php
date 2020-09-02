@@ -121,6 +121,9 @@ class RootFieldResolver extends AbstractDBDataFieldResolver
                 }
                 // Obtain the instance of the schema
                 $instanceManager = InstanceManagerFacade::getInstance();
+                /**
+                 * @var SchemaTypeDataLoader
+                 */
                 $schemaTypeDataLoader = $instanceManager->getInstance(SchemaTypeDataLoader::class);
                 $schemaInstances = $schemaTypeDataLoader->getObjects([$schemaID]);
                 $schema = $schemaInstances[0];
