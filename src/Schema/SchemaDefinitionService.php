@@ -5,14 +5,18 @@ declare(strict_types=1);
 namespace GraphQLByPoP\GraphQLServer\Schema;
 
 use PoP\Engine\TypeResolvers\RootTypeResolver;
-use GraphQLByPoP\GraphQLServer\Schema\SchemaDefinitionServiceInterface;
+use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\Facades\Instances\InstanceManagerFacade;
+use GraphQLByPoP\GraphQLServer\Schema\SchemaDefinitionServiceInterface;
 
 class SchemaDefinitionService extends \PoP\ComponentModel\Schema\SchemaDefinitionService implements SchemaDefinitionServiceInterface
 {
     public function getTypeName(string $typeResolverClass): string
     {
         $instanceManager = InstanceManagerFacade::getInstance();
+        /**
+         * @var TypeResolverInterface
+         */
         $typeResolver = $instanceManager->getInstance($typeResolverClass);
         return $typeResolver->getMaybeNamespacedTypeName();
     }

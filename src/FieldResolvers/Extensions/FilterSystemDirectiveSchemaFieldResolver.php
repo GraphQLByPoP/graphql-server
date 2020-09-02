@@ -5,16 +5,17 @@ declare(strict_types=1);
 namespace GraphQLByPoP\GraphQLServer\FieldResolvers\Extensions;
 
 use PoP\API\Schema\SchemaDefinition;
-use GraphQLByPoP\GraphQLServer\Enums\DirectiveTypeEnum;
 use PoP\ComponentModel\Schema\SchemaHelpers;
-use GraphQLByPoP\GraphQLServer\Schema\SchemaDefinitionHelpers;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
-use GraphQLByPoP\GraphQLServer\TypeResolvers\SchemaTypeResolver;
 use PoP\Translation\Facades\TranslationAPIFacade;
-use GraphQLByPoP\GraphQLServer\FieldResolvers\SchemaFieldResolver;
+use GraphQLByPoP\GraphQLServer\Enums\DirectiveTypeEnum;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
+use GraphQLByPoP\GraphQLServer\Schema\SchemaDefinitionHelpers;
 use PoP\ComponentModel\Facades\Instances\InstanceManagerFacade;
+use GraphQLByPoP\GraphQLServer\TypeResolvers\SchemaTypeResolver;
+use GraphQLByPoP\GraphQLServer\FieldResolvers\SchemaFieldResolver;
 use PoP\ComponentModel\Facades\Registries\DirectiveRegistryFacade;
+use PoP\ComponentModel\DirectiveResolvers\DirectiveResolverInterface;
 
 class FilterSystemDirectiveSchemaFieldResolver extends SchemaFieldResolver
 {
@@ -116,6 +117,9 @@ class FilterSystemDirectiveSchemaFieldResolver extends SchemaFieldResolver
                     $ofTypeDirectiveResolverClasses = array_filter(
                         $directiveRegistry->getDirectiveResolverClasses(),
                         function ($directiveResolverClass) use ($instanceManager, $ofTypes) {
+                            /**
+                             * @var DirectiveResolverInterface
+                             */
                             $directiveResolver = $instanceManager->getInstance($directiveResolverClass);
                             return in_array($directiveResolver->getDirectiveType(), $ofTypes);
                         }
