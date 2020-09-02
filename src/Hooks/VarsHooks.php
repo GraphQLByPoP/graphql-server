@@ -28,7 +28,10 @@ class VarsHooks extends AbstractHookSet
         );
     }
 
-    public function addVars($vars_in_array)
+    /**
+     * @param array<array> $vars_in_array
+     */
+    public function addVars(array $vars_in_array): void
     {
         $vars = &$vars_in_array[0];
         if ($vars['scheme'] == APISchemes::API && $vars['datastructure'] == GraphQLDataStructureFormatter::getName()) {
