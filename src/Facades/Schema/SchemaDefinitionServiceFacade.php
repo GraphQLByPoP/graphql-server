@@ -11,6 +11,10 @@ class SchemaDefinitionServiceFacade
 {
     public static function getInstance(): SchemaDefinitionServiceInterface
     {
-        return ContainerBuilderFactory::getInstance()->get('schema_definition_service');
+        /**
+         * @var SchemaDefinitionServiceInterface
+         */
+        $service = ContainerBuilderFactory::getInstance()->get('schema_definition_service');
+        return $service;
     }
 }
