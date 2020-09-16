@@ -9,12 +9,16 @@ use GraphQLByPoP\GraphQLServer\Facades\Registries\SchemaDefinitionReferenceRegis
 
 class SchemaDefinitionReferenceTypeDataLoader extends AbstractTypeDataLoader
 {
+    /**
+     * @return AbstractSchemaDefinitionReferenceObject[]
+     */
     public function getObjects(array $ids): array
     {
         $schemaDefinitionReferenceRegistry = SchemaDefinitionReferenceRegistryFacade::getInstance();
-        return array_map(
+        // Filter out potential `null` results
+        return array_filter(array_map(
             fn ($schemaDefinitionID) => $schemaDefinitionReferenceRegistry->getSchemaDefinitionReference($schemaDefinitionID),
             $ids
-        );
+        ));
     }
 }
