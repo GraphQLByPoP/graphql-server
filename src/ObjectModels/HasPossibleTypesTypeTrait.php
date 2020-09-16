@@ -11,7 +11,14 @@ trait HasPossibleTypesTypeTrait
 {
     use ResolveTypeSchemaDefinitionReferenceTrait;
 
-    protected $possibleTypes;
+    /**
+     * @var AbstractType[]
+     */
+    protected array $possibleTypes;
+
+    /**
+     * @return AbstractType[]
+     */
     public function getPossibleTypes(): array
     {
         return $this->possibleTypes;

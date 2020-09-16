@@ -158,7 +158,11 @@ class SchemaDefinitionHelpers
                     $fieldName
                 ]
             ));
-            $fields[] = $schemaDefinitionReferenceRegistry->getSchemaDefinitionReference($schemaDefinitionID);
+            /**
+             * @var Field
+             */
+            $field = $schemaDefinitionReferenceRegistry->getSchemaDefinitionReference($schemaDefinitionID);
+            $fields[] = $field;
         }
         return $fields;
     }

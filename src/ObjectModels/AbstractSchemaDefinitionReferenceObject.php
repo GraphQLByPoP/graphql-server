@@ -8,10 +8,19 @@ use GraphQLByPoP\GraphQLServer\Facades\Registries\SchemaDefinitionReferenceRegis
 
 abstract class AbstractSchemaDefinitionReferenceObject
 {
-    protected $id;
-    protected $fullSchemaDefinition;
-    protected $schemaDefinitionPath;
-    protected $schemaDefinition;
+    protected string $id;
+    /**
+     * @var <string, mixed>
+     */
+    protected array $fullSchemaDefinition;
+    /**
+     * @var string[]
+     */
+    protected array $schemaDefinitionPath;
+    /**
+     * @var <string, mixed>
+     */
+    protected array $schemaDefinition;
     /**
      * Build a new Schema Definition Reference Object
      *

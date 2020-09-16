@@ -24,11 +24,18 @@ use GraphQLByPoP\GraphQLServer\Registries\SchemaDefinitionReferenceRegistryInter
 
 class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegistryInterface
 {
-
-    protected $fullSchemaDefinition;
-    protected $fullSchemaDefinitionReferenceMap;
-    protected $fullSchemaDefinitionReferenceDictionary;
-    protected $dynamicTypes = [];
+    /**
+     * @var array<string, mixed>
+     */
+    protected ?array $fullSchemaDefinition = null;
+    /**
+     * @var array<string, AbstractSchemaDefinitionReferenceObject>
+     */
+    protected array $fullSchemaDefinitionReferenceDictionary = [];
+    /**
+     * @var AbstractSchemaDefinitionReferenceObject[]
+     */
+    protected array $dynamicTypes = [];
 
     /**
      * It returns the full schema, expanded with all data required to satisfy

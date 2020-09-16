@@ -10,7 +10,10 @@ use PoP\ComponentModel\Schema\SchemaDefinition;
 
 class InputObjectType extends AbstractDynamicType
 {
-    protected $inputValues;
+    /**
+     * @var InputValue[]
+     */
+    protected array $inputValues;
 
     public function __construct(array &$fullSchemaDefinition, array $schemaDefinitionPath, array $customDefinition = [])
     {

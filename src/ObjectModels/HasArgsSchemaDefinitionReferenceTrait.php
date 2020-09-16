@@ -9,7 +9,11 @@ use GraphQLByPoP\GraphQLServer\ObjectModels\InputValue;
 
 trait HasArgsSchemaDefinitionReferenceTrait
 {
-    protected $args;
+    /**
+     * @var InputValue[]
+     */
+    protected array $args;
+
     protected function initArgs(array &$fullSchemaDefinition, array $schemaDefinitionPath): void
     {
         $this->args = [];

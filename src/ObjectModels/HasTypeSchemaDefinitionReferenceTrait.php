@@ -12,7 +12,8 @@ trait HasTypeSchemaDefinitionReferenceTrait
 {
     use ResolveTypeSchemaDefinitionReferenceTrait;
 
-    protected $type;
+    protected AbstractType $type;
+
     public function getType(): AbstractType
     {
         return $this->type;

@@ -8,7 +8,7 @@ use GraphQLByPoP\GraphQLServer\ObjectModels\AbstractType;
 
 abstract class AbstractNestableType extends AbstractType
 {
-    protected $nestedType;
+    protected AbstractType $nestedType;
     public function __construct(array &$fullSchemaDefinition, array $schemaDefinitionPath, AbstractType $nestedType, array $customDefinition = [])
     {
         parent::__construct($fullSchemaDefinition, $schemaDefinitionPath, $customDefinition);

@@ -13,7 +13,10 @@ use GraphQLByPoP\GraphQLServer\Facades\Registries\SchemaDefinitionReferenceRegis
 
 trait HasInterfacesTypeTrait
 {
-    protected $interfaces;
+    /**
+     * @var InterfaceType[]
+     */
+    protected array $interfaces;
     /**
      * Reference the already-registered interfaces
      *
@@ -39,6 +42,9 @@ trait HasInterfacesTypeTrait
                 ]
             );
             // If the interface was not registered, that means that no FieldResolver implements it
+            /**
+             * @var InterfaceType
+             */
             $interface = $schemaDefinitionReferenceRegistry->getSchemaDefinitionReference($schemaDefinitionID);
             if (is_null($interface)) {
                 $translationAPI = TranslationAPIFacade::getInstance();

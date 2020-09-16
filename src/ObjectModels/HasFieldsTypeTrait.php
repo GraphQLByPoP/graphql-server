@@ -11,7 +11,11 @@ use GraphQLByPoP\GraphQLServer\Schema\SchemaDefinitionHelpers;
 
 trait HasFieldsTypeTrait
 {
-    protected $fields;
+    /**
+     * @var Field[]
+     */
+    protected array $fields;
+
     protected function initFields(array &$fullSchemaDefinition, array $schemaDefinitionPath, bool $includeConnections): void
     {
         $this->fields = [];

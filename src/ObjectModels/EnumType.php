@@ -13,7 +13,10 @@ class EnumType extends AbstractDynamicType
 {
     use NonDocumentableTypeTrait;
 
-    protected $enumValues;
+    /**
+     * @var EnumValue[]
+     */
+    protected array $enumValues;
 
     public function __construct(array &$fullSchemaDefinition, array $schemaDefinitionPath, array $customDefinition = [])
     {

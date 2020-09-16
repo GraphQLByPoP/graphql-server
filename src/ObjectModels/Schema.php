@@ -17,9 +17,15 @@ use GraphQLByPoP\GraphQLServer\Facades\Registries\SchemaDefinitionReferenceRegis
 
 class Schema
 {
-    protected $id;
-    protected $types;
-    protected $directives;
+    protected string $id;
+    /**
+     * @var ScalarType[]
+     */
+    protected array $types;
+    /**
+     * @var Directive[]
+     */
+    protected array $directives;
 
     public function __construct(array $fullSchemaDefinition, string $id)
     {
@@ -192,7 +198,7 @@ class Schema
             new UnionType($fullSchemaDefinition, $typeSchemaDefinitionPath) :
             new ObjectType($fullSchemaDefinition, $typeSchemaDefinitionPath);
     }
-    protected function getDirectiveInstance(array &$fullSchemaDefinition, array $directiveSchemaDefinitionPath)
+    protected function getDirectiveInstance(array &$fullSchemaDefinition, array $directiveSchemaDefinitionPath): Directive
     {
         return new Directive($fullSchemaDefinition, $directiveSchemaDefinitionPath);
     }
