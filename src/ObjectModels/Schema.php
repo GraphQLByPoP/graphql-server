@@ -18,11 +18,9 @@ use GraphQLByPoP\GraphQLServer\Facades\Registries\SchemaDefinitionReferenceRegis
 class Schema
 {
     protected $id;
-    protected $queryTypeResolverInstance;
-    protected $mutationTypeResolverInstance;
-    protected $subscriptionTypeResolverInstance;
     protected $types;
     protected $directives;
+
     public function __construct(array $fullSchemaDefinition, string $id)
     {
         $this->id = $id;
