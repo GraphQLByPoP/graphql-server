@@ -13,9 +13,7 @@ class SchemaDefinitionReferenceTypeDataLoader extends AbstractTypeDataLoader
     {
         $schemaDefinitionReferenceRegistry = SchemaDefinitionReferenceRegistryFacade::getInstance();
         return array_map(
-            function ($schemaDefinitionID) use ($schemaDefinitionReferenceRegistry) {
-                return $schemaDefinitionReferenceRegistry->getSchemaDefinitionReference($schemaDefinitionID);
-            },
+            fn ($schemaDefinitionID) => $schemaDefinitionReferenceRegistry->getSchemaDefinitionReference($schemaDefinitionID),
             $ids
         );
     }
