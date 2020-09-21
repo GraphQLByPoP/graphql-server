@@ -16,6 +16,7 @@ use GraphQLByPoP\GraphQLRequest\ComponentConfiguration as GraphQLRequestComponen
 use GraphQLByPoP\GraphQLServer\DirectiveResolvers\ConditionalOnEnvironment\ExportDirectiveResolver;
 use GraphQLByPoP\GraphQLServer\DirectiveResolvers\ConditionalOnEnvironment\RemoveIfNullDirectiveResolver;
 use PoP\ComponentModel\AttachableExtensions\AttachableExtensionGroups;
+use PoP\API\ComponentConfiguration as APIComponentConfiguration;
 
 /**
  * Initialize component
@@ -110,6 +111,10 @@ class Component extends AbstractComponent
         // Boot conditional on having variables treated as expressions for @export directive
         if (GraphQLQueryComponentConfiguration::enableVariablesAsExpressions()) {
             ContainerBuilderUtils::attachFieldResolversFromNamespace(__NAMESPACE__ . '\\FieldResolvers\\ConditionalOnEnvironment\\VariablesAsExpressions');
+        }
+        // Boot conditional on having embeddable fields
+        if (APIComponentConfiguration::enableEmbeddableFields()) {
+            ContainerBuilderUtils::attachFieldResolversFromNamespace(__NAMESPACE__ . '\\FieldResolvers\\ConditionalOnEnvironment\\EmbeddableFields');
         }
     }
 }
