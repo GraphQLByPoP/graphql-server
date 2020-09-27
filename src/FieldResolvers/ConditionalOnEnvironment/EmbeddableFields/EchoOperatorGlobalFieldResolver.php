@@ -23,15 +23,15 @@ class EchoOperatorGlobalFieldResolver extends OperatorGlobalFieldResolver
         return false;
     }
 
-    /**
-     * Higher priority => Process before the global fieldResolver,
-     * so this one gets registered (otherwise, since `ADD_GLOBAL_FIELDS_TO_SCHEMA`
-     * is false, the field would be removed)
-     */
-    public static function getPriorityToAttachClasses(): ?int
-    {
-        return 20;
-    }
+    // /**
+    //  * Higher priority => Process before the global fieldResolver,
+    //  * so this one gets registered (otherwise, since `ADD_GLOBAL_FIELDS_TO_SCHEMA`
+    //  * is false, the field would be removed)
+    //  */
+    // public static function getPriorityToAttachClasses(): ?int
+    // {
+    //     return 20;
+    // }
 
     /**
      * Only the `echo` field is to be exposed
@@ -41,7 +41,7 @@ class EchoOperatorGlobalFieldResolver extends OperatorGlobalFieldResolver
     public static function getFieldNamesToResolve(): array
     {
         return [
-            'echo',
+            'echoStr',
         ];
     }
 
@@ -51,7 +51,7 @@ class EchoOperatorGlobalFieldResolver extends OperatorGlobalFieldResolver
     public function getSchemaFieldType(TypeResolverInterface $typeResolver, string $fieldName): ?string
     {
         $types = [
-            'echo' => SchemaDefinition::TYPE_STRING,
+            'echoStr' => SchemaDefinition::TYPE_STRING,
         ];
         return $types[$fieldName] ?? parent::getSchemaFieldType($typeResolver, $fieldName);
     }
@@ -64,7 +64,7 @@ class EchoOperatorGlobalFieldResolver extends OperatorGlobalFieldResolver
         $schemaFieldArgs = parent::getSchemaFieldArgs($typeResolver, $fieldName);
         $translationAPI = TranslationAPIFacade::getInstance();
         switch ($fieldName) {
-            case 'echo':
+            case 'echoStr':
                 return array_merge(
                     $schemaFieldArgs,
                     [
@@ -88,8 +88,32 @@ class EchoOperatorGlobalFieldResolver extends OperatorGlobalFieldResolver
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         $descriptions = [
-            'echo' => $translationAPI->__('Repeat back the input string', 'graphql-api'),
+            'echoStr' => $translationAPI->__('Repeat back the input string', 'graphql-api'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($typeResolver, $fieldName);
+    }
+
+    /**
+     * @param array<string, mixed> $fieldArgs
+     * @param array<string, mixed>|null $variables
+     * @param array<string, mixed>|null $expressions
+     * @param array<string, mixed> $options
+     * @return mixed
+     */
+    public function resolveValue(
+        TypeResolverInterface $typeResolver,
+        object $resultItem,
+        string $fieldName,
+        array $fieldArgs = [],
+        ?array $variables = null,
+        ?array $expressions = null,
+        array $options = []
+    ) {
+        switch ($fieldName) {
+            case 'echoStr':
+                return $fieldArgs['value'];
+        }
+
+        return parent::resolveValue($typeResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
     }
 }
