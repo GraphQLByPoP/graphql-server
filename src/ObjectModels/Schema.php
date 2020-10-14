@@ -11,7 +11,7 @@ use GraphQLByPoP\GraphQLServer\ObjectModels\Directive;
 use GraphQLByPoP\GraphQLServer\ObjectModels\ScalarType;
 use GraphQLByPoP\GraphQLServer\ObjectModels\AbstractType;
 use GraphQLByPoP\GraphQLServer\Schema\SchemaDefinitionHelpers;
-use GraphQLByPoP\GraphQLServer\Facades\Schema\SchemaDefinitionServiceFacade;
+use GraphQLByPoP\GraphQLServer\Facades\Schema\GraphQLSchemaDefinitionServiceFacade;
 use GraphQLByPoP\GraphQLServer\Schema\SchemaDefinition as GraphQLServerSchemaDefinition;
 use GraphQLByPoP\GraphQLServer\Facades\Registries\SchemaDefinitionReferenceRegistryFacade;
 
@@ -110,11 +110,11 @@ class Schema
             $this->directives[] = $this->getDirectiveInstance($fullSchemaDefinition, $directiveSchemaDefinitionPath);
         }
 
-        $schemaDefinitionService = SchemaDefinitionServiceFacade::getInstance();
+        $graphQLSchemaDefinitionService = GraphQLSchemaDefinitionServiceFacade::getInstance();
 
         // Initialize the different types
         // 1. queryType
-        $queryTypeSchemaKey = $schemaDefinitionService->getQueryTypeSchemaKey();
+        $queryTypeSchemaKey = $graphQLSchemaDefinitionService->getQueryTypeSchemaKey();
         $queryTypeSchemaDefinitionPath = [
             SchemaDefinition::ARGNAME_TYPES,
             $queryTypeSchemaKey,
@@ -122,7 +122,7 @@ class Schema
         $this->queryType = $this->getTypeInstance($fullSchemaDefinition, $queryTypeSchemaDefinitionPath);
 
         // 2. mutationType
-        $mutationTypeName = $schemaDefinitionService->getMutationTypeName();
+        $mutationTypeName = $graphQLSchemaDefinitionService->getMutationTypeName();
         if ($mutationTypeName) {
             $mutationTypeSchemaDefinitionPath = [
                 SchemaDefinition::ARGNAME_TYPES,
@@ -132,7 +132,7 @@ class Schema
         }
 
         // 3. subscriptionType
-        $subscriptionTypeName = $schemaDefinitionService->getSubscriptionTypeName();
+        $subscriptionTypeName = $graphQLSchemaDefinitionService->getSubscriptionTypeName();
         if ($subscriptionTypeName) {
             $subscriptionTypeSchemaDefinitionPath = [
                 SchemaDefinition::ARGNAME_TYPES,

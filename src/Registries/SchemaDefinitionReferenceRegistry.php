@@ -16,7 +16,7 @@ use PoP\ComponentModel\Directives\DirectiveTypes;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\API\Facades\SchemaDefinitionRegistryFacade;
 use PoP\ComponentModel\Facades\Cache\PersistentCacheFacade;
-use GraphQLByPoP\GraphQLServer\Facades\Schema\SchemaDefinitionServiceFacade;
+use GraphQLByPoP\GraphQLServer\Facades\Schema\GraphQLSchemaDefinitionServiceFacade;
 use PoP\API\ComponentConfiguration as APIComponentConfiguration;
 use GraphQLByPoP\GraphQLServer\Schema\SchemaDefinition as GraphQLServerSchemaDefinition;
 use GraphQLByPoP\GraphQLServer\ObjectModels\AbstractSchemaDefinitionReferenceObject;
@@ -88,8 +88,8 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                 $this->fullSchemaDefinition = $schemaDefinitionRegistry->getSchemaDefinition($fieldArgs);
 
                 // Convert the schema from PoP's format to what GraphQL needs to work with
-                $schemaDefinitionService = SchemaDefinitionServiceFacade::getInstance();
-                $queryTypeSchemaKey = $schemaDefinitionService->getQueryTypeSchemaKey();
+                $graphQLSchemaDefinitionService = GraphQLSchemaDefinitionServiceFacade::getInstance();
+                $queryTypeSchemaKey = $graphQLSchemaDefinitionService->getQueryTypeSchemaKey();
                 $this->prepareSchemaDefinitionForGraphQL($queryTypeSchemaKey);
 
                 // Store in the cache
@@ -123,8 +123,8 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
              * Check if to remove the "self" field everywhere, or if to keep it just for the Root type
              */
             $keepSelfFieldForRootType = ComponentConfiguration::addSelfFieldForRootTypeToSchema();
-            $schemaDefinitionService = SchemaDefinitionServiceFacade::getInstance();
-            $queryTypeSchemaKey = $schemaDefinitionService->getQueryTypeSchemaKey();
+            $graphQLSchemaDefinitionService = GraphQLSchemaDefinitionServiceFacade::getInstance();
+            $queryTypeSchemaKey = $graphQLSchemaDefinitionService->getQueryTypeSchemaKey();
             foreach (array_keys($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES]) as $typeSchemaKey) {
                 if (!$keepSelfFieldForRootType || $typeSchemaKey != $queryTypeSchemaKey) {
                     unset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$typeSchemaKey][SchemaDefinition::ARGNAME_CONNECTIONS]['self']);

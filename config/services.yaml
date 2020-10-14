@@ -7,10 +7,10 @@ services:
         class: \GraphQLByPoP\GraphQLServer\Registries\SchemaDefinitionReferenceRegistry
 
     PoP\ComponentModel\Schema\SchemaDefinitionServiceInterface:
-        class: \GraphQLByPoP\GraphQLServer\Schema\SchemaDefinitionService
+        class: \GraphQLByPoP\GraphQLServer\Schema\GraphQLSchemaDefinitionService
 
-    GraphQLByPoP\GraphQLServer\Schema\SchemaDefinitionServiceInterface:
-        class: \GraphQLByPoP\GraphQLServer\Schema\SchemaDefinitionService
+    GraphQLByPoP\GraphQLServer\Schema\GraphQLSchemaDefinitionServiceInterface:
+        class: \GraphQLByPoP\GraphQLServer\Schema\GraphQLSchemaDefinitionService
 
     GraphQLByPoP\GraphQLServer\Hooks\:
         resource: '../src/Hooks/*'

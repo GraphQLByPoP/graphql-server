@@ -7,9 +7,10 @@ namespace GraphQLByPoP\GraphQLServer\Schema;
 use PoP\Engine\TypeResolvers\RootTypeResolver;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\Facades\Instances\InstanceManagerFacade;
-use GraphQLByPoP\GraphQLServer\Schema\SchemaDefinitionServiceInterface;
+use GraphQLByPoP\GraphQLServer\Schema\GraphQLSchemaDefinitionServiceInterface;
+use PoP\ComponentModel\Schema\SchemaDefinitionService;
 
-class SchemaDefinitionService extends \PoP\ComponentModel\Schema\SchemaDefinitionService implements SchemaDefinitionServiceInterface
+class GraphQLSchemaDefinitionService extends SchemaDefinitionService implements GraphQLSchemaDefinitionServiceInterface
 {
     public function getTypeName(string $typeResolverClass): string
     {
