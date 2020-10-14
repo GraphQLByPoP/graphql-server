@@ -14,7 +14,7 @@ class SchemaDefinitionServiceFacade
         /**
          * @var SchemaDefinitionServiceInterface
          */
-        $service = ContainerBuilderFactory::getInstance()->get('schema_definition_service');
+        $service = ContainerBuilderFactory::getInstance()->get(SchemaDefinitionServiceInterface::class);
         return $service;
     }
 }

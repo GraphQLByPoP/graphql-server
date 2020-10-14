@@ -6,6 +6,7 @@ namespace GraphQLByPoP\GraphQLServer\Config;
 
 use PoP\Root\Component\PHPServiceConfigurationTrait;
 use PoP\ComponentModel\Container\ContainerBuilderUtils;
+use PoP\ComponentModel\DataStructure\DataStructureManagerInterface;
 
 class ServiceConfiguration
 {
@@ -17,7 +18,7 @@ class ServiceConfiguration
          * Override class GraphQLDataStructureFormatter from GraphQLAPI
          */
         ContainerBuilderUtils::injectServicesIntoService(
-            'data_structure_manager',
+            DataStructureManagerInterface::class,
             'GraphQLByPoP\\GraphQLServer\\DataStructureFormatters',
             'add'
         );

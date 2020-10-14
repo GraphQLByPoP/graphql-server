@@ -1,21 +1,19 @@
 services:
     _defaults:
-        bind:
-            PoP\Hooks\HooksAPIInterface: '@hooks_api'
-            PoP\Translation\TranslationAPIInterface: '@translation_api'
+        public: true
+        autowire: true
 
-    schema_definition_reference_registry:
+    GraphQLByPoP\GraphQLServer\Registries\SchemaDefinitionReferenceRegistryInterface:
         class: \GraphQLByPoP\GraphQLServer\Registries\SchemaDefinitionReferenceRegistry
-        public: true
 
-    schema_definition_service:
+    PoP\ComponentModel\Schema\SchemaDefinitionServiceInterface:
         class: \GraphQLByPoP\GraphQLServer\Schema\SchemaDefinitionService
-        public: true
+
+    GraphQLByPoP\GraphQLServer\Schema\SchemaDefinitionServiceInterface:
+        class: \GraphQLByPoP\GraphQLServer\Schema\SchemaDefinitionService
 
     GraphQLByPoP\GraphQLServer\Hooks\:
         resource: '../src/Hooks/*'
-        public: true
 
     GraphQLByPoP\GraphQLServer\DataStructureFormatters\:
         resource: '../src/DataStructureFormatters/*'
-        public: true

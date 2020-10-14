@@ -14,7 +14,7 @@ class SchemaDefinitionReferenceRegistryFacade
         /**
          * @var SchemaDefinitionReferenceRegistryInterface
          */
-        $service = ContainerBuilderFactory::getInstance()->get('schema_definition_reference_registry');
+        $service = ContainerBuilderFactory::getInstance()->get(SchemaDefinitionReferenceRegistryInterface::class);
         return $service;
     }
 }
