@@ -37,7 +37,7 @@ class FilterSystemDirectiveSchemaFieldResolver extends SchemaFieldResolver
     //  *
     //  * @param TypeResolverInterface $typeResolver
     //  * @param string $fieldName
-    //  * @param array $fieldArgs
+    //  * @param array<string, mixed> $fieldArgs
     //  * @return boolean
     //  */
     // public function resolveCanProcess(TypeResolverInterface $typeResolver, string $fieldName, array $fieldArgs = []): bool
