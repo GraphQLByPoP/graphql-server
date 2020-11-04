@@ -9,7 +9,7 @@ use PoP\API\Environment as APIEnvironment;
 use GraphQLByPoP\GraphQLQuery\ComponentConfiguration as GraphQLQueryComponentConfiguration;
 use GraphQLByPoP\GraphQLRequest\ComponentConfiguration as GraphQLRequestComponentConfiguration;
 use PoP\API\ComponentConfiguration as APIComponentConfiguration;
-use PoP\Engine\Hooks\AbstractHookSet;
+use PoP\Hooks\AbstractHookSet;
 use PoP\ComponentModel\ComponentConfiguration\ComponentConfigurationHelpers;
 
 class ComponentConfigurationHookSet extends AbstractHookSet
