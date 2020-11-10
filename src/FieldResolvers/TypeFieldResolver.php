@@ -173,8 +173,7 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
                 // From GraphQL spec (https://graphql.github.io/graphql-spec/draft/#sel-FAJbLAC1BJC3BAn6e):
                 // "should be non-null for OBJECT and INTERFACE only, must be null for the others"
                 if ($type instanceof HasFieldsTypeInterface) {
-                    $includeDeprecated = $fieldArgs['includeDeprecated'] ?? false;
-                    return $type->getFieldIDs($includeDeprecated);
+                    return $type->getFieldIDs($fieldArgs['includeDeprecated']);
                 }
                 return null;
             case 'interfaces':
@@ -195,8 +194,7 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
                 // From GraphQL spec (https://graphql.github.io/graphql-spec/draft/#sel-FAJbLAC7CCC9CA2nT):
                 // "should be non-null for ENUM only, must be null for the others"
                 if ($type instanceof EnumType) {
-                    $includeDeprecated = $fieldArgs['includeDeprecated'] ?? false;
-                    return $type->getEnumValueIDs($includeDeprecated);
+                    return $type->getEnumValueIDs($fieldArgs['includeDeprecated']);
                 }
                 return null;
             case 'inputFields':
