@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace GraphQLByPoP\GraphQLServer\ObjectModels;
 
-use GraphQLByPoP\GraphQLServer\Environment;
 use PoP\API\Schema\SchemaDefinition;
+use GraphQLByPoP\GraphQLServer\Environment;
 use GraphQLByPoP\GraphQLServer\ComponentConfiguration;
 use GraphQLByPoP\GraphQLServer\ObjectModels\Directive;
 use GraphQLByPoP\GraphQLServer\ObjectModels\ScalarType;
 use GraphQLByPoP\GraphQLServer\ObjectModels\AbstractType;
+use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
+use PoP\Engine\Facades\Schema\SchemaDefinitionServiceFacade;
 use GraphQLByPoP\GraphQLServer\Schema\SchemaDefinitionHelpers;
+use PoP\ComponentModel\Facades\Instances\InstanceManagerFacade;
 use GraphQLByPoP\GraphQLServer\Facades\Schema\GraphQLSchemaDefinitionServiceFacade;
 use GraphQLByPoP\GraphQLServer\Schema\SchemaDefinition as GraphQLServerSchemaDefinition;
 use GraphQLByPoP\GraphQLServer\Facades\Registries\SchemaDefinitionReferenceRegistryFacade;
@@ -141,11 +144,11 @@ class Schema
 
         // 2. Initialize the Object and Union types from under "types" and the Interface type from under "interfaces"
         $resolvableTypes = [];
-        $resolvableTypeNames = array_diff(
+        $resolvableTypeSchemaKeys = array_diff(
             array_keys($fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES]),
             $scalarTypeNames
         );
-        foreach ($resolvableTypeNames as $typeName) {
+        foreach ($resolvableTypeSchemaKeys as $typeName) {
             $typeSchemaDefinitionPath = [
                 SchemaDefinition::ARGNAME_TYPES,
                 $typeName,
@@ -174,6 +177,22 @@ class Schema
         // This step will initialize the dynamic Enum and InputObject types and add them to the registry
         foreach ($resolvableTypes as $resolvableType) {
             $resolvableType->initializeTypeDependencies();
+        }
+
+        /**
+         * If nested mutations are disabled, we will use types QueryRoot and MutationRoot,
+         * and the data for type "Root" can be safely not sent
+         */
+        if (!ComponentConfiguration::enableNestedMutations()) {
+            $instanceManager = InstanceManagerFacade::getInstance();
+            $schemaDefinitionService = SchemaDefinitionServiceFacade::getInstance();
+            $rootTypeResolverClass = $schemaDefinitionService->getRootTypeResolverClass();
+            /** @var TypeResolverInterface */
+            $rootTypeResolver = $instanceManager->getInstance($rootTypeResolverClass);
+            $resolvableTypes = array_filter(
+                $resolvableTypes,
+                fn (AbstractType $objectType) => $objectType->getName() != $rootTypeResolver->getTypeName()
+            );
         }
 
         // 4. Add the Object, Union and Interface types under $resolvableTypes, and the dynamic Enum and InputObject types from the registry

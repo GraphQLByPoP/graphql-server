@@ -146,14 +146,6 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
             }
         }
 
-        /**
-         * If nested mutations are disabled, we will use types QueryRoot and MutationRoot,
-         * and the data for type "Root" can be safely removed
-         */
-        if (!$enableNestedMutations) {
-            // unset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$rootTypeSchemaKey]);
-        }
-
         // Maybe append the field/directive's version to its description, since this field is missing in GraphQL
         $addVersionToSchemaFieldDescription = Environment::addVersionToSchemaFieldDescription();
         // When doing nested mutations, differentiate mutating fields by adding label "[Mutation]" in the description
