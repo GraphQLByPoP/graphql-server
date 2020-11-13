@@ -10,6 +10,7 @@ class Environment
     public const SORT_SCHEMA_ALPHABETICALLY = 'SORT_SCHEMA_ALPHABETICALLY';
     public const ENABLE_REMOVE_IF_NULL_DIRECTIVE = 'ENABLE_REMOVE_IF_NULL_DIRECTIVE';
     public const ENABLE_PROACTIVE_FEEDBACK = 'ENABLE_PROACTIVE_FEEDBACK';
+    public const ENABLE_NESTED_MUTATIONS = 'ENABLE_NESTED_MUTATIONS';
 
     public static function addGlobalFieldsToSchema(): bool
     {

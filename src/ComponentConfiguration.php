@@ -15,6 +15,7 @@ class ComponentConfiguration
     private static $sortSchemaAlphabetically;
     private static $enableRemoveIfNullDirective;
     private static $enableProactiveFeedback;
+    private static $enableNestedMutations;
 
     public static function addSelfFieldForRootTypeToSchema(): bool
     {
@@ -75,6 +76,24 @@ class ComponentConfiguration
         // Define properties
         $envVariable = Environment::ENABLE_PROACTIVE_FEEDBACK;
         $selfProperty = &self::$enableProactiveFeedback;
+        $defaultValue = true;
+        $callback = [EnvironmentValueHelpers::class, 'toBool'];
+
+        // Initialize property from the environment/hook
+        self::maybeInitializeConfigurationValue(
+            $envVariable,
+            $selfProperty,
+            $defaultValue,
+            $callback
+        );
+        return $selfProperty;
+    }
+
+    public static function enableNestedMutations(): bool
+    {
+        // Define properties
+        $envVariable = Environment::ENABLE_NESTED_MUTATIONS;
+        $selfProperty = &self::$enableNestedMutations;
         $defaultValue = true;
         $callback = [EnvironmentValueHelpers::class, 'toBool'];
 
