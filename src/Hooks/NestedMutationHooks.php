@@ -4,29 +4,25 @@ declare(strict_types=1);
 
 namespace GraphQLByPoP\GraphQLServer\Hooks;
 
+use GraphQLByPoP\GraphQLServer\ComponentConfiguration;
 use PoP\Hooks\AbstractHookSet;
-use PoP\API\Response\Schemes as APISchemes;
-use PoP\ComponentModel\State\ApplicationState;
 use PoP\ComponentModel\TypeResolvers\HookHelpers;
-use PoP\Translation\Facades\TranslationAPIFacade;
-use PoP\ComponentModel\ModelInstance\ModelInstance;
-use GraphQLByPoP\GraphQLServer\Configuration\Request;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
-use PoP\Engine\Facades\Schema\SchemaDefinitionServiceFacade;
 use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
-use PoP\GraphQLAPI\DataStructureFormatters\GraphQLDataStructureFormatter;
 use GraphQLByPoP\GraphQLServer\Facades\Schema\GraphQLSchemaDefinitionServiceFacade;
 
 class NestedMutationHooks extends AbstractHookSet
 {
     protected function init()
     {
-        $this->hooksAPI->addFilter(
-            HookHelpers::getHookNameToFilterField(),
-            array($this, 'maybeFilterFieldName'),
-            10,
-            5
-        );
+        if (!ComponentConfiguration::enableNestedMutations()) {
+            $this->hooksAPI->addFilter(
+                HookHelpers::getHookNameToFilterField(),
+                array($this, 'maybeFilterFieldName'),
+                10,
+                5
+            );
+        }
     }
 
     /**
