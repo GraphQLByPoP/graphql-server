@@ -88,9 +88,7 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                 $this->fullSchemaDefinition = $schemaDefinitionRegistry->getSchemaDefinition($fieldArgs);
 
                 // Convert the schema from PoP's format to what GraphQL needs to work with
-                $graphQLSchemaDefinitionService = GraphQLSchemaDefinitionServiceFacade::getInstance();
-                $queryTypeSchemaKey = $graphQLSchemaDefinitionService->getQueryTypeSchemaKey();
-                $this->prepareSchemaDefinitionForGraphQL($queryTypeSchemaKey);
+                $this->prepareSchemaDefinitionForGraphQL();
 
                 // Store in the cache
                 if ($useCache) {
@@ -101,8 +99,11 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
 
         return $this->fullSchemaDefinition;
     }
-    protected function prepareSchemaDefinitionForGraphQL(string $queryTypeSchemaKey): void
+    protected function prepareSchemaDefinitionForGraphQL(): void
     {
+        $graphQLSchemaDefinitionService = GraphQLSchemaDefinitionServiceFacade::getInstance();
+        $queryTypeSchemaKey = $graphQLSchemaDefinitionService->getQueryTypeSchemaKey();
+
         // Remove the introspection fields that must not be added to the schema
         // Field "__typename" from all types (GraphQL spec @ https://graphql.github.io/graphql-spec/draft/#sel-FAJZHABFBKjrL):
         // "This field is implicit and does not appear in the fields list in any defined type."
@@ -123,8 +124,6 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
              * Check if to remove the "self" field everywhere, or if to keep it just for the Root type
              */
             $keepSelfFieldForRootType = ComponentConfiguration::addSelfFieldForRootTypeToSchema();
-            $graphQLSchemaDefinitionService = GraphQLSchemaDefinitionServiceFacade::getInstance();
-            $queryTypeSchemaKey = $graphQLSchemaDefinitionService->getQueryTypeSchemaKey();
             foreach (array_keys($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES]) as $typeSchemaKey) {
                 if (!$keepSelfFieldForRootType || $typeSchemaKey != $queryTypeSchemaKey) {
                     unset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$typeSchemaKey][SchemaDefinition::ARGNAME_CONNECTIONS]['self']);
