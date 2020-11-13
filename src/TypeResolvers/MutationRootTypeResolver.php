@@ -45,6 +45,6 @@ class MutationRootTypeResolver extends AbstractUseRootAsSourceForSchemaTypeResol
             // Fields "id" and "self" are mandatory, so they must both
             // also be allowed for the MutationRoot, even if they are not mutations!
             in_array($fieldName, ['id', 'self'])
-            || $fieldResolver->resolveFieldMutationResolverClass($this, $fieldName, []) !== null;
+            || $fieldResolver->resolveFieldMutationResolverClass($this, $fieldName) !== null;
     }
 }

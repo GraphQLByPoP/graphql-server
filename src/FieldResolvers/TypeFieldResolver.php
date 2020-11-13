@@ -218,7 +218,7 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
         return parent::resolveValue($typeResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
     }
 
-    public function resolveFieldTypeResolverClass(TypeResolverInterface $typeResolver, string $fieldName, array $fieldArgs = []): ?string
+    public function resolveFieldTypeResolverClass(TypeResolverInterface $typeResolver, string $fieldName): ?string
     {
         switch ($fieldName) {
             case 'fields':
@@ -232,6 +232,6 @@ class TypeFieldResolver extends AbstractDBDataFieldResolver
             case 'inputFields':
                 return InputValueTypeResolver::class;
         }
-        return parent::resolveFieldTypeResolverClass($typeResolver, $fieldName, $fieldArgs);
+        return parent::resolveFieldTypeResolverClass($typeResolver, $fieldName);
     }
 }

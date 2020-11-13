@@ -41,6 +41,6 @@ class QueryRootTypeResolver extends AbstractUseRootAsSourceForSchemaTypeResolver
 
     protected function isFieldNameConditionSatisfiedForSchema(FieldResolverInterface $fieldResolver, string $fieldName): bool
     {
-        return $fieldResolver->resolveFieldMutationResolverClass($this, $fieldName, []) === null;
+        return $fieldResolver->resolveFieldMutationResolverClass($this, $fieldName) === null;
     }
 }
