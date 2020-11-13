@@ -116,5 +116,9 @@ class Component extends AbstractComponent
         if (APIComponentConfiguration::enableEmbeddableFields()) {
             ContainerBuilderUtils::attachFieldResolversFromNamespace(__NAMESPACE__ . '\\FieldResolvers\\ConditionalOnEnvironment\\EmbeddableFields');
         }
+        // Boot conditional on having nested mutations disabled
+        if (!ComponentConfiguration::enableNestedMutations()) {
+            ContainerBuilderUtils::attachFieldResolversFromNamespace(__NAMESPACE__ . '\\FieldResolvers\\ConditionalOnEnvironment\\DisabledNestedMutations');
+        }
     }
 }
