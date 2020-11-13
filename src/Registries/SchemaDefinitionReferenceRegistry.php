@@ -101,8 +101,13 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
     }
     protected function prepareSchemaDefinitionForGraphQL(): void
     {
+        $enableNestedMutations = ComponentConfiguration::enableNestedMutations();
+
         $graphQLSchemaDefinitionService = GraphQLSchemaDefinitionServiceFacade::getInstance();
         $rootTypeSchemaKey = $graphQLSchemaDefinitionService->getRootTypeSchemaKey();
+        if (!$enableNestedMutations) {
+            $queryRootTypeSchemaKey = $graphQLSchemaDefinitionService->getQueryRootTypeSchemaKey();
+        }
 
         // Remove the introspection fields that must not be added to the schema
         // Field "__typename" from all types (GraphQL spec @ https://graphql.github.io/graphql-spec/draft/#sel-FAJZHABFBKjrL):
@@ -113,6 +118,10 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
         // "These fields are implicit and do not appear in the fields list in the root type of the query operation."
         unset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$rootTypeSchemaKey][SchemaDefinition::ARGNAME_CONNECTIONS]['__type']);
         unset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$rootTypeSchemaKey][SchemaDefinition::ARGNAME_CONNECTIONS]['__schema']);
+        if (!$enableNestedMutations) {
+            unset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$queryRootTypeSchemaKey][SchemaDefinition::ARGNAME_CONNECTIONS]['__type']);
+            unset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$queryRootTypeSchemaKey][SchemaDefinition::ARGNAME_CONNECTIONS]['__schema']);
+        }
 
         // Remove unneeded data
         if (!Environment::addGlobalFieldsToSchema()) {
@@ -125,24 +134,24 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
              */
             $keepSelfFieldForRootType = ComponentConfiguration::addSelfFieldForRootTypeToSchema();
             foreach (array_keys($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES]) as $typeSchemaKey) {
-                if (!$keepSelfFieldForRootType || $typeSchemaKey != $rootTypeSchemaKey) {
+                if (!$keepSelfFieldForRootType || ($typeSchemaKey != $rootTypeSchemaKey && ($enableNestedMutations || $typeSchemaKey != $queryRootTypeSchemaKey))) {
                     unset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$typeSchemaKey][SchemaDefinition::ARGNAME_CONNECTIONS]['self']);
                 }
             }
         }
         if (!Environment::addFullSchemaFieldToSchema()) {
             unset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$rootTypeSchemaKey][SchemaDefinition::ARGNAME_FIELDS]['fullSchema']);
+            if (!$enableNestedMutations) {
+                unset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$queryRootTypeSchemaKey][SchemaDefinition::ARGNAME_FIELDS]['fullSchema']);
+            }
         }
 
         /**
-         * If nested mutations are enabled, keep all data as it already is,
-         * accessible from under Root.
-         *
-         * Otherwise, it must be moved to either under Query or Mutation,
-         * and all mutations from types other than Root must be removed.
+         * If nested mutations are disabled, we will use types QueryRoot and MutationRoot,
+         * and the data for type "Root" can be safely removed
          */
-        if (!ComponentConfiguration::enableNestedMutations()) {
-            // TODO: Complete
+        if (!$enableNestedMutations) {
+            // unset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$rootTypeSchemaKey]);
         }
 
         // Maybe append the field/directive's version to its description, since this field is missing in GraphQL
