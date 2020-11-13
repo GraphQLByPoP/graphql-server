@@ -45,6 +45,9 @@ class Field extends AbstractSchemaDefinitionReferenceObject
         if ($version = $this->schemaDefinition[SchemaDefinition::ARGNAME_VERSION]) {
             $extensions[SchemaDefinition::ARGNAME_VERSION] = $version;
         }
+        if (isset($this->schemaDefinition[SchemaDefinition::ARGNAME_FIELD_IS_MUTATION]) && $this->schemaDefinition[SchemaDefinition::ARGNAME_FIELD_IS_MUTATION]) {
+            $extensions[SchemaDefinition::ARGNAME_FIELD_IS_MUTATION] = true;
+        }
         return $extensions;
     }
 }
