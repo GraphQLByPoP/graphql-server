@@ -134,6 +134,17 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
             unset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$rootTypeSchemaKey][SchemaDefinition::ARGNAME_FIELDS]['fullSchema']);
         }
 
+        /**
+         * If nested mutations are enabled, keep all data as it already is,
+         * accessible from under Root.
+         *
+         * Otherwise, it must be moved to either under Query or Mutation,
+         * and all mutations from types other than Root must be removed.
+         */
+        if (!ComponentConfiguration::enableNestedMutations()) {
+            // TODO: Complete
+        }
+
         // Maybe append the field/directive's version to its description, since this field is missing in GraphQL
         $addVersionToSchemaFieldDescription = Environment::addVersionToSchemaFieldDescription();
 
