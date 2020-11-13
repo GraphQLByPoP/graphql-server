@@ -8,10 +8,10 @@ use PoP\Engine\Schema\SchemaDefinitionServiceInterface;
 
 interface GraphQLSchemaDefinitionServiceInterface extends SchemaDefinitionServiceInterface
 {
-    public function getQueryTypeSchemaKey(): string;
+    public function getQueryRootTypeSchemaKey(): string;
     public function getQueryRootTypeResolverClass(): string;
-    public function getMutationTypeSchemaKey(): ?string;
+    public function getMutationRootTypeSchemaKey(): ?string;
     public function getMutationRootTypeResolverClass(): ?string;
-    public function getSubscriptionTypeSchemaKey(): ?string;
+    public function getSubscriptionRootTypeSchemaKey(): ?string;
     public function getSubscriptionRootTypeResolverClass(): ?string;
 }

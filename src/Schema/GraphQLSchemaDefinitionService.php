@@ -13,7 +13,7 @@ use GraphQLByPoP\GraphQLServer\Schema\GraphQLSchemaDefinitionServiceInterface;
 
 class GraphQLSchemaDefinitionService extends SchemaDefinitionService implements GraphQLSchemaDefinitionServiceInterface
 {
-    public function getQueryTypeSchemaKey(): string
+    public function getQueryRootTypeSchemaKey(): string
     {
         $instanceManager = InstanceManagerFacade::getInstance();
         $queryTypeResolverClass = $this->getQueryRootTypeResolverClass();
@@ -33,7 +33,7 @@ class GraphQLSchemaDefinitionService extends SchemaDefinitionService implements 
         return QueryRootTypeResolver::class;
     }
 
-    public function getMutationTypeSchemaKey(): ?string
+    public function getMutationRootTypeSchemaKey(): ?string
     {
         if ($mutationTypeResolverClass = $this->getMutationRootTypeResolverClass()) {
             $instanceManager = InstanceManagerFacade::getInstance();
@@ -55,7 +55,7 @@ class GraphQLSchemaDefinitionService extends SchemaDefinitionService implements 
         return MutationRootTypeResolver::class;
     }
 
-    public function getSubscriptionTypeSchemaKey(): ?string
+    public function getSubscriptionRootTypeSchemaKey(): ?string
     {
         if ($subscriptionTypeResolverClass = $this->getSubscriptionRootTypeResolverClass()) {
             $instanceManager = InstanceManagerFacade::getInstance();
