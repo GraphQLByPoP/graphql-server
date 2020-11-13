@@ -35,7 +35,7 @@ class GraphQLSchemaDefinitionService extends SchemaDefinitionService implements 
         return RootTypeResolver::class;
     }
 
-    public function getMutationTypeName(): ?string
+    public function getMutationTypeSchemaKey(): ?string
     {
         if ($typeResolverClass = $this->getMutationTypeResolverClass()) {
             return $this->getTypeName($typeResolverClass);
@@ -48,7 +48,7 @@ class GraphQLSchemaDefinitionService extends SchemaDefinitionService implements 
         return null;
     }
 
-    public function getSubscriptionTypeName(): ?string
+    public function getSubscriptionTypeSchemaKey(): ?string
     {
         if ($typeResolverClass = $this->getSubscriptionTypeResolverClass()) {
             return $this->getTypeName($typeResolverClass);

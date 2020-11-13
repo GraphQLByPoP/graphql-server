@@ -122,21 +122,21 @@ class Schema
         $this->queryType = $this->getTypeInstance($fullSchemaDefinition, $queryTypeSchemaDefinitionPath);
 
         // 2. mutationType
-        $mutationTypeName = $graphQLSchemaDefinitionService->getMutationTypeName();
-        if ($mutationTypeName) {
+        $mutationTypeSchemaKey = $graphQLSchemaDefinitionService->getMutationTypeSchemaKey();
+        if ($mutationTypeSchemaKey) {
             $mutationTypeSchemaDefinitionPath = [
                 SchemaDefinition::ARGNAME_TYPES,
-                $mutationTypeName,
+                $mutationTypeSchemaKey,
             ];
             $this->mutationType = $this->getTypeInstance($fullSchemaDefinition, $mutationTypeSchemaDefinitionPath);
         }
 
         // 3. subscriptionType
-        $subscriptionTypeName = $graphQLSchemaDefinitionService->getSubscriptionTypeName();
-        if ($subscriptionTypeName) {
+        $subscriptionTypeSchemaKey = $graphQLSchemaDefinitionService->getSubscriptionTypeSchemaKey();
+        if ($subscriptionTypeSchemaKey) {
             $subscriptionTypeSchemaDefinitionPath = [
                 SchemaDefinition::ARGNAME_TYPES,
-                $subscriptionTypeName,
+                $subscriptionTypeSchemaKey,
             ];
             $this->subscriptionType = $this->getTypeInstance($fullSchemaDefinition, $subscriptionTypeSchemaDefinitionPath);
         }
