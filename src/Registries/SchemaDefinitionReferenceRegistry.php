@@ -147,6 +147,8 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
 
         // Maybe append the field/directive's version to its description, since this field is missing in GraphQL
         $addVersionToSchemaFieldDescription = Environment::addVersionToSchemaFieldDescription();
+        // When doing nested mutations, differentiate mutating fields by adding label "[Mutation]" in the description
+        $addMutationLabelToSchemaFieldDescription = ComponentConfiguration::enableNestedMutations();
 
         // Convert the field type from its internal representation (eg: "array:Post") to the GraphQL standard representation (eg: "[Post]")
         // 1. Global fields, connections and directives
@@ -160,6 +162,9 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                 if ($addVersionToSchemaFieldDescription) {
                     $this->addVersionToSchemaFieldDescription($itemPath);
                 }
+                if ($addMutationLabelToSchemaFieldDescription) {
+                    $this->addMutationLabelToSchemaFieldDescription($itemPath);
+                }
             }
             foreach (array_keys($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_GLOBAL_CONNECTIONS]) as $connectionName) {
                 $itemPath = [
@@ -169,6 +174,9 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                 $this->introduceSDLNotationToFieldSchemaDefinition($itemPath);
                 if ($addVersionToSchemaFieldDescription) {
                     $this->addVersionToSchemaFieldDescription($itemPath);
+                }
+                if ($addMutationLabelToSchemaFieldDescription) {
+                    $this->addMutationLabelToSchemaFieldDescription($itemPath);
                 }
             }
         }
@@ -216,6 +224,9 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                 if ($addVersionToSchemaFieldDescription) {
                     $this->addVersionToSchemaFieldDescription($itemPath);
                 }
+                if ($addMutationLabelToSchemaFieldDescription) {
+                    $this->addMutationLabelToSchemaFieldDescription($itemPath);
+                }
             }
             foreach (array_keys($typeSchemaDefinition[SchemaDefinition::ARGNAME_CONNECTIONS]) as $connectionName) {
                 $itemPath = [
@@ -227,6 +238,9 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                 $this->introduceSDLNotationToFieldSchemaDefinition($itemPath);
                 if ($addVersionToSchemaFieldDescription) {
                     $this->addVersionToSchemaFieldDescription($itemPath);
+                }
+                if ($addMutationLabelToSchemaFieldDescription) {
+                    $this->addMutationLabelToSchemaFieldDescription($itemPath);
                 }
             }
             foreach (array_keys($typeSchemaDefinition[SchemaDefinition::ARGNAME_DIRECTIVES]) as $directiveName) {
@@ -390,7 +404,6 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
      * Append the field or directive's version to its description
      *
      * @param array $fieldOrDirectiveSchemaDefinitionPath
-     * @return void
      */
     protected function addVersionToSchemaFieldDescription(array $fieldOrDirectiveSchemaDefinitionPath): void
     {
@@ -403,6 +416,23 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                     $translationAPI->__('(Version: %s)', 'graphql-server')
                 ),
                 $schemaFieldVersion
+            );
+        }
+    }
+
+    /**
+     * Append the "Mutation" label to the field's description
+     *
+     * @param array $fieldSchemaDefinitionPath
+     */
+    protected function addMutationLabelToSchemaFieldDescription(array $fieldSchemaDefinitionPath): void
+    {
+        $fieldSchemaDefinition = &SchemaDefinitionHelpers::advancePointerToPath($this->fullSchemaDefinition, $fieldSchemaDefinitionPath);
+        if (isset($fieldSchemaDefinition[SchemaDefinition::ARGNAME_FIELD_IS_MUTATION]) && $fieldSchemaDefinition[SchemaDefinition::ARGNAME_FIELD_IS_MUTATION]) {
+            $translationAPI = TranslationAPIFacade::getInstance();
+            $fieldSchemaDefinition[SchemaDefinition::ARGNAME_DESCRIPTION] = sprintf(
+                $translationAPI->__('[Mutation] %s', 'graphql-server'),
+                $fieldSchemaDefinition[SchemaDefinition::ARGNAME_DESCRIPTION]
             );
         }
     }
