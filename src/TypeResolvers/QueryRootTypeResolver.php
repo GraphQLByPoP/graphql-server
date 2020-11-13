@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace GraphQLByPoP\GraphQLServer\TypeResolvers;
 
-use PoP\Engine\TypeResolvers\RootTypeResolver;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use GraphQLByPoP\GraphQLServer\ObjectModels\QueryRoot;
 use PoP\Engine\TypeResolvers\ReservedNameTypeResolverTrait;
+use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
 use GraphQLByPoP\GraphQLServer\TypeDataLoaders\QueryRootTypeDataLoader;
 
 class QueryRootTypeResolver extends AbstractUseRootAsSourceForSchemaTypeResolver
@@ -37,5 +37,10 @@ class QueryRootTypeResolver extends AbstractUseRootAsSourceForSchemaTypeResolver
     public function getTypeDataLoaderClass(): string
     {
         return QueryRootTypeDataLoader::class;
+    }
+
+    protected function isFieldNameConditionSatisfiedForSchema(FieldResolverInterface $fieldResolver, string $fieldName): bool
+    {
+        return $fieldResolver->resolveFieldMutationResolverClass($this, $fieldName, []) === null;
     }
 }
