@@ -22,6 +22,19 @@ class GraphQLSchemaDefinitionService extends SchemaDefinitionService implements 
         return $typeResolver->getMaybeNamespacedTypeName();
     }
 
+    public function getRootTypeSchemaKey(): string
+    {
+        $instanceManager = InstanceManagerFacade::getInstance();
+        $rootTypeResolverClass = $this->getRootTypeResolverClass();
+        $rootTypeResolver = $instanceManager->getInstance($rootTypeResolverClass);
+        return $this->getTypeSchemaKey($rootTypeResolver);
+    }
+
+    public function getRootTypeResolverClass(): string
+    {
+        return RootTypeResolver::class;
+    }
+
     public function getQueryTypeSchemaKey(): string
     {
         $instanceManager = InstanceManagerFacade::getInstance();

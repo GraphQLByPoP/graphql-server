@@ -102,7 +102,7 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
     protected function prepareSchemaDefinitionForGraphQL(): void
     {
         $graphQLSchemaDefinitionService = GraphQLSchemaDefinitionServiceFacade::getInstance();
-        $queryTypeSchemaKey = $graphQLSchemaDefinitionService->getQueryTypeSchemaKey();
+        $rootTypeSchemaKey = $graphQLSchemaDefinitionService->getRootTypeSchemaKey();
 
         // Remove the introspection fields that must not be added to the schema
         // Field "__typename" from all types (GraphQL spec @ https://graphql.github.io/graphql-spec/draft/#sel-FAJZHABFBKjrL):
@@ -111,8 +111,8 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
 
         // Fields "__schema" and "__type" from the query type (GraphQL spec @ https://graphql.github.io/graphql-spec/draft/#sel-FAJbHABABnD9ub):
         // "These fields are implicit and do not appear in the fields list in the root type of the query operation."
-        unset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$queryTypeSchemaKey][SchemaDefinition::ARGNAME_CONNECTIONS]['__type']);
-        unset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$queryTypeSchemaKey][SchemaDefinition::ARGNAME_CONNECTIONS]['__schema']);
+        unset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$rootTypeSchemaKey][SchemaDefinition::ARGNAME_CONNECTIONS]['__type']);
+        unset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$rootTypeSchemaKey][SchemaDefinition::ARGNAME_CONNECTIONS]['__schema']);
 
         // Remove unneeded data
         if (!Environment::addGlobalFieldsToSchema()) {
@@ -125,13 +125,13 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
              */
             $keepSelfFieldForRootType = ComponentConfiguration::addSelfFieldForRootTypeToSchema();
             foreach (array_keys($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES]) as $typeSchemaKey) {
-                if (!$keepSelfFieldForRootType || $typeSchemaKey != $queryTypeSchemaKey) {
+                if (!$keepSelfFieldForRootType || $typeSchemaKey != $rootTypeSchemaKey) {
                     unset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$typeSchemaKey][SchemaDefinition::ARGNAME_CONNECTIONS]['self']);
                 }
             }
         }
         if (!Environment::addFullSchemaFieldToSchema()) {
-            unset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$queryTypeSchemaKey][SchemaDefinition::ARGNAME_FIELDS]['fullSchema']);
+            unset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$rootTypeSchemaKey][SchemaDefinition::ARGNAME_FIELDS]['fullSchema']);
         }
 
         // Maybe append the field/directive's version to its description, since this field is missing in GraphQL

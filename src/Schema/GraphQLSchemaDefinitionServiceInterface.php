@@ -9,6 +9,8 @@ use PoP\ComponentModel\Schema\SchemaDefinitionServiceInterface;
 interface GraphQLSchemaDefinitionServiceInterface extends SchemaDefinitionServiceInterface
 {
     public function getTypeName(string $typeResolverClass): string;
+    public function getRootTypeSchemaKey(): string;
+    public function getRootTypeResolverClass(): string;
     public function getQueryTypeSchemaKey(): string;
     public function getQueryTypeResolverClass(): string;
     public function getMutationTypeSchemaKey(): ?string;
