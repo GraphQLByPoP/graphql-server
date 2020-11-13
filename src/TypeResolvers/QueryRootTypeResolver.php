@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace GraphQLByPoP\GraphQLServer\TypeResolvers;
 
-use PoP\Engine\TypeResolvers\ReservedNameTypeResolverTrait;
-use GraphQLByPoP\GraphQLServer\ObjectModels\QueryRoot;
-use GraphQLByPoP\GraphQLServer\TypeDataLoaders\QueryRootTypeDataLoader;
+use PoP\Engine\TypeResolvers\RootTypeResolver;
 use PoP\Translation\Facades\TranslationAPIFacade;
-use PoP\ComponentModel\TypeResolvers\AbstractTypeResolver;
+use GraphQLByPoP\GraphQLServer\ObjectModels\QueryRoot;
+use PoP\Engine\TypeResolvers\ReservedNameTypeResolverTrait;
+use GraphQLByPoP\GraphQLServer\TypeDataLoaders\QueryRootTypeDataLoader;
 
-class QueryRootTypeResolver extends AbstractTypeResolver
+class QueryRootTypeResolver extends AbstractUseRootAsSourceForSchemaTypeResolver
 {
     use ReservedNameTypeResolverTrait;
 
