@@ -31,20 +31,6 @@ class RootFieldResolver extends AbstractDBDataFieldResolver
         ];
     }
 
-    /**
-     * These fields are implicit, and must not be added to the schema
-     * or the clients produce an error
-     */
-    public function skipAddingToSchemaDefinition(TypeResolverInterface $typeResolver, string $fieldName): bool
-    {
-        switch ($fieldName) {
-            case '__schema':
-            case '__type':
-                return true;
-        }
-        return parent::skipAddingToSchemaDefinition($typeResolver, $fieldName);
-    }
-
     public function getSchemaFieldType(TypeResolverInterface $typeResolver, string $fieldName): ?string
     {
         $types = [
