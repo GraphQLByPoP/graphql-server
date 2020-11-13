@@ -8,7 +8,7 @@ use PoP\Engine\TypeResolvers\RootTypeResolver;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\Facades\Instances\InstanceManagerFacade;
 use GraphQLByPoP\GraphQLServer\Schema\GraphQLSchemaDefinitionServiceInterface;
-use PoP\ComponentModel\Schema\SchemaDefinitionService;
+use PoP\Engine\Schema\SchemaDefinitionService;
 
 class GraphQLSchemaDefinitionService extends SchemaDefinitionService implements GraphQLSchemaDefinitionServiceInterface
 {
@@ -20,19 +20,6 @@ class GraphQLSchemaDefinitionService extends SchemaDefinitionService implements 
          */
         $typeResolver = $instanceManager->getInstance($typeResolverClass);
         return $typeResolver->getMaybeNamespacedTypeName();
-    }
-
-    public function getRootTypeSchemaKey(): string
-    {
-        $instanceManager = InstanceManagerFacade::getInstance();
-        $rootTypeResolverClass = $this->getRootTypeResolverClass();
-        $rootTypeResolver = $instanceManager->getInstance($rootTypeResolverClass);
-        return $this->getTypeSchemaKey($rootTypeResolver);
-    }
-
-    public function getRootTypeResolverClass(): string
-    {
-        return RootTypeResolver::class;
     }
 
     public function getQueryTypeSchemaKey(): string
