@@ -16,7 +16,7 @@ class GraphQLSchemaDefinitionService extends SchemaDefinitionService implements 
     public function getQueryTypeSchemaKey(): string
     {
         $instanceManager = InstanceManagerFacade::getInstance();
-        $queryTypeResolverClass = $this->getQueryTypeResolverClass();
+        $queryTypeResolverClass = $this->getQueryRootTypeResolverClass();
         $queryTypeResolver = $instanceManager->getInstance($queryTypeResolverClass);
         return $this->getTypeSchemaKey($queryTypeResolver);
     }
@@ -25,7 +25,7 @@ class GraphQLSchemaDefinitionService extends SchemaDefinitionService implements 
      * If nested mutations are enabled, use "Root".
      * Otherwise, use "Query"
      */
-    public function getQueryTypeResolverClass(): string
+    public function getQueryRootTypeResolverClass(): string
     {
         if (ComponentConfiguration::enableNestedMutations()) {
             return $this->getRootTypeResolverClass();
@@ -35,7 +35,7 @@ class GraphQLSchemaDefinitionService extends SchemaDefinitionService implements 
 
     public function getMutationTypeSchemaKey(): ?string
     {
-        if ($mutationTypeResolverClass = $this->getMutationTypeResolverClass()) {
+        if ($mutationTypeResolverClass = $this->getMutationRootTypeResolverClass()) {
             $instanceManager = InstanceManagerFacade::getInstance();
             $mutationTypeResolver = $instanceManager->getInstance($mutationTypeResolverClass);
             return $this->getTypeSchemaKey($mutationTypeResolver);
@@ -47,7 +47,7 @@ class GraphQLSchemaDefinitionService extends SchemaDefinitionService implements 
      * If nested mutations are enabled, use "Root".
      * Otherwise, use "Mutation"
      */
-    public function getMutationTypeResolverClass(): ?string
+    public function getMutationRootTypeResolverClass(): ?string
     {
         if (ComponentConfiguration::enableNestedMutations()) {
             return $this->getRootTypeResolverClass();
@@ -57,7 +57,7 @@ class GraphQLSchemaDefinitionService extends SchemaDefinitionService implements 
 
     public function getSubscriptionTypeSchemaKey(): ?string
     {
-        if ($subscriptionTypeResolverClass = $this->getSubscriptionTypeResolverClass()) {
+        if ($subscriptionTypeResolverClass = $this->getSubscriptionRootTypeResolverClass()) {
             $instanceManager = InstanceManagerFacade::getInstance();
             $subscriptionTypeResolver = $instanceManager->getInstance($subscriptionTypeResolverClass);
             return $this->getTypeSchemaKey($subscriptionTypeResolver);
@@ -68,7 +68,7 @@ class GraphQLSchemaDefinitionService extends SchemaDefinitionService implements 
     /**
      * Not yet implemented
      */
-    public function getSubscriptionTypeResolverClass(): ?string
+    public function getSubscriptionRootTypeResolverClass(): ?string
     {
         return null;
     }
