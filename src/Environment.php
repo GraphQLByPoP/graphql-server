@@ -31,4 +31,9 @@ class Environment
     {
         return getenv('ADD_VERSION_TO_SCHEMA_FIELD_DESCRIPTION') !== false ? strtolower(getenv('ADD_VERSION_TO_SCHEMA_FIELD_DESCRIPTION')) == "true" : false;
     }
+
+    public static function enableSettingMutationSchemeByURLParam(): bool
+    {
+        return getenv('ENABLE_SETTING_MUTATION_SCHEME_BY_URL_PARAM') !== false ? strtolower(getenv('ENABLE_SETTING_MUTATION_SCHEME_BY_URL_PARAM')) == "true" : false;
+    }
 }

@@ -17,6 +17,11 @@ use GraphQLByPoP\GraphQLServer\DirectiveResolvers\ConditionalOnEnvironment\Expor
 use GraphQLByPoP\GraphQLServer\DirectiveResolvers\ConditionalOnEnvironment\RemoveIfNullDirectiveResolver;
 use PoP\ComponentModel\AttachableExtensions\AttachableExtensionGroups;
 use PoP\API\ComponentConfiguration as APIComponentConfiguration;
+use GraphQLByPoP\GraphQLServer\Configuration\Request;
+use GraphQLByPoP\GraphQLServer\Environment;
+use PoP\Engine\Environment as EngineEnvironment;
+use GraphQLByPoP\GraphQLServer\Component as GraphQLServerComponent;
+use PoP\Engine\Component as EngineComponent;
 
 /**
  * Initialize component
@@ -49,6 +54,26 @@ class Component extends AbstractComponent
         return [
             \PoP\AccessControl\Component::class,
         ];
+    }
+
+    /**
+     * Set the default component configuration
+     *
+     * @param array<string, mixed> $componentClassConfiguration
+     */
+    public static function customizeComponentClassConfiguration(
+        array &$componentClassConfiguration
+    ): void {
+        // The mutation scheme can be set by param ?mutation_scheme=..., with values:
+        // - "standard" => Use QueryRoot and MutationRoot
+        // - "nested" => Use Root, and nested mutations with redundant root fields
+        // - "lean_nested" => Use Root, and nested mutations without redundant root fields
+        if (Environment::enableSettingMutationSchemeByURLParam()) {
+            if ($mutationScheme = Request::getMutationScheme()) {
+                $componentClassConfiguration[GraphQLServerComponent::class][Environment::ENABLE_NESTED_MUTATIONS] = $mutationScheme != Request::URLPARAM_VALUE_MUTATION_SCHEME_STANDARD;
+                $componentClassConfiguration[EngineComponent::class][EngineEnvironment::DISABLE_REDUNDANT_ROOT_TYPE_MUTATION_FIELDS] = $mutationScheme == Request::URLPARAM_VALUE_MUTATION_SCHEME_NESTED_WITHOUT_REDUNDANT_ROOT_FIELDS;
+            }
+        }
     }
 
     /**

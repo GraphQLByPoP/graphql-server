@@ -17,7 +17,7 @@ class Request
         return isset($_REQUEST[self::URLPARAM_EDIT_SCHEMA]) && $_REQUEST[self::URLPARAM_EDIT_SCHEMA];
     }
 
-    public static function getMutationsScheme(): ?string
+    public static function getMutationScheme(): ?string
     {
         if (isset($_REQUEST[self::URLPARAM_MUTATION_SCHEME])) {
             $scheme = $_REQUEST[self::URLPARAM_MUTATION_SCHEME];
