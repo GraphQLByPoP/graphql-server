@@ -20,7 +20,6 @@ use PoP\API\ComponentConfiguration as APIComponentConfiguration;
 use GraphQLByPoP\GraphQLServer\Configuration\Request;
 use GraphQLByPoP\GraphQLServer\Environment;
 use PoP\Engine\Environment as EngineEnvironment;
-use GraphQLByPoP\GraphQLServer\Component as GraphQLServerComponent;
 use PoP\Engine\Component as EngineComponent;
 
 /**
@@ -70,7 +69,7 @@ class Component extends AbstractComponent
         // - "lean_nested" => Use Root, and nested mutations without redundant root fields
         if (Environment::enableSettingMutationSchemeByURLParam()) {
             if ($mutationScheme = Request::getMutationScheme()) {
-                $componentClassConfiguration[GraphQLServerComponent::class][Environment::ENABLE_NESTED_MUTATIONS] = $mutationScheme != Request::URLPARAM_VALUE_MUTATION_SCHEME_STANDARD;
+                $componentClassConfiguration[self::class][Environment::ENABLE_NESTED_MUTATIONS] = $mutationScheme != Request::URLPARAM_VALUE_MUTATION_SCHEME_STANDARD;
                 $componentClassConfiguration[EngineComponent::class][EngineEnvironment::DISABLE_REDUNDANT_ROOT_TYPE_MUTATION_FIELDS] = $mutationScheme == Request::URLPARAM_VALUE_MUTATION_SCHEME_NESTED_WITHOUT_REDUNDANT_ROOT_FIELDS;
             }
         }
