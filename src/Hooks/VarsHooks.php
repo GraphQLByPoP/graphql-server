@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GraphQLByPoP\GraphQLServer\Hooks;
 
+use GraphQLByPoP\GraphQLServer\ComponentConfiguration;
 use GraphQLByPoP\GraphQLServer\Configuration\Request;
 use PoP\Hooks\AbstractHookSet;
 use PoP\ComponentModel\State\ApplicationState;
@@ -41,10 +42,12 @@ class VarsHooks extends AbstractHookSet
 
     public function getModelInstanceComponentsFromVars($components)
     {
+        $translationAPI = TranslationAPIFacade::getInstance();
         $vars = ApplicationState::getVars();
         if (isset($vars['edit-schema'])) {
-            $components[] = TranslationAPIFacade::getInstance()->__('edit schema:', 'graphql-server') . $vars['edit-schema'];
+            $components[] = $translationAPI->__('edit schema:', 'graphql-server') . $vars['edit-schema'];
         }
+        $components[] = $translationAPI->__('enable nested mutations:', 'graphql-server') . ComponentConfiguration::enableNestedMutations();
 
         return $components;
     }
