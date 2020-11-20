@@ -18,7 +18,7 @@ class SchemaCacheHooks extends AbstractHookSet
         );
     }
 
-    public function getSchemaCacheKeyComponents($components)
+    public function getSchemaCacheKeyComponents(array $components): array
     {
         $components['nested-mutations-enabled'] = ComponentConfiguration::enableNestedMutations();
         return $components;
