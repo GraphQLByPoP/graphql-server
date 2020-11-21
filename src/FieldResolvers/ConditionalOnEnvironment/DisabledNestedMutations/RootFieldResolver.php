@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GraphQLByPoP\GraphQLServer\FieldResolvers\ConditionalOnEnvironment\DisabledNestedMutations;
 
+use PoP\ComponentModel\State\ApplicationState;
 use PoP\Engine\TypeResolvers\RootTypeResolver;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\Translation\Facades\TranslationAPIFacade;
@@ -23,8 +24,15 @@ class RootFieldResolver extends AbstractDBDataFieldResolver
         return array(RootTypeResolver::class);
     }
 
+    /**
+     * Register the fields for the Standard GraphQL server only
+     */
     public static function getFieldNamesToResolve(): array
     {
+        $vars = ApplicationState::getVars();
+        if (!$vars['standard-graphql']) {
+            return [];
+        }
         return [
             'queryRoot',
             'mutationRoot',
