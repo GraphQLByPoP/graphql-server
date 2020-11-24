@@ -6,21 +6,22 @@ namespace GraphQLByPoP\GraphQLServer;
 
 use PoP\Root\Component\AbstractComponent;
 use PoP\Root\Component\YAMLServicesTrait;
-use GraphQLByPoP\GraphQLServer\Config\ServiceConfiguration;
+use GraphQLByPoP\GraphQLServer\Environment;
+use PoP\Engine\Component as EngineComponent;
+use PoP\Engine\Environment as EngineEnvironment;
 use PoP\Root\Component\CanDisableComponentTrait;
-use PoP\ComponentModel\Container\ContainerBuilderUtils;
-use GraphQLByPoP\GraphQLRequest\Component as GraphQLRequestComponent;
-use GraphQLByPoP\GraphQLQuery\ComponentConfiguration as GraphQLQueryComponentConfiguration;
+use GraphQLByPoP\GraphQLServer\Configuration\Request;
 use GraphQLByPoP\GraphQLServer\ComponentConfiguration;
+use PoP\ComponentModel\Container\ContainerBuilderUtils;
+use GraphQLByPoP\GraphQLServer\Config\ServiceConfiguration;
+use GraphQLByPoP\GraphQLServer\Configuration\MutationSchemes;
+use PoP\API\ComponentConfiguration as APIComponentConfiguration;
+use GraphQLByPoP\GraphQLRequest\Component as GraphQLRequestComponent;
+use PoP\ComponentModel\AttachableExtensions\AttachableExtensionGroups;
+use GraphQLByPoP\GraphQLQuery\ComponentConfiguration as GraphQLQueryComponentConfiguration;
 use GraphQLByPoP\GraphQLRequest\ComponentConfiguration as GraphQLRequestComponentConfiguration;
 use GraphQLByPoP\GraphQLServer\DirectiveResolvers\ConditionalOnEnvironment\ExportDirectiveResolver;
 use GraphQLByPoP\GraphQLServer\DirectiveResolvers\ConditionalOnEnvironment\RemoveIfNullDirectiveResolver;
-use PoP\ComponentModel\AttachableExtensions\AttachableExtensionGroups;
-use PoP\API\ComponentConfiguration as APIComponentConfiguration;
-use GraphQLByPoP\GraphQLServer\Configuration\Request;
-use GraphQLByPoP\GraphQLServer\Environment;
-use PoP\Engine\Environment as EngineEnvironment;
-use PoP\Engine\Component as EngineComponent;
 
 /**
  * Initialize component
@@ -69,8 +70,8 @@ class Component extends AbstractComponent
         // - "lean_nested" => Use Root, and nested mutations without redundant root fields
         if (Environment::enableSettingMutationSchemeByURLParam()) {
             if ($mutationScheme = Request::getMutationScheme()) {
-                $componentClassConfiguration[self::class][Environment::ENABLE_NESTED_MUTATIONS] = $mutationScheme != Request::URLPARAM_VALUE_MUTATION_SCHEME_STANDARD;
-                $componentClassConfiguration[EngineComponent::class][EngineEnvironment::DISABLE_REDUNDANT_ROOT_TYPE_MUTATION_FIELDS] = $mutationScheme == Request::URLPARAM_VALUE_MUTATION_SCHEME_NESTED_WITHOUT_REDUNDANT_ROOT_FIELDS;
+                $componentClassConfiguration[self::class][Environment::ENABLE_NESTED_MUTATIONS] = $mutationScheme != MutationSchemes::STANDARD;
+                $componentClassConfiguration[EngineComponent::class][EngineEnvironment::DISABLE_REDUNDANT_ROOT_TYPE_MUTATION_FIELDS] = $mutationScheme == MutationSchemes::NESTED_WITHOUT_REDUNDANT_ROOT_FIELDS;
             }
         }
     }
