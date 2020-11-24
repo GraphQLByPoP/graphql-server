@@ -15,14 +15,12 @@ class NestedMutationHooks extends AbstractHookSet
 {
     protected function init()
     {
-        if (!ComponentConfiguration::enableNestedMutations()) {
-            $this->hooksAPI->addFilter(
-                HookHelpers::getHookNameToFilterField(),
-                array($this, 'maybeFilterFieldName'),
-                10,
-                5
-            );
-        }
+        $this->hooksAPI->addFilter(
+            HookHelpers::getHookNameToFilterField(),
+            array($this, 'maybeFilterFieldName'),
+            10,
+            5
+        );
     }
 
     /**
@@ -36,6 +34,9 @@ class NestedMutationHooks extends AbstractHookSet
         array $fieldInterfaceResolverClasses,
         string $fieldName
     ): bool {
+        if (!ComponentConfiguration::enableNestedMutations()) {
+            return $include;
+        }
         $graphQLSchemaDefinitionService = GraphQLSchemaDefinitionServiceFacade::getInstance();
         if (
             $include

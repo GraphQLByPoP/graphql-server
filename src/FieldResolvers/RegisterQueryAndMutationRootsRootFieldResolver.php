@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GraphQLByPoP\GraphQLServer\FieldResolvers\ConditionalOnEnvironment\DisabledNestedMutations;
+namespace GraphQLByPoP\GraphQLServer\FieldResolvers;
 
 use PoP\ComponentModel\State\ApplicationState;
 use PoP\Engine\TypeResolvers\RootTypeResolver;
@@ -12,12 +12,13 @@ use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\FieldResolvers\AbstractDBDataFieldResolver;
 use GraphQLByPoP\GraphQLServer\TypeResolvers\QueryRootTypeResolver;
 use GraphQLByPoP\GraphQLServer\TypeResolvers\MutationRootTypeResolver;
+use GraphQLByPoP\GraphQLServer\ComponentConfiguration;
 
 /**
  * Add connections to the QueryRoot and MutationRoot types,
  * so they can be accessed to generate the schema
  */
-class RootFieldResolver extends AbstractDBDataFieldResolver
+class RegisterQueryAndMutationRootsRootFieldResolver extends AbstractDBDataFieldResolver
 {
     public static function getClassesToAttachTo(): array
     {
@@ -25,12 +26,13 @@ class RootFieldResolver extends AbstractDBDataFieldResolver
     }
 
     /**
-     * Register the fields for the Standard GraphQL server only
+     * Register the fields for the Standard GraphQL server only,
+     * and when nested mutations are disabled
      */
     public static function getFieldNamesToResolve(): array
     {
         $vars = ApplicationState::getVars();
-        if (!$vars['standard-graphql']) {
+        if (ComponentConfiguration::enableNestedMutations() || !$vars['standard-graphql']) {
             return [];
         }
         return [
