@@ -34,7 +34,7 @@ class NestedMutationHooks extends AbstractHookSet
         array $fieldInterfaceResolverClasses,
         string $fieldName
     ): bool {
-        if (!ComponentConfiguration::enableNestedMutations()) {
+        if (ComponentConfiguration::enableNestedMutations()) {
             return $include;
         }
         $graphQLSchemaDefinitionService = GraphQLSchemaDefinitionServiceFacade::getInstance();
