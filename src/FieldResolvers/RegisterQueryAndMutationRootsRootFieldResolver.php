@@ -13,6 +13,7 @@ use PoP\ComponentModel\FieldResolvers\AbstractDBDataFieldResolver;
 use GraphQLByPoP\GraphQLServer\TypeResolvers\QueryRootTypeResolver;
 use GraphQLByPoP\GraphQLServer\TypeResolvers\MutationRootTypeResolver;
 use GraphQLByPoP\GraphQLServer\ComponentConfiguration;
+use PoP\API\ComponentConfiguration as APIComponentConfiguration;
 
 /**
  * Add connections to the QueryRoot and MutationRoot types,
@@ -35,10 +36,15 @@ class RegisterQueryAndMutationRootsRootFieldResolver extends AbstractDBDataField
         if (ComponentConfiguration::enableNestedMutations() || !$vars['standard-graphql']) {
             return [];
         }
-        return [
-            'queryRoot',
-            'mutationRoot',
-        ];
+        return array_merge(
+            [
+                'queryRoot',
+            ],
+            APIComponentConfiguration::enableMutations() ?
+            [
+                'mutationRoot',
+            ] : []
+        );
     }
 
     public function getSchemaFieldDescription(TypeResolverInterface $typeResolver, string $fieldName): ?string
