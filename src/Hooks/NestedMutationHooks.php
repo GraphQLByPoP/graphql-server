@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace GraphQLByPoP\GraphQLServer\Hooks;
 
-use GraphQLByPoP\GraphQLServer\ComponentConfiguration;
 use PoP\Hooks\AbstractHookSet;
+use PoP\ComponentModel\State\ApplicationState;
 use PoP\ComponentModel\TypeResolvers\HookHelpers;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
@@ -24,6 +24,7 @@ class NestedMutationHooks extends AbstractHookSet
     }
 
     /**
+     * For the standard GraphQL server:
      * If nested mutations are disabled, then remove registering fieldNames
      * when they have a MutationResolver for types other than the Root and MutationRoot
      */
@@ -34,7 +35,8 @@ class NestedMutationHooks extends AbstractHookSet
         array $fieldInterfaceResolverClasses,
         string $fieldName
     ): bool {
-        if (ComponentConfiguration::enableNestedMutations()) {
+        $vars = ApplicationState::getVars();
+        if ($vars['nested-mutations-enabled']) {
             return $include;
         }
         $graphQLSchemaDefinitionService = GraphQLSchemaDefinitionServiceFacade::getInstance();

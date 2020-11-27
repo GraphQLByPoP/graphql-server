@@ -12,7 +12,6 @@ use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\FieldResolvers\AbstractDBDataFieldResolver;
 use GraphQLByPoP\GraphQLServer\TypeResolvers\QueryRootTypeResolver;
 use GraphQLByPoP\GraphQLServer\TypeResolvers\MutationRootTypeResolver;
-use GraphQLByPoP\GraphQLServer\ComponentConfiguration;
 use PoP\API\ComponentConfiguration as APIComponentConfiguration;
 
 /**
@@ -33,7 +32,7 @@ class RegisterQueryAndMutationRootsRootFieldResolver extends AbstractDBDataField
     public static function getFieldNamesToResolve(): array
     {
         $vars = ApplicationState::getVars();
-        if (ComponentConfiguration::enableNestedMutations() || !$vars['standard-graphql']) {
+        if ($vars['nested-mutations-enabled']) {
             return [];
         }
         return array_merge(

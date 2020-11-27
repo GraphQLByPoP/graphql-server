@@ -23,10 +23,29 @@ class VarsHooks extends AbstractHookSet
             10,
             1
         );
+        $this->hooksAPI->addAction(
+            'augmentVarsProperties',
+            [$this, 'augmentVarsProperties'],
+            10,
+            1
+        );
         $this->hooksAPI->addFilter(
             ModelInstance::HOOK_COMPONENTS_RESULT,
             array($this, 'getModelInstanceComponentsFromVars')
         );
+    }
+
+    /**
+     * Check if to use nested mutations from the GraphQL server config
+     * @param array<array> $vars_in_array
+     */
+    public function augmentVarsProperties(array $vars_in_array): void
+    {
+        // The PQL always has nested mutations enabled. Only the for the standard GraphQL server
+        [&$vars] = $vars_in_array;
+        $vars['nested-mutations-enabled'] = $vars['standard-graphql'] ?
+            ComponentConfiguration::enableNestedMutations()
+            : true;
     }
 
     /**
@@ -50,7 +69,7 @@ class VarsHooks extends AbstractHookSet
         if ($graphQLOperationType = $vars['graphql-operation-type']) {
             $components[] = $translationAPI->__('GraphQL operation type:', 'graphql-server') . $graphQLOperationType;
         }
-        $components[] = $translationAPI->__('enable nested mutations:', 'graphql-server') . ComponentConfiguration::enableNestedMutations();
+        $components[] = $translationAPI->__('enable nested mutations:', 'graphql-server') . $vars['nested-mutations-enabled'];
 
         return $components;
     }

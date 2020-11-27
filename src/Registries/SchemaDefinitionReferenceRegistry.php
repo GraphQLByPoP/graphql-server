@@ -101,7 +101,8 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
     }
     protected function prepareSchemaDefinitionForGraphQL(): void
     {
-        $enableNestedMutations = ComponentConfiguration::enableNestedMutations();
+        $vars = ApplicationState::getVars();
+        $enableNestedMutations = $vars['nested-mutations-enabled'];
 
         $graphQLSchemaDefinitionService = GraphQLSchemaDefinitionServiceFacade::getInstance();
         $rootTypeSchemaKey = $graphQLSchemaDefinitionService->getRootTypeSchemaKey();
@@ -149,7 +150,7 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
         // Maybe append the field/directive's version to its description, since this field is missing in GraphQL
         $addVersionToSchemaFieldDescription = Environment::addVersionToSchemaFieldDescription();
         // When doing nested mutations, differentiate mutating fields by adding label "[Mutation]" in the description
-        $addMutationLabelToSchemaFieldDescription = ComponentConfiguration::enableNestedMutations();
+        $addMutationLabelToSchemaFieldDescription = $enableNestedMutations;
 
         // Convert the field type from its internal representation (eg: "array:Post") to the GraphQL standard representation (eg: "[Post]")
         // 1. Global fields, connections and directives

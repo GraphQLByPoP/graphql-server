@@ -6,6 +6,7 @@ namespace GraphQLByPoP\GraphQLServer\ObjectModels;
 
 use PoP\API\Schema\SchemaDefinition;
 use GraphQLByPoP\GraphQLServer\Environment;
+use PoP\ComponentModel\State\ApplicationState;
 use GraphQLByPoP\GraphQLServer\ComponentConfiguration;
 use GraphQLByPoP\GraphQLServer\ObjectModels\Directive;
 use GraphQLByPoP\GraphQLServer\ObjectModels\ScalarType;
@@ -183,7 +184,8 @@ class Schema
          * If nested mutations are disabled, we will use types QueryRoot and MutationRoot,
          * and the data for type "Root" can be safely not sent
          */
-        if (!ComponentConfiguration::enableNestedMutations()) {
+        $vars = ApplicationState::getVars();
+        if (!$vars['nested-mutations-enabled']) {
             $instanceManager = InstanceManagerFacade::getInstance();
             $schemaDefinitionService = SchemaDefinitionServiceFacade::getInstance();
             $rootTypeResolverClass = $schemaDefinitionService->getRootTypeResolverClass();
