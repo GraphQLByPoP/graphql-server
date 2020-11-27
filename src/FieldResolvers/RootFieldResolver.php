@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace GraphQLByPoP\GraphQLServer\FieldResolvers;
 
 use PoP\API\Schema\SchemaDefinition;
+use PoP\ComponentModel\Misc\GeneralUtils;
+use PoP\ComponentModel\State\ApplicationState;
 use PoP\Engine\TypeResolvers\RootTypeResolver;
-use PoP\ComponentModel\Facades\Instances\InstanceManagerFacade;
-use GraphQLByPoP\GraphQLServer\TypeResolvers\TypeTypeResolver;
-use GraphQLByPoP\GraphQLServer\TypeResolvers\SchemaTypeResolver;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
+use GraphQLByPoP\GraphQLServer\TypeResolvers\TypeTypeResolver;
+use PoP\ComponentModel\Facades\Instances\InstanceManagerFacade;
+use GraphQLByPoP\GraphQLServer\TypeResolvers\SchemaTypeResolver;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 use PoP\ComponentModel\FieldResolvers\AbstractDBDataFieldResolver;
-use PoP\ComponentModel\Misc\GeneralUtils;
 use GraphQLByPoP\GraphQLServer\TypeDataLoaders\SchemaTypeDataLoader;
 
 class RootFieldResolver extends AbstractDBDataFieldResolver
@@ -25,6 +26,11 @@ class RootFieldResolver extends AbstractDBDataFieldResolver
 
     public static function getFieldNamesToResolve(): array
     {
+        // Only register them for the standard GraphQL, not for PQL
+        $vars = ApplicationState::getVars();
+        if (!$vars['standard-graphql']) {
+            return [];
+        }
         return [
             '__schema',
             '__type',
