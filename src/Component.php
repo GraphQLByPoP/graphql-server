@@ -74,6 +74,13 @@ class Component extends AbstractComponent
                 $componentClassConfiguration[EngineComponent::class][EngineEnvironment::DISABLE_REDUNDANT_ROOT_TYPE_MUTATION_FIELDS] = $mutationScheme == MutationSchemes::NESTED_WITHOUT_REDUNDANT_ROOT_FIELDS;
             }
         }
+        // Enable GraphQL Introspection for PQL by doing ?enable_graphql_introspection=1
+        if (Environment::enableEnablingGraphQLIntrospectionByURLParam()) {
+            $enableGraphQLIntrospection = Request::enableGraphQLIntrospection();
+            if ($enableGraphQLIntrospection !== null) {
+                $componentClassConfiguration[self::class][Environment::ENABLE_GRAPHQL_INTROSPECTION] = $enableGraphQLIntrospection;
+            }
+        }
     }
 
     /**

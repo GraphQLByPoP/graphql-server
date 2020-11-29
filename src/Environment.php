@@ -11,6 +11,7 @@ class Environment
     public const ENABLE_REMOVE_IF_NULL_DIRECTIVE = 'ENABLE_REMOVE_IF_NULL_DIRECTIVE';
     public const ENABLE_PROACTIVE_FEEDBACK = 'ENABLE_PROACTIVE_FEEDBACK';
     public const ENABLE_NESTED_MUTATIONS = 'ENABLE_NESTED_MUTATIONS';
+    public const ENABLE_GRAPHQL_INTROSPECTION = 'ENABLE_GRAPHQL_INTROSPECTION';
 
     public static function addGlobalFieldsToSchema(): bool
     {
@@ -35,5 +36,10 @@ class Environment
     public static function enableSettingMutationSchemeByURLParam(): bool
     {
         return getenv('ENABLE_SETTING_MUTATION_SCHEME_BY_URL_PARAM') !== false ? strtolower(getenv('ENABLE_SETTING_MUTATION_SCHEME_BY_URL_PARAM')) == "true" : false;
+    }
+
+    public static function enableEnablingGraphQLIntrospectionByURLParam(): bool
+    {
+        return getenv('ENABLE_ENABLING_GRAPHQL_INTROSPECTION_BY_URL_PARAM') !== false ? strtolower(getenv('ENABLE_ENABLING_GRAPHQL_INTROSPECTION_BY_URL_PARAM')) == "true" : false;
     }
 }

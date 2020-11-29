@@ -26,9 +26,10 @@ class RootFieldResolver extends AbstractDBDataFieldResolver
 
     public static function getFieldNamesToResolve(): array
     {
-        // Only register them for the standard GraphQL, not for PQL
+        // Only register them for the standard GraphQL,
+        // or for PQL if explicitly enabled
         $vars = ApplicationState::getVars();
-        if (!$vars['standard-graphql']) {
+        if (!$vars['graphql-introspection-enabled']) {
             return [];
         }
         return [

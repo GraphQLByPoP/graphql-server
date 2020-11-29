@@ -46,6 +46,13 @@ class VarsHooks extends AbstractHookSet
         $vars['nested-mutations-enabled'] = $vars['standard-graphql'] ?
             ComponentConfiguration::enableNestedMutations()
             : true;
+        // Check if the value has been defined by configuration. If so, use it.
+        // Otherwise, use the defaults:
+        // By default, Standard GraphQL has introspection enabled, and PQL is not
+        $enableGraphQLIntrospection = ComponentConfiguration::enableGraphQLIntrospection();
+        $vars['graphql-introspection-enabled'] = $enableGraphQLIntrospection !== null ?
+            $enableGraphQLIntrospection
+            : $vars['standard-graphql'];
     }
 
     /**
@@ -70,6 +77,7 @@ class VarsHooks extends AbstractHookSet
             $components[] = $translationAPI->__('GraphQL operation type:', 'graphql-server') . $graphQLOperationType;
         }
         $components[] = $translationAPI->__('enable nested mutations:', 'graphql-server') . $vars['nested-mutations-enabled'];
+        $components[] = $translationAPI->__('enable GraphQL introspection:', 'graphql-server') . $vars['graphql-introspection-enabled'];
 
         return $components;
     }

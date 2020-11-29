@@ -16,6 +16,7 @@ class ComponentConfiguration
     private static $enableRemoveIfNullDirective;
     private static $enableProactiveFeedback;
     private static $enableNestedMutations;
+    private static $enableGraphQLIntrospection;
 
     public static function addSelfFieldForRootTypeToSchema(): bool
     {
@@ -95,6 +96,24 @@ class ComponentConfiguration
         $envVariable = Environment::ENABLE_NESTED_MUTATIONS;
         $selfProperty = &self::$enableNestedMutations;
         $defaultValue = false;
+        $callback = [EnvironmentValueHelpers::class, 'toBool'];
+
+        // Initialize property from the environment/hook
+        self::maybeInitializeConfigurationValue(
+            $envVariable,
+            $selfProperty,
+            $defaultValue,
+            $callback
+        );
+        return $selfProperty;
+    }
+
+    public static function enableGraphQLIntrospection(): ?bool
+    {
+        // Define properties
+        $envVariable = Environment::ENABLE_GRAPHQL_INTROSPECTION;
+        $selfProperty = &self::$enableGraphQLIntrospection;
+        $defaultValue = null;
         $callback = [EnvironmentValueHelpers::class, 'toBool'];
 
         // Initialize property from the environment/hook
