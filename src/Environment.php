@@ -42,4 +42,9 @@ class Environment
     {
         return getenv('ENABLE_ENABLING_GRAPHQL_INTROSPECTION_BY_URL_PARAM') !== false ? strtolower(getenv('ENABLE_ENABLING_GRAPHQL_INTROSPECTION_BY_URL_PARAM')) == "true" : false;
     }
+
+    public static function addGraphQLIntrospectionPersistedQuery(): bool
+    {
+        return getenv('ADD_GRAPHQL_INTROSPECTION_PERSISTED_QUERY') !== false ? strtolower(getenv('ADD_GRAPHQL_INTROSPECTION_PERSISTED_QUERY')) == "true" : false;
+    }
 }
