@@ -69,7 +69,7 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                     $fieldArgs,
                     CacheUtils::getSchemaCacheKeyComponents(),
                     [
-                        'edit-schema' => $vars['edit-schema'],
+                        'edit-schema' => isset($vars['edit-schema']) && $vars['edit-schema'],
                     ]
                 );
                 // For the persistentCache, use a hash to remove invalid characters (such as "()")
@@ -212,7 +212,7 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
         // 2. Each type's fields, connections and directives
         foreach ($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES] as $typeSchemaKey => $typeSchemaDefinition) {
             // No need for Union types
-            if ($typeSchemaDefinition[SchemaDefinition::ARGNAME_IS_UNION]) {
+            if ($typeSchemaDefinition[SchemaDefinition::ARGNAME_IS_UNION] ?? null) {
                 continue;
             }
             foreach (array_keys($typeSchemaDefinition[SchemaDefinition::ARGNAME_FIELDS]) as $fieldName) {
@@ -346,7 +346,7 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
     protected function introduceSDLNotationToFieldSchemaDefinition(array $fieldSchemaDefinitionPath): void
     {
         $fieldSchemaDefinition = &SchemaDefinitionHelpers::advancePointerToPath($this->fullSchemaDefinition, $fieldSchemaDefinitionPath);
-        if ($type = $fieldSchemaDefinition[SchemaDefinition::ARGNAME_TYPE]) {
+        if ($type = $fieldSchemaDefinition[SchemaDefinition::ARGNAME_TYPE] ?? null) {
             $fieldSchemaDefinition[SchemaDefinition::ARGNAME_TYPE] = SchemaHelpers::getTypeToOutputInSchema(
                 $type,
                 $fieldSchemaDefinition[SchemaDefinition::ARGNAME_NON_NULLABLE]
@@ -359,9 +359,9 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
         $fieldOrDirectiveSchemaDefinition = &SchemaDefinitionHelpers::advancePointerToPath($this->fullSchemaDefinition, $fieldOrDirectiveSchemaDefinitionPath);
 
         // Also for the fieldOrDirective arguments
-        if ($fieldOrDirectiveArgs = $fieldOrDirectiveSchemaDefinition[SchemaDefinition::ARGNAME_ARGS]) {
+        if ($fieldOrDirectiveArgs = $fieldOrDirectiveSchemaDefinition[SchemaDefinition::ARGNAME_ARGS] ?? null) {
             foreach ($fieldOrDirectiveArgs as $fieldOrDirectiveArgName => $fieldOrDirectiveArgSchemaDefinition) {
-                if ($type = $fieldOrDirectiveArgSchemaDefinition[SchemaDefinition::ARGNAME_TYPE]) {
+                if ($type = $fieldOrDirectiveArgSchemaDefinition[SchemaDefinition::ARGNAME_TYPE] ?? null) {
                     $fieldOrDirectiveSchemaDefinition[SchemaDefinition::ARGNAME_ARGS][$fieldOrDirectiveArgName][SchemaDefinition::ARGNAME_TYPE] = SchemaHelpers::getTypeToOutputInSchema($type, $fieldOrDirectiveArgSchemaDefinition[SchemaDefinition::ARGNAME_MANDATORY]);
                     // If it is an input object, it may have its own args to also convert
                     if ($type == SchemaDefinition::TYPE_INPUT_OBJECT) {
@@ -386,7 +386,7 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
     protected function maybeAddTypeToSchemaDirectiveDescription(array $directiveSchemaDefinitionPath): void
     {
         $vars = ApplicationState::getVars();
-        if ($vars['edit-schema']) {
+        if (isset($vars['edit-schema']) && $vars['edit-schema']) {
             $directiveSchemaDefinition = &SchemaDefinitionHelpers::advancePointerToPath($this->fullSchemaDefinition, $directiveSchemaDefinitionPath);
             if ($directiveSchemaDefinition[SchemaDefinition::ARGNAME_DIRECTIVE_TYPE] == DirectiveTypes::SCHEMA) {
                 $translationAPI = TranslationAPIFacade::getInstance();
@@ -410,7 +410,7 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
     protected function addVersionToSchemaFieldDescription(array $fieldOrDirectiveSchemaDefinitionPath): void
     {
         $fieldOrDirectiveSchemaDefinition = &SchemaDefinitionHelpers::advancePointerToPath($this->fullSchemaDefinition, $fieldOrDirectiveSchemaDefinitionPath);
-        if ($schemaFieldVersion = $fieldOrDirectiveSchemaDefinition[SchemaDefinition::ARGNAME_VERSION]) {
+        if ($schemaFieldVersion = $fieldOrDirectiveSchemaDefinition[SchemaDefinition::ARGNAME_VERSION] ?? null) {
             $translationAPI = TranslationAPIFacade::getInstance();
             $fieldOrDirectiveSchemaDefinition[SchemaDefinition::ARGNAME_DESCRIPTION] .= sprintf(
                 sprintf(
@@ -430,7 +430,7 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
     protected function addMutationLabelToSchemaFieldDescription(array $fieldSchemaDefinitionPath): void
     {
         $fieldSchemaDefinition = &SchemaDefinitionHelpers::advancePointerToPath($this->fullSchemaDefinition, $fieldSchemaDefinitionPath);
-        if (isset($fieldSchemaDefinition[SchemaDefinition::ARGNAME_FIELD_IS_MUTATION]) && $fieldSchemaDefinition[SchemaDefinition::ARGNAME_FIELD_IS_MUTATION]) {
+        if ($fieldSchemaDefinition[SchemaDefinition::ARGNAME_FIELD_IS_MUTATION] ?? null) {
             $translationAPI = TranslationAPIFacade::getInstance();
             $fieldSchemaDefinition[SchemaDefinition::ARGNAME_DESCRIPTION] = sprintf(
                 $translationAPI->__('[Mutation] %s', 'graphql-server'),

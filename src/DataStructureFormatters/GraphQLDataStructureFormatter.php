@@ -138,7 +138,7 @@ class GraphQLDataStructureFormatter extends \PoP\GraphQLAPI\DataStructureFormatt
             'message' => $message,
         ];
         // Add the "location" directly, not under "extensions"
-        if ($location = $extensions['location']) {
+        if ($location = $extensions['location'] ?? null) {
             unset($extensions['location']);
             $entry['location'] = $location;
         }

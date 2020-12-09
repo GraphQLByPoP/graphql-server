@@ -27,7 +27,7 @@ class InputObjectType extends AbstractDynamicType
     protected function initInputValues(array &$fullSchemaDefinition, array $schemaDefinitionPath): void
     {
         $this->inputValues = [];
-        if ($inputValues = $this->schemaDefinition[SchemaDefinition::ARGNAME_ARGS]) {
+        if ($inputValues = $this->schemaDefinition[SchemaDefinition::ARGNAME_ARGS] ?? null) {
             foreach (array_keys($inputValues) as $inputValueName) {
                 $inputValueSchemaDefinitionPath = array_merge(
                     $schemaDefinitionPath,

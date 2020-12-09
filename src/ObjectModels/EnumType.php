@@ -27,7 +27,7 @@ class EnumType extends AbstractDynamicType
     protected function initEnumValues(array &$fullSchemaDefinition, array $schemaDefinitionPath): void
     {
         $this->enumValues = [];
-        if ($enumValues = $this->schemaDefinition[SchemaDefinition::ARGNAME_ENUM_VALUES]) {
+        if ($enumValues = $this->schemaDefinition[SchemaDefinition::ARGNAME_ENUM_VALUES] ?? null) {
             foreach (array_keys($enumValues) as $enumValueName) {
                 $enumValueSchemaDefinitionPath = array_merge(
                     $schemaDefinitionPath,

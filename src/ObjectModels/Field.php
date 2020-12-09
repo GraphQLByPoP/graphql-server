@@ -42,10 +42,10 @@ class Field extends AbstractSchemaDefinitionReferenceObject
     public function getExtensions(): array
     {
         $extensions = [];
-        if ($version = $this->schemaDefinition[SchemaDefinition::ARGNAME_VERSION]) {
+        if ($version = $this->schemaDefinition[SchemaDefinition::ARGNAME_VERSION] ?? null) {
             $extensions[SchemaDefinition::ARGNAME_VERSION] = $version;
         }
-        if (isset($this->schemaDefinition[SchemaDefinition::ARGNAME_FIELD_IS_MUTATION]) && $this->schemaDefinition[SchemaDefinition::ARGNAME_FIELD_IS_MUTATION]) {
+        if ($this->schemaDefinition[SchemaDefinition::ARGNAME_FIELD_IS_MUTATION] ?? null) {
             $extensions[SchemaDefinition::ARGNAME_FIELD_IS_MUTATION] = true;
         }
         return $extensions;

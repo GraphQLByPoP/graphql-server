@@ -39,7 +39,7 @@ class Directive extends AbstractSchemaDefinitionReferenceObject
          * 1. When the type is "Query"
          * 2. When the type is "Schema" and we are editing the query on the back-end (as to replace the lack of SDL)
          */
-        if ($directiveType == DirectiveTypes::QUERY || ($directiveType == DirectiveTypes::SCHEMA && $vars['edit-schema'])) {
+        if ($directiveType == DirectiveTypes::QUERY || ($directiveType == DirectiveTypes::SCHEMA && isset($vars['edit-schema']) && $vars['edit-schema'])) {
             // Same DirectiveLocations as used by "@skip": https://graphql.github.io/graphql-spec/draft/#sec--skip
             $directives = array_merge(
                 $directives,
