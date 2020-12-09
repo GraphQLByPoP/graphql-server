@@ -66,7 +66,7 @@ class SchemaDefinitionHelpers
                 // (eg: field "status" for interfaces CustomPost and ContentEntry)
                 // Then, check if the interface's interface also implements the field!
                 // Then, do not add it yet, leave it for its implemented interface to add it
-                if ($interfaceImplementedInterfaceNames = $fullSchemaDefinition[SchemaDefinition::ARGNAME_INTERFACES][$interfaceName][SchemaDefinition::ARGNAME_INTERFACES]) {
+                if ($interfaceImplementedInterfaceNames = $fullSchemaDefinition[SchemaDefinition::ARGNAME_INTERFACES][$interfaceName][SchemaDefinition::ARGNAME_INTERFACES] ?? []) {
                     $interfaceImplementedInterfaceFields = [];
                     foreach ($interfaceImplementedInterfaceNames as $interfaceImplementedInterfaceName) {
                         $interfaceImplementedInterfaceFields = array_merge(
@@ -108,7 +108,7 @@ class SchemaDefinitionHelpers
              * and the field can be deprecated just for that type (eg: Page.excerpt) and
              * not everywhere (eg: IsCustomPost.excerpt)
              */
-            // if ($interfaceName = $fieldInterfaces[$fieldName]) {
+            // if ($interfaceName = $fieldInterfaces[$fieldName] ?? null) {
             //     $targetFieldSchemaDefinitionPath = [
             //         SchemaDefinition::ARGNAME_INTERFACES,
             //         $interfaceName,
@@ -125,7 +125,7 @@ class SchemaDefinitionHelpers
              */
             $customDefinition = [];
             if ($addVersionToSchemaFieldDescription) {
-                if ($schemaFieldVersion = $fieldSchemaDefinitionPointer[$fieldName][SchemaDefinition::ARGNAME_VERSION]) {
+                if ($schemaFieldVersion = $fieldSchemaDefinitionPointer[$fieldName][SchemaDefinition::ARGNAME_VERSION] ?? null) {
                     $schemaFieldDescription = $fieldSchemaDefinitionPointer[$fieldName][SchemaDefinition::ARGNAME_DESCRIPTION];
                     $customDefinition = [
                         SchemaDefinition::ARGNAME_VERSION => $schemaFieldVersion,

@@ -55,7 +55,7 @@ abstract class AbstractDynamicType extends AbstractType
     public function getName(): string
     {
         // If they have provided a name, use it
-        if ($dynamicName = $this->schemaDefinition[$this->getDynamicTypeNamePropertyInSchema()]) {
+        if ($dynamicName = $this->schemaDefinition[$this->getDynamicTypeNamePropertyInSchema()] ?? null) {
             return $dynamicName;
         }
         // Otherwise, generate a unique name
