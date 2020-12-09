@@ -62,15 +62,16 @@ class GraphQLDataStructureFormatter extends \PoP\GraphQLAPI\DataStructureFormatt
     protected function addFieldOrDirectiveEntryToExtensions(array &$extensions, array $item): void
     {
         // Single field
-        if (count($item[Tokens::PATH]) == 1) {
-            $extensions['field'] = $item[Tokens::PATH][0];
+        $fields = $item[Tokens::PATH] ?? [];
+        if (count($fields) == 1) {
+            $extensions['field'] = $fields[0];
             return;
         }
         // Two fields: it may be a directive
-        if (count($item[Tokens::PATH]) == 2) {
+        if (count($fields) == 2) {
             $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
-            $maybeField = $item[Tokens::PATH][0];
-            $maybeDirective = $item[Tokens::PATH][1];
+            $maybeField = $fields[0];
+            $maybeDirective = $fields[1];
             $maybeFieldDirectives = array_map(
                 [$fieldQueryInterpreter, 'convertDirectiveToFieldDirective'],
                 $fieldQueryInterpreter->getDirectives($maybeField)
@@ -82,7 +83,7 @@ class GraphQLDataStructureFormatter extends \PoP\GraphQLAPI\DataStructureFormatt
             }
         }
         // Many fields
-        $extensions['fields'] = $item[Tokens::PATH];
+        $extensions['fields'] = $fields;
     }
     /**
      * Change properties for GraphQL
