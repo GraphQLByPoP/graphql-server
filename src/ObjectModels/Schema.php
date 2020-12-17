@@ -213,7 +213,7 @@ class Schema
         }
         $typeSchemaDefinition = $typeSchemaDefinitionPointer;
         // The type here can either be an ObjectType or a UnionType
-        return $typeSchemaDefinition[SchemaDefinition::ARGNAME_IS_UNION] ?
+        return ($typeSchemaDefinition[SchemaDefinition::ARGNAME_IS_UNION] ?? null) ?
             new UnionType($fullSchemaDefinition, $typeSchemaDefinitionPath) :
             new ObjectType($fullSchemaDefinition, $typeSchemaDefinitionPath);
     }
