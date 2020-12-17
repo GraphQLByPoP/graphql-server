@@ -73,7 +73,7 @@ class VarsHooks extends AbstractHookSet
         if (isset($vars['edit-schema'])) {
             $components[] = $translationAPI->__('edit schema:', 'graphql-server') . $vars['edit-schema'];
         }
-        if ($graphQLOperationType = $vars['graphql-operation-type']) {
+        if ($graphQLOperationType = $vars['graphql-operation-type'] ?? null) {
             $components[] = $translationAPI->__('GraphQL operation type:', 'graphql-server') . $graphQLOperationType;
         }
         $components[] = $translationAPI->__('enable nested mutations:', 'graphql-server') . $vars['nested-mutations-enabled'];
