@@ -20,7 +20,7 @@ class EnumValue extends AbstractSchemaDefinitionReferenceObject
     }
     public function getDescription(): ?string
     {
-        return $this->schemaDefinition[SchemaDefinition::ARGNAME_DESCRIPTION];
+        return $this->schemaDefinition[SchemaDefinition::ARGNAME_DESCRIPTION] ?? null;
     }
     public function isDeprecated(): bool
     {
@@ -28,6 +28,6 @@ class EnumValue extends AbstractSchemaDefinitionReferenceObject
     }
     public function getDeprecatedReason(): ?string
     {
-        return $this->schemaDefinition[SchemaDefinition::ARGNAME_DEPRECATIONDESCRIPTION];
+        return $this->schemaDefinition[SchemaDefinition::ARGNAME_DEPRECATIONDESCRIPTION] ?? null;
     }
 }

@@ -29,7 +29,7 @@ class Field extends AbstractSchemaDefinitionReferenceObject
     }
     public function getDescription(): ?string
     {
-        return $this->schemaDefinition[SchemaDefinition::ARGNAME_DESCRIPTION];
+        return $this->schemaDefinition[SchemaDefinition::ARGNAME_DESCRIPTION] ?? null;
     }
     public function isDeprecated(): bool
     {
@@ -37,7 +37,7 @@ class Field extends AbstractSchemaDefinitionReferenceObject
     }
     public function getDeprecationDescription(): ?string
     {
-        return $this->schemaDefinition[SchemaDefinition::ARGNAME_DEPRECATIONDESCRIPTION];
+        return $this->schemaDefinition[SchemaDefinition::ARGNAME_DEPRECATIONDESCRIPTION] ?? null;
     }
     public function getExtensions(): array
     {
