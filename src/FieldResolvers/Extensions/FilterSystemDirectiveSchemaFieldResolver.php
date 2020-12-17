@@ -108,7 +108,7 @@ class FilterSystemDirectiveSchemaFieldResolver extends SchemaFieldResolver
         switch ($fieldName) {
             case 'directives':
                 $directiveIDs = $schema->getDirectiveIDs();
-                if ($ofTypes = $fieldArgs['ofTypes']) {
+                if ($ofTypes = $fieldArgs['ofTypes'] ?? null) {
                     $instanceManager = InstanceManagerFacade::getInstance();
                     /**
                      * @var DirectiveTypeEnum

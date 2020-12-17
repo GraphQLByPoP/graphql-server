@@ -281,19 +281,19 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
 
             // Sort fields, connections and interfaces for each type
             foreach ($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES] as $typeSchemaKey => $typeSchemaDefinition) {
-                if (!is_null($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$typeSchemaKey][SchemaDefinition::ARGNAME_FIELDS])) {
+                if (isset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$typeSchemaKey][SchemaDefinition::ARGNAME_FIELDS])) {
                     ksort($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$typeSchemaKey][SchemaDefinition::ARGNAME_FIELDS]);
                 }
-                if (!is_null($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$typeSchemaKey][SchemaDefinition::ARGNAME_CONNECTIONS])) {
+                if (isset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$typeSchemaKey][SchemaDefinition::ARGNAME_CONNECTIONS])) {
                     ksort($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$typeSchemaKey][SchemaDefinition::ARGNAME_CONNECTIONS]);
                 }
-                if (!is_null($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$typeSchemaKey][SchemaDefinition::ARGNAME_INTERFACES])) {
+                if (isset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$typeSchemaKey][SchemaDefinition::ARGNAME_INTERFACES])) {
                     sort($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_TYPES][$typeSchemaKey][SchemaDefinition::ARGNAME_INTERFACES]);
                 }
             }
 
             // Sort directives
-            if (!is_null($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_GLOBAL_DIRECTIVES])) {
+            if (isset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_GLOBAL_DIRECTIVES])) {
                 ksort($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_GLOBAL_DIRECTIVES]);
             }
             /**
@@ -303,7 +303,7 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
              *
              * @todo Find a workaround if interfaces need to be sorted
              */
-            // if (!is_null($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_INTERFACES])) {
+            // if (isset($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_INTERFACES])) {
             //     ksort($this->fullSchemaDefinition[SchemaDefinition::ARGNAME_INTERFACES]);
             // }
         }

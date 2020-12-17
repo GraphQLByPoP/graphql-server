@@ -30,6 +30,9 @@ class Schema
      * @var Directive[]
      */
     protected array $directives;
+    protected ?AbstractType $queryType = null;
+    protected ?AbstractType $mutationType = null;
+    protected ?AbstractType $subscriptionType = null;
 
     public function __construct(array $fullSchemaDefinition, string $id)
     {
