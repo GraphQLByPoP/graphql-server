@@ -349,7 +349,7 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
         if ($type = $fieldSchemaDefinition[SchemaDefinition::ARGNAME_TYPE] ?? null) {
             $fieldSchemaDefinition[SchemaDefinition::ARGNAME_TYPE] = SchemaHelpers::getTypeToOutputInSchema(
                 $type,
-                $fieldSchemaDefinition[SchemaDefinition::ARGNAME_NON_NULLABLE]
+                $fieldSchemaDefinition[SchemaDefinition::ARGNAME_NON_NULLABLE] ?? null
             );
         }
         $this->introduceSDLNotationToFieldOrDirectiveArgs($fieldSchemaDefinitionPath);
