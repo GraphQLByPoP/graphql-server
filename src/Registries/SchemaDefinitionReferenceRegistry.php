@@ -4,23 +4,25 @@ declare(strict_types=1);
 
 namespace GraphQLByPoP\GraphQLServer\Registries;
 
-use GraphQLByPoP\GraphQLServer\Environment;
 use PoP\API\Cache\CacheUtils;
-use GraphQLByPoP\GraphQLServer\Cache\CacheTypes;
-use GraphQLByPoP\GraphQLServer\Schema\SchemaHelpers;
-use GraphQLByPoP\GraphQLServer\ComponentConfiguration;
+use GraphQLByPoP\GraphQLServer\Environment;
 use PoP\ComponentModel\State\ApplicationState;
 use PoP\ComponentModel\Schema\SchemaDefinition;
-use GraphQLByPoP\GraphQLServer\Schema\SchemaDefinitionHelpers;
+use GraphQLByPoP\GraphQLServer\Cache\CacheTypes;
 use PoP\ComponentModel\Directives\DirectiveTypes;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\API\Facades\SchemaDefinitionRegistryFacade;
+use GraphQLByPoP\GraphQLQuery\Schema\SchemaElements;
+use GraphQLByPoP\GraphQLServer\Schema\SchemaHelpers;
+use GraphQLByPoP\GraphQLServer\ComponentConfiguration;
 use PoP\ComponentModel\Facades\Cache\PersistentCacheFacade;
-use GraphQLByPoP\GraphQLServer\Facades\Schema\GraphQLSchemaDefinitionServiceFacade;
+use GraphQLByPoP\GraphQLServer\Schema\SchemaDefinitionHelpers;
 use PoP\API\ComponentConfiguration as APIComponentConfiguration;
-use GraphQLByPoP\GraphQLServer\Schema\SchemaDefinition as GraphQLServerSchemaDefinition;
+use GraphQLByPoP\GraphQLServer\Facades\Schema\GraphQLSchemaDefinitionServiceFacade;
 use GraphQLByPoP\GraphQLServer\ObjectModels\AbstractSchemaDefinitionReferenceObject;
 use GraphQLByPoP\GraphQLServer\Registries\SchemaDefinitionReferenceRegistryInterface;
+use GraphQLByPoP\GraphQLServer\Schema\SchemaDefinition as GraphQLServerSchemaDefinition;
+use GraphQLByPoP\GraphQLQuery\ComponentConfiguration as GraphQLQueryComponentConfiguration;
 
 class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegistryInterface
 {
@@ -151,6 +153,8 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
         $addVersionToSchemaFieldDescription = Environment::addVersionToSchemaFieldDescription();
         // When doing nested mutations, differentiate mutating fields by adding label "[Mutation]" in the description
         $addMutationLabelToSchemaFieldDescription = $enableNestedMutations;
+        // Maybe add param "nestedUnder" on the schema for each directive
+        $enableNestedDirectives = GraphQLQueryComponentConfiguration::enableNestedDirectives();
 
         // Convert the field type from its internal representation (eg: "array:Post") to the GraphQL standard representation (eg: "[Post]")
         // 1. Global fields, connections and directives
@@ -203,7 +207,12 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                 SchemaDefinition::ARGNAME_GLOBAL_DIRECTIVES,
                 $directiveName
             ];
+            $fieldOrDirectiveSchemaDefinition = &SchemaDefinitionHelpers::advancePointerToPath($this->fullSchemaDefinition, $itemPath);
+
             $this->introduceSDLNotationToFieldOrDirectiveArgs($itemPath);
+            if ($enableNestedDirectives) {
+                $this->addNestedDirectiveDataToSchemaDirectiveArgs($itemPath);
+            }
             if ($addVersionToSchemaFieldDescription) {
                 $this->addVersionToSchemaFieldDescription($itemPath);
             }
@@ -253,6 +262,9 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                     $directiveName
                 ];
                 $this->introduceSDLNotationToFieldOrDirectiveArgs($itemPath);
+                if ($enableNestedDirectives) {
+                    $this->addNestedDirectiveDataToSchemaDirectiveArgs($itemPath);
+                }
                 if ($addVersionToSchemaFieldDescription) {
                     $this->addVersionToSchemaFieldDescription($itemPath);
                 }
@@ -420,6 +432,23 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                 $schemaFieldVersion
             );
         }
+    }
+
+    /**
+     * Append param "nestedUnder" to the directive
+     *
+     * @param array $directiveSchemaDefinitionPath
+     */
+    protected function addNestedDirectiveDataToSchemaDirectiveArgs(array $directiveSchemaDefinitionPath): void
+    {
+        $translationAPI = TranslationAPIFacade::getInstance();
+        $directiveSchemaDefinition = &SchemaDefinitionHelpers::advancePointerToPath($this->fullSchemaDefinition, $directiveSchemaDefinitionPath);
+        $directiveSchemaDefinition[SchemaDefinition::ARGNAME_ARGS] ??= [];
+        $directiveSchemaDefinition[SchemaDefinition::ARGNAME_ARGS][] = [
+            SchemaDefinition::ARGNAME_NAME => SchemaElements::DIRECTIVE_PARAM_NESTED_UNDER,
+            SchemaDefinition::ARGNAME_TYPE => GraphQLServerSchemaDefinition::TYPE_INT,
+            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Nest the directive under another one, indicated as a relative position from this one (a negative int)', 'graphql-server'),
+        ];
     }
 
     /**
