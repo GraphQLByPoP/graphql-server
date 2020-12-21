@@ -154,7 +154,7 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
         // When doing nested mutations, differentiate mutating fields by adding label "[Mutation]" in the description
         $addMutationLabelToSchemaFieldDescription = $enableNestedMutations;
         // Maybe add param "nestedUnder" on the schema for each directive
-        $enableNestedDirectives = GraphQLQueryComponentConfiguration::enableNestedDirectives();
+        $enableComposableDirectives = GraphQLQueryComponentConfiguration::enableComposableDirectives();
 
         // Convert the field type from its internal representation (eg: "array:Post") to the GraphQL standard representation (eg: "[Post]")
         // 1. Global fields, connections and directives
@@ -210,7 +210,7 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
             $fieldOrDirectiveSchemaDefinition = &SchemaDefinitionHelpers::advancePointerToPath($this->fullSchemaDefinition, $itemPath);
 
             $this->introduceSDLNotationToFieldOrDirectiveArgs($itemPath);
-            if ($enableNestedDirectives) {
+            if ($enableComposableDirectives) {
                 $this->addNestedDirectiveDataToSchemaDirectiveArgs($itemPath);
             }
             if ($addVersionToSchemaFieldDescription) {
@@ -262,7 +262,7 @@ class SchemaDefinitionReferenceRegistry implements SchemaDefinitionReferenceRegi
                     $directiveName
                 ];
                 $this->introduceSDLNotationToFieldOrDirectiveArgs($itemPath);
-                if ($enableNestedDirectives) {
+                if ($enableComposableDirectives) {
                     $this->addNestedDirectiveDataToSchemaDirectiveArgs($itemPath);
                 }
                 if ($addVersionToSchemaFieldDescription) {
