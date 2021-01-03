@@ -54,6 +54,10 @@ RewriteRule ^api/graphql/?$ /?scheme=api&datastructure=graphql [L,P,QSA]
 ```
 -->
 
+## Development
+
+The source code is hosted on the [PoP monorepo](https://github.com/leoloso/PoP), under [`GraphQLByPoP/packages/graphql-server`](https://github.com/leoloso/PoP/tree/master/layers/GraphQLByPoP/packages/graphql-server).
+
 ## Usage
 
 Initialize the component:
@@ -131,7 +135,7 @@ Requirements:
 Via [Rector](https://github.com/rectorphp/rector) (dry-run mode):
 
 ```bash
-composer downgrade-code
+composer preview-code-downgrade
 ```
 
 ## Standards
@@ -192,4 +196,4 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [link-code-quality]: https://scrutinizer-ci.com/g/graphql-by-pop/graphql-server
 [link-downloads]: https://packagist.org/packages/graphql-by-pop/graphql-server
 [link-author]: https://github.com/leoloso
-[link-contributors]: ../../contributors
+[link-contributors]: ../../../../../../contributors
