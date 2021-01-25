@@ -1,6 +1,6 @@
-build
+/build/
 composer.lock
-vendor
+/vendor/
 phpcs.xml
 phpunit.xml
 .phpunit.result.cache
