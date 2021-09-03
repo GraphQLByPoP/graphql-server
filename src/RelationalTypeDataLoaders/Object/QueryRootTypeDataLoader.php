@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace GraphQLByPoP\GraphQLServer\TypeDataLoaders;
+namespace GraphQLByPoP\GraphQLServer\RelationalTypeDataLoaders\Object;
 
 use GraphQLByPoP\GraphQLServer\ObjectFacades\QueryRootObjectFacade;
-use PoP\ComponentModel\TypeDataLoaders\AbstractTypeDataLoader;
+use PoP\ComponentModel\RelationalTypeDataLoaders\Object\AbstractObjectTypeDataLoader;
 
-class QueryRootTypeDataLoader extends AbstractTypeDataLoader
+class QueryRootTypeDataLoader extends AbstractObjectTypeDataLoader
 {
     public function getObjects(array $ids): array
     {

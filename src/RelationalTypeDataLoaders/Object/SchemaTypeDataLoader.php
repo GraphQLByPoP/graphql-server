@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace GraphQLByPoP\GraphQLServer\TypeDataLoaders;
+namespace GraphQLByPoP\GraphQLServer\RelationalTypeDataLoaders\Object;
 
 use GraphQLByPoP\GraphQLServer\ObjectModels\Schema;
 use GraphQLByPoP\GraphQLServer\TypeResolvers\Object\SchemaTypeResolver;
-use PoP\ComponentModel\TypeDataLoaders\AbstractTypeDataLoader;
+use PoP\ComponentModel\RelationalTypeDataLoaders\Object\AbstractObjectTypeDataLoader;
 use GraphQLByPoP\GraphQLServer\Facades\Registries\SchemaDefinitionReferenceRegistryFacade;
-use PoP\ComponentModel\TypeDataLoaders\UseObjectDictionaryTypeDataLoaderTrait;
+use PoP\ComponentModel\RelationalTypeDataLoaders\Object\UseObjectDictionaryTypeDataLoaderTrait;
 
-class SchemaTypeDataLoader extends AbstractTypeDataLoader
+class SchemaTypeDataLoader extends AbstractObjectTypeDataLoader
 {
     use UseObjectDictionaryTypeDataLoaderTrait;
 

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace GraphQLByPoP\GraphQLServer\TypeDataLoaders;
+namespace GraphQLByPoP\GraphQLServer\RelationalTypeDataLoaders\Object;
 
 use GraphQLByPoP\GraphQLServer\ObjectFacades\MutationRootObjectFacade;
-use PoP\ComponentModel\TypeDataLoaders\AbstractTypeDataLoader;
+use PoP\ComponentModel\RelationalTypeDataLoaders\Object\AbstractObjectTypeDataLoader;
 
-class MutationRootTypeDataLoader extends AbstractTypeDataLoader
+class MutationRootTypeDataLoader extends AbstractObjectTypeDataLoader
 {
     public function getObjects(array $ids): array
     {
