@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace GraphQLByPoP\GraphQLServer\TypeResolvers;
+namespace GraphQLByPoP\GraphQLServer\TypeResolvers\Object;
 
-use PoP\Engine\TypeResolvers\RootTypeResolver;
-use PoP\ComponentModel\TypeResolvers\AbstractObjectTypeResolver;
+use PoP\Engine\TypeResolvers\Object\RootTypeResolver;
+use PoP\ComponentModel\TypeResolvers\Object\AbstractObjectTypeResolver;
 use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
 
 abstract class AbstractUseRootAsSourceForSchemaTypeResolver extends AbstractObjectTypeResolver

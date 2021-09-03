@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GraphQLByPoP\GraphQLServer\TypeResolvers;
+namespace GraphQLByPoP\GraphQLServer\TypeResolvers\Object;
 
 use GraphQLByPoP\GraphQLServer\ObjectModels\MutationRoot;
 use PoP\Engine\TypeResolvers\ReservedNameTypeResolverTrait;

@@ -2,27 +2,27 @@
 
 declare(strict_types=1);
 
-namespace GraphQLByPoP\GraphQLServer\TypeResolvers;
+namespace GraphQLByPoP\GraphQLServer\TypeResolvers\Object;
 
-use GraphQLByPoP\GraphQLServer\TypeResolvers\AbstractIntrospectionTypeResolver;
+use GraphQLByPoP\GraphQLServer\TypeResolvers\Object\AbstractIntrospectionTypeResolver;
 use GraphQLByPoP\GraphQLServer\TypeDataLoaders\SchemaDefinitionReferenceTypeDataLoader;
 
-class FieldTypeResolver extends AbstractIntrospectionTypeResolver
+class EnumValueTypeResolver extends AbstractIntrospectionTypeResolver
 {
     public function getTypeName(): string
     {
-        return '__Field';
+        return '__EnumValue';
     }
 
     public function getSchemaTypeDescription(): ?string
     {
-        return $this->translationAPI->__('Representation of a GraphQL type\'s field', 'graphql-server');
+        return $this->translationAPI->__('Representation of an Enum value in GraphQL', 'graphql-server');
     }
 
     public function getID(object $resultItem): string | int | null
     {
-        $field = $resultItem;
-        return $field->getID();
+        $enumValue = $resultItem;
+        return $enumValue->getID();
     }
 
     public function getRelationalTypeDataLoaderClass(): string
