@@ -4,25 +4,25 @@ declare(strict_types=1);
 
 namespace GraphQLByPoP\GraphQLServer\TypeResolvers\ObjectType;
 
-use GraphQLByPoP\GraphQLServer\TypeResolvers\ObjectType\AbstractIntrospectionTypeResolver;
 use GraphQLByPoP\GraphQLServer\RelationalTypeDataLoaders\ObjectType\SchemaDefinitionReferenceTypeDataLoader;
+use GraphQLByPoP\GraphQLServer\TypeResolvers\ObjectType\AbstractIntrospectionObjectTypeResolver;
 
-class FieldTypeResolver extends AbstractIntrospectionTypeResolver
+class DirectiveObjectTypeResolver extends AbstractIntrospectionObjectTypeResolver
 {
     public function getTypeName(): string
     {
-        return '__Field';
+        return '__Directive';
     }
 
     public function getSchemaTypeDescription(): ?string
     {
-        return $this->translationAPI->__('Representation of a GraphQL type\'s field', 'graphql-server');
+        return $this->translationAPI->__('A GraphQL directive in the data graph', 'graphql-server');
     }
 
     public function getID(object $resultItem): string | int | null
     {
-        $field = $resultItem;
-        return $field->getID();
+        $directive = $resultItem;
+        return $directive->getID();
     }
 
     public function getRelationalTypeDataLoaderClass(): string
