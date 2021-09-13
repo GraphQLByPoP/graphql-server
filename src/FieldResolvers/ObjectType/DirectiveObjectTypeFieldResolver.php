@@ -4,21 +4,23 @@ declare(strict_types=1);
 
 namespace GraphQLByPoP\GraphQLServer\FieldResolvers\ObjectType;
 
-use GraphQLByPoP\GraphQLServer\ObjectModels\Field;
-use GraphQLByPoP\GraphQLServer\TypeResolvers\ObjectType\FieldTypeResolver;
+use GraphQLByPoP\GraphQLServer\Enums\DirectiveLocationEnum;
+use GraphQLByPoP\GraphQLServer\TypeResolvers\ObjectType\DirectiveTypeResolver;
 use GraphQLByPoP\GraphQLServer\TypeResolvers\ObjectType\InputValueTypeResolver;
-use GraphQLByPoP\GraphQLServer\TypeResolvers\ObjectType\TypeTypeResolver;
 use PoP\ComponentModel\FieldResolvers\ObjectType\AbstractObjectTypeFieldResolver;
+use PoP\ComponentModel\FieldResolvers\ObjectType\WithEnumObjectTypeFieldSchemaDefinitionResolverTrait;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\ComponentModel\Schema\SchemaTypeModifiers;
 use PoP\ComponentModel\TypeResolvers\ObjectType\ObjectTypeResolverInterface;
 
-class FieldFieldResolver extends AbstractObjectTypeFieldResolver
+class DirectiveObjectTypeFieldResolver extends AbstractObjectTypeFieldResolver
 {
+    use WithEnumObjectTypeFieldSchemaDefinitionResolverTrait;
+
     public function getObjectTypeResolverClassesToAttachTo(): array
     {
         return [
-            FieldTypeResolver::class,
+            DirectiveTypeResolver::class,
         ];
     }
 
@@ -28,10 +30,8 @@ class FieldFieldResolver extends AbstractObjectTypeFieldResolver
             'name',
             'description',
             'args',
-            'type',
-            'isDeprecated',
-            'deprecationReason',
-            'extensions',
+            'locations',
+            'isRepeatable',
         ];
     }
 
@@ -40,10 +40,8 @@ class FieldFieldResolver extends AbstractObjectTypeFieldResolver
         return match ($fieldName) {
             'name' => SchemaDefinition::TYPE_STRING,
             'description' => SchemaDefinition::TYPE_STRING,
-            'type' => SchemaDefinition::TYPE_STRING,
-            'isDeprecated' => SchemaDefinition::TYPE_BOOL,
-            'deprecationReason' => SchemaDefinition::TYPE_STRING,
-            'extensions' => SchemaDefinition::TYPE_OBJECT,
+            'locations' => SchemaDefinition::TYPE_ENUM,
+            'isRepeatable' => SchemaDefinition::TYPE_BOOL,
             default => parent::getSchemaFieldType($objectTypeResolver, $fieldName),
         };
     }
@@ -52,10 +50,9 @@ class FieldFieldResolver extends AbstractObjectTypeFieldResolver
     {
         return match ($fieldName) {
             'name',
-            'type',
-            'isDeprecated',
-            'extensions'
+            'isRepeatable'
                 => SchemaTypeModifiers::NON_NULLABLE,
+            'locations',
             'args'
                 => SchemaTypeModifiers::NON_NULLABLE | SchemaTypeModifiers::IS_ARRAY,
             default
@@ -63,16 +60,40 @@ class FieldFieldResolver extends AbstractObjectTypeFieldResolver
         };
     }
 
+    protected function getSchemaDefinitionEnumName(ObjectTypeResolverInterface $objectTypeResolver, string $fieldName): ?string
+    {
+        switch ($fieldName) {
+            case 'locations':
+                /**
+                 * @var DirectiveLocationEnum
+                 */
+                $directiveLocationEnum = $this->instanceManager->getInstance(DirectiveLocationEnum::class);
+                return $directiveLocationEnum->getName();
+        }
+        return null;
+    }
+
+    protected function getSchemaDefinitionEnumValues(ObjectTypeResolverInterface $objectTypeResolver, string $fieldName): ?array
+    {
+        switch ($fieldName) {
+            case 'locations':
+                /**
+                 * @var DirectiveLocationEnum
+                 */
+                $directiveLocationEnum = $this->instanceManager->getInstance(DirectiveLocationEnum::class);
+                return $directiveLocationEnum->getValues();
+        }
+        return null;
+    }
+
     public function getSchemaFieldDescription(ObjectTypeResolverInterface $objectTypeResolver, string $fieldName): ?string
     {
         $descriptions = [
-            'name' => $this->translationAPI->__('Field\'s name', 'graphql-server'),
-            'description' => $this->translationAPI->__('Field\'s description', 'graphql-server'),
-            'args' => $this->translationAPI->__('Field arguments', 'graphql-server'),
-            'type' => $this->translationAPI->__('Type to which the field belongs', 'graphql-server'),
-            'isDeprecated' => $this->translationAPI->__('Is the field deprecated?', 'graphql-server'),
-            'deprecationReason' => $this->translationAPI->__('Why was the field deprecated?', 'graphql-server'),
-            'extensions' => $this->translationAPI->__('Custom metadata added to the field (see: https://github.com/graphql/graphql-spec/issues/300#issuecomment-504734306 and below comments, and https://github.com/graphql/graphql-js/issues/1527)', 'graphql-server'),
+            'name' => $this->translationAPI->__('Directive\'s name', 'graphql-server'),
+            'description' => $this->translationAPI->__('Directive\'s description', 'graphql-server'),
+            'args' => $this->translationAPI->__('Directive\'s arguments', 'graphql-server'),
+            'locations' => $this->translationAPI->__('The locations where the directive may be placed', 'graphql-server'),
+            'isRepeatable' => $this->translationAPI->__('Can the directive be executed more than once in the same field?', 'graphql-server'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($objectTypeResolver, $fieldName);
     }
@@ -92,23 +113,18 @@ class FieldFieldResolver extends AbstractObjectTypeFieldResolver
         ?array $expressions = null,
         array $options = []
     ): mixed {
-        /** @var Field */
-        $field = $resultItem;
+        $directive = $resultItem;
         switch ($fieldName) {
             case 'name':
-                return $field->getName();
+                return $directive->getName();
             case 'description':
-                return $field->getDescription();
+                return $directive->getDescription();
             case 'args':
-                return $field->getArgIDs();
-            case 'type':
-                return $field->getTypeID();
-            case 'isDeprecated':
-                return $field->isDeprecated();
-            case 'deprecationReason':
-                return $field->getDeprecationDescription();
-            case 'extensions':
-                return $field->getExtensions();
+                return $directive->getArgIDs();
+            case 'locations':
+                return $directive->getLocations();
+            case 'isRepeatable':
+                return $directive->isRepeatable();
         }
 
         return parent::resolveValue($objectTypeResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
@@ -119,8 +135,6 @@ class FieldFieldResolver extends AbstractObjectTypeFieldResolver
         switch ($fieldName) {
             case 'args':
                 return InputValueTypeResolver::class;
-            case 'type':
-                return TypeTypeResolver::class;
         }
         return parent::getFieldTypeResolverClass($objectTypeResolver, $fieldName);
     }
