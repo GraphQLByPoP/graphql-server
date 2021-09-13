@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace GraphQLByPoP\GraphQLServer\FieldResolvers;
+namespace GraphQLByPoP\GraphQLServer\FieldResolvers\ObjectType;
 
 use PoP\API\Schema\SchemaDefinition;
-use PoP\ComponentModel\FieldResolvers\AbstractGlobalFieldResolver;
+use PoP\ComponentModel\FieldResolvers\ObjectType\AbstractGlobalFieldResolver;
 use PoP\ComponentModel\Schema\SchemaTypeModifiers;
 use PoP\ComponentModel\TypeResolvers\ObjectType\ObjectTypeResolverInterface;
 
