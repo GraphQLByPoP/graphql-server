@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace GraphQLByPoP\GraphQLServer\FieldResolvers\ObjectType;
 
-use Symfony\Contracts\Service\Attribute\Required;
-use PoP\ComponentModel\TypeResolvers\ConcreteTypeResolverInterface;
 use GraphQLByPoP\GraphQLServer\ObjectModels\Schema;
 use GraphQLByPoP\GraphQLServer\TypeResolvers\ObjectType\DirectiveObjectTypeResolver;
 use GraphQLByPoP\GraphQLServer\TypeResolvers\ObjectType\SchemaObjectTypeResolver;
@@ -13,7 +11,9 @@ use GraphQLByPoP\GraphQLServer\TypeResolvers\ObjectType\TypeObjectTypeResolver;
 use PoP\API\Schema\SchemaDefinition;
 use PoP\ComponentModel\FieldResolvers\ObjectType\AbstractObjectTypeFieldResolver;
 use PoP\ComponentModel\Schema\SchemaTypeModifiers;
+use PoP\ComponentModel\TypeResolvers\ConcreteTypeResolverInterface;
 use PoP\ComponentModel\TypeResolvers\ObjectType\ObjectTypeResolverInterface;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class SchemaObjectTypeFieldResolver extends AbstractObjectTypeFieldResolver
 {
@@ -63,15 +63,15 @@ class SchemaObjectTypeFieldResolver extends AbstractObjectTypeFieldResolver
 
     public function getSchemaFieldDescription(ObjectTypeResolverInterface $objectTypeResolver, string $fieldName): ?string
     {
-        $descriptions = [
+        return match ($fieldName) {
             'queryType' => $this->translationAPI->__('The type, accessible from the root, that resolves queries', 'graphql-server'),
             'mutationType' => $this->translationAPI->__('The type, accessible from the root, that resolves mutations', 'graphql-server'),
             'subscriptionType' => $this->translationAPI->__('The type, accessible from the root, that resolves subscriptions', 'graphql-server'),
             'types' => $this->translationAPI->__('All types registered in the data graph', 'graphql-server'),
             'directives' => $this->translationAPI->__('All directives registered in the data graph', 'graphql-server'),
             'type' => $this->translationAPI->__('Obtain a specific type from the schema', 'graphql-server'),
-        ];
-        return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($objectTypeResolver, $fieldName);
+            default => parent::getSchemaFieldDescription($objectTypeResolver, $fieldName),
+        };
     }
 
     public function getSchemaFieldArgs(ObjectTypeResolverInterface $objectTypeResolver, string $fieldName): array

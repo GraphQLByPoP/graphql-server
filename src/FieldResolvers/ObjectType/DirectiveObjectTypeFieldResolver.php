@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace GraphQLByPoP\GraphQLServer\FieldResolvers\ObjectType;
 
-use Symfony\Contracts\Service\Attribute\Required;
-use PoP\ComponentModel\TypeResolvers\ConcreteTypeResolverInterface;
-use PoP\Engine\TypeResolvers\ScalarType\StringScalarTypeResolver;
-use PoP\Engine\TypeResolvers\ScalarType\BooleanScalarTypeResolver;
 use GraphQLByPoP\GraphQLServer\ObjectModels\Directive;
 use GraphQLByPoP\GraphQLServer\TypeResolvers\EnumType\DirectiveLocationEnumTypeResolver;
 use GraphQLByPoP\GraphQLServer\TypeResolvers\ObjectType\DirectiveObjectTypeResolver;
 use GraphQLByPoP\GraphQLServer\TypeResolvers\ObjectType\InputValueObjectTypeResolver;
 use PoP\ComponentModel\FieldResolvers\ObjectType\AbstractObjectTypeFieldResolver;
 use PoP\ComponentModel\Schema\SchemaTypeModifiers;
+use PoP\ComponentModel\TypeResolvers\ConcreteTypeResolverInterface;
 use PoP\ComponentModel\TypeResolvers\ObjectType\ObjectTypeResolverInterface;
+use PoP\Engine\TypeResolvers\ScalarType\BooleanScalarTypeResolver;
+use PoP\Engine\TypeResolvers\ScalarType\StringScalarTypeResolver;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class DirectiveObjectTypeFieldResolver extends AbstractObjectTypeFieldResolver
 {
@@ -82,14 +82,14 @@ class DirectiveObjectTypeFieldResolver extends AbstractObjectTypeFieldResolver
 
     public function getSchemaFieldDescription(ObjectTypeResolverInterface $objectTypeResolver, string $fieldName): ?string
     {
-        $descriptions = [
+        return match ($fieldName) {
             'name' => $this->translationAPI->__('Directive\'s name', 'graphql-server'),
             'description' => $this->translationAPI->__('Directive\'s description', 'graphql-server'),
             'args' => $this->translationAPI->__('Directive\'s arguments', 'graphql-server'),
             'locations' => $this->translationAPI->__('The locations where the directive may be placed', 'graphql-server'),
             'isRepeatable' => $this->translationAPI->__('Can the directive be executed more than once in the same field?', 'graphql-server'),
-        ];
-        return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($objectTypeResolver, $fieldName);
+            default => parent::getSchemaFieldDescription($objectTypeResolver, $fieldName),
+        };
     }
 
     /**

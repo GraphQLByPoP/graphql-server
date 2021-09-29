@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace GraphQLByPoP\GraphQLServer\FieldResolvers\ObjectType;
 
-use Symfony\Contracts\Service\Attribute\Required;
-use PoP\ComponentModel\TypeResolvers\ConcreteTypeResolverInterface;
-use PoP\Engine\TypeResolvers\ScalarType\StringScalarTypeResolver;
-use PoP\Engine\TypeResolvers\ScalarType\BooleanScalarTypeResolver;
-use PoPSchema\SchemaCommons\TypeResolvers\ScalarType\ObjectScalarTypeResolver;
 use GraphQLByPoP\GraphQLServer\ObjectModels\Field;
 use GraphQLByPoP\GraphQLServer\TypeResolvers\ObjectType\FieldObjectTypeResolver;
 use GraphQLByPoP\GraphQLServer\TypeResolvers\ObjectType\InputValueObjectTypeResolver;
 use GraphQLByPoP\GraphQLServer\TypeResolvers\ObjectType\TypeObjectTypeResolver;
 use PoP\ComponentModel\FieldResolvers\ObjectType\AbstractObjectTypeFieldResolver;
 use PoP\ComponentModel\Schema\SchemaTypeModifiers;
+use PoP\ComponentModel\TypeResolvers\ConcreteTypeResolverInterface;
 use PoP\ComponentModel\TypeResolvers\ObjectType\ObjectTypeResolverInterface;
+use PoP\Engine\TypeResolvers\ScalarType\BooleanScalarTypeResolver;
+use PoP\Engine\TypeResolvers\ScalarType\StringScalarTypeResolver;
+use PoPSchema\SchemaCommons\TypeResolvers\ScalarType\ObjectScalarTypeResolver;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class FieldObjectTypeFieldResolver extends AbstractObjectTypeFieldResolver
 {
@@ -91,7 +91,7 @@ class FieldObjectTypeFieldResolver extends AbstractObjectTypeFieldResolver
 
     public function getSchemaFieldDescription(ObjectTypeResolverInterface $objectTypeResolver, string $fieldName): ?string
     {
-        $descriptions = [
+        return match ($fieldName) {
             'name' => $this->translationAPI->__('Field\'s name', 'graphql-server'),
             'description' => $this->translationAPI->__('Field\'s description', 'graphql-server'),
             'args' => $this->translationAPI->__('Field arguments', 'graphql-server'),
@@ -99,8 +99,8 @@ class FieldObjectTypeFieldResolver extends AbstractObjectTypeFieldResolver
             'isDeprecated' => $this->translationAPI->__('Is the field deprecated?', 'graphql-server'),
             'deprecationReason' => $this->translationAPI->__('Why was the field deprecated?', 'graphql-server'),
             'extensions' => $this->translationAPI->__('Custom metadata added to the field (see: https://github.com/graphql/graphql-spec/issues/300#issuecomment-504734306 and below comments, and https://github.com/graphql/graphql-js/issues/1527)', 'graphql-server'),
-        ];
-        return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($objectTypeResolver, $fieldName);
+            default => parent::getSchemaFieldDescription($objectTypeResolver, $fieldName),
+        };
     }
 
     /**
