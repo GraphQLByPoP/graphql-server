@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GraphQLByPoP\GraphQLServer\Configuration;
 
 use GraphQLByPoP\GraphQLServer\Constants\Params;
+use GraphQLByPoP\GraphQLServer\Environment;
 use PoP\BasicService\Component\EnvironmentValueHelpers;
 
 class Request
@@ -19,18 +20,25 @@ class Request
 
     public static function getMutationScheme(): ?string
     {
-        if (isset($_REQUEST[Params::MUTATION_SCHEME])) {
-            $scheme = $_REQUEST[Params::MUTATION_SCHEME];
-            $schemes = [
-                MutationSchemes::STANDARD,
-                MutationSchemes::NESTED_WITH_REDUNDANT_ROOT_FIELDS,
-                MutationSchemes::NESTED_WITHOUT_REDUNDANT_ROOT_FIELDS,
-            ];
-            if (in_array($scheme, $schemes)) {
-                return $scheme;
-            }
+        if (!Environment::enableSettingMutationSchemeByURLParam()) {
+            return null;
         }
-        return null;
+
+        $scheme = $_REQUEST[Params::MUTATION_SCHEME] ?? null;
+        if ($scheme === null) {
+            return null;
+        }
+
+        $schemes = [
+            MutationSchemes::STANDARD,
+            MutationSchemes::NESTED_WITH_REDUNDANT_ROOT_FIELDS,
+            MutationSchemes::NESTED_WITHOUT_REDUNDANT_ROOT_FIELDS,
+        ];
+        if (!in_array($scheme, $schemes)) {
+            return null;
+        }
+
+        return $scheme;
     }
 
     public static function enableGraphQLIntrospection(): ?bool
