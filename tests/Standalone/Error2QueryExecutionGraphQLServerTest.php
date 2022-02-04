@@ -4,18 +4,30 @@ declare(strict_types=1);
 
 namespace GraphQLByPoP\GraphQLServer\Standalone;
 
-class ErrorQueryExecutionGraphQLServerTest extends AbstractQueryExecutionGraphQLServerTestCase
+class Error2QueryExecutionGraphQLServerTest extends AbstractQueryExecutionGraphQLServerTestCase
 {
     public function graphQLServerExecutionProvider(): array
     {
         return [
-            'empty' => [
+            'field-is-not-connection' => [
                 '
+                {
+                    id {
+                        id
+                    }
+                }
                 ',
                 [
+                    'data' => [
+                        'id' => null,
+                    ],
                     'errors' => [
                         [
-                            "message" => "The query has not been provided",
+                            "message" => "Field 'id' is not a connection",
+                            "extensions" => [
+                                "field" => "id",
+                                "type" => "QueryRoot",
+                            ],
                             "locations" => [
                                 [
                                     "column" => 1,
