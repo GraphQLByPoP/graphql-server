@@ -1,7 +1,7 @@
 {
   "errors": [
     {
-      "message": "On field 'implements', there is no argument with name 'type'",
+      "message": "Argument 'value' in field 'echo' cannot be empty",
       "locations": [
         {
           "line": 1,
@@ -11,14 +11,14 @@
       "extensions": {
         "type": "QueryRoot",
         "fields": [
-          "implements(interface: \"SomeInterface\", type: \"DoesntMatter\")",
+          "echo(value: null)",
           "validate"
         ],
-        "code": "PoP\\Root\\e1"
+        "code": "PoP\\ComponentModel\\e24"
       }
     }
   ],
   "data": {
-    "implements": null
+    "echo": null
   }
 }
