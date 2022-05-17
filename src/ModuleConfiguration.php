@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace GraphQLByPoP\GraphQLServer;
 
 use PoP\Root\App;
-use PoP\Root\Component\AbstractComponentConfiguration;
-use PoPAPI\API\Component as APIComponent;
-use PoPAPI\API\ComponentConfiguration as APIComponentConfiguration;
-use PoP\Root\Component\EnvironmentValueHelpers;
+use PoP\Root\Module\AbstractModuleConfiguration;
+use PoPAPI\API\Module as APIModule;
+use PoPAPI\API\ModuleConfiguration as APIModuleConfiguration;
+use PoP\Root\Module\EnvironmentValueHelpers;
 
-class ComponentConfiguration extends AbstractComponentConfiguration
+class ModuleConfiguration extends AbstractModuleConfiguration
 {
     public function exposeSelfFieldForRootTypeInGraphQLSchema(): bool
     {
@@ -213,9 +213,9 @@ class ComponentConfiguration extends AbstractComponentConfiguration
 
     public function exposeGlobalFieldsInGraphQLSchema(): bool
     {
-        /** @var APIComponentConfiguration */
-        $componentConfiguration = App::getComponent(APIComponent::class)->getConfiguration();
-        if ($componentConfiguration->skipExposingGlobalFieldsInFullSchema()) {
+        /** @var APIModuleConfiguration */
+        $moduleConfiguration = App::getModule(APIModule::class)->getConfiguration();
+        if ($moduleConfiguration->skipExposingGlobalFieldsInFullSchema()) {
             return false;
         }
 
