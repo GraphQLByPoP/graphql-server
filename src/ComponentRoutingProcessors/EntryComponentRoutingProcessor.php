@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace GraphQLByPoP\GraphQLServer\RouteModuleProcessors;
+namespace GraphQLByPoP\GraphQLServer\ComponentRoutingProcessors;
 
 use GraphQLByPoP\GraphQLQuery\Schema\OperationTypes;
 use GraphQLByPoP\GraphQLServer\ModuleProcessors\RootRelationalFieldDataloadModuleProcessor;
 use PoPAPI\API\Response\Schemes as APISchemes;
 use PoPAPI\API\Routing\RequestNature;
 use PoPAPI\GraphQLAPI\DataStructureFormatters\GraphQLDataStructureFormatter;
-use PoP\ModuleRouting\AbstractEntryRouteModuleProcessor;
+use PoP\ComponentRouting\AbstractEntryComponentRoutingProcessor;
 
-class EntryRouteModuleProcessor extends AbstractEntryRouteModuleProcessor
+class EntryComponentRoutingProcessor extends AbstractEntryComponentRoutingProcessor
 {
     private ?GraphQLDataStructureFormatter $graphQLDataStructureFormatter = null;
 
@@ -27,12 +27,12 @@ class EntryRouteModuleProcessor extends AbstractEntryRouteModuleProcessor
     /**
      * @return array<string, array<array>>
      */
-    public function getModulesVarsPropertiesByNature(): array
+    public function getStatePropertiesToSelectComponentByNature(): array
     {
         $ret = array();
 
         $ret[RequestNature::QUERY_ROOT][] = [
-            'module' => [
+            'component' => [
                 RootRelationalFieldDataloadModuleProcessor::class,
                 RootRelationalFieldDataloadModuleProcessor::MODULE_DATALOAD_RELATIONALFIELDS_QUERYROOT
             ],
@@ -43,7 +43,7 @@ class EntryRouteModuleProcessor extends AbstractEntryRouteModuleProcessor
             ],
         ];
         $ret[RequestNature::QUERY_ROOT][] = [
-            'module' => [
+            'component' => [
                 RootRelationalFieldDataloadModuleProcessor::class,
                 RootRelationalFieldDataloadModuleProcessor::MODULE_DATALOAD_RELATIONALFIELDS_MUTATIONROOT
             ],
