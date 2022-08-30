@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace GraphQLByPoP\GraphQLServer\Overrides\AccessControl;
+namespace GraphQLByPoP\GraphQLServer\ConditionalOnModule\AccessControl\Overrides\Services;
 
 use GraphQLByPoP\GraphQLServer\IFTTT\MandatoryDirectivesForFieldsRootTypeEntryDuplicatorInterface;
 use PoP\AccessControl\Services\AccessControlManager as UpstreamAccessControlManager;
