@@ -37,7 +37,7 @@ abstract class AbstractGraphQLServerTestCase extends TestCase
         return InstanceManagerFacade::getInstance()->getInstance($service);
     }
 
-    protected static function getStandaloneGraphQLServer(): StandaloneGraphQLServer
+    protected static function getGraphQLServer(): StandaloneGraphQLServer
     {
         return self::$standaloneGraphQLServer;
     }
@@ -84,7 +84,7 @@ abstract class AbstractGraphQLServerTestCase extends TestCase
         array $variables = [],
         ?string $operationName = null
     ): void {
-        $response = self::getStandaloneGraphQLServer()->execute($queryOrExecutableDocument, $variables, $operationName);
+        $response = self::getGraphQLServer()->execute($queryOrExecutableDocument, $variables, $operationName);
         $expectedResponseJSON = json_encode($expectedResponse);
         if ($expectedResponseJSON === false) {
             throw new RuntimeException('Encoding the expected response as JSON failed');
@@ -136,7 +136,7 @@ abstract class AbstractGraphQLServerTestCase extends TestCase
             $graphQLVariables = (array) $graphQLVariables;
         }
 
-        $response = self::getStandaloneGraphQLServer()->execute($graphQLQuery, $graphQLVariables, $operationName);
+        $response = self::getGraphQLServer()->execute($graphQLQuery, $graphQLVariables, $operationName);
         $responseContent = $response->getContent();
         if ($responseContent === false) {
             throw new RuntimeException('Obtaining the content of the response failed');
