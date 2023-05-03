@@ -6,7 +6,7 @@ namespace GraphQLByPoP\GraphQLServer\Unit;
 
 use RuntimeException;
 
-abstract class AbstractOrderedFieldsFixtureQueryExecutionGraphQLServerTest extends AbstractFixtureQueryExecutionGraphQLServerTestCase
+abstract class AbstractOrderedFieldsFixtureQueryExecutionGraphQLServerTestCase extends AbstractFixtureQueryExecutionGraphQLServerTestCase
 {
     /**
      * Override assertion, to also test the order of the fields

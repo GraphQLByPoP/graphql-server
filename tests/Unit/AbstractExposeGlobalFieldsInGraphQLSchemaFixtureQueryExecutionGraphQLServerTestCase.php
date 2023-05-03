@@ -6,11 +6,11 @@ namespace GraphQLByPoP\GraphQLServer\Unit;
 
 use PoP\Root\Module\ModuleInterface;
 
-abstract class AbstractExposeGlobalFieldsInRootTypeOnlyInGraphQLSchemaFixtureQueryExecutionGraphQLServerTest extends AbstractEnabledDisabledFixtureQueryExecutionGraphQLServerTestCase
+abstract class AbstractExposeGlobalFieldsInGraphQLSchemaFixtureQueryExecutionGraphQLServerTestCase extends AbstractEnabledDisabledFixtureQueryExecutionGraphQLServerTestCase
 {
     protected function getFixtureFolder(): string
     {
-        return __DIR__ . '/fixture-expose-global-fields-in-root-type-only-in-graphql-schema';
+        return __DIR__ . '/fixture-expose-global-fields-in-graphql-schema';
     }
 
     /**
@@ -22,8 +22,7 @@ abstract class AbstractExposeGlobalFieldsInRootTypeOnlyInGraphQLSchemaFixtureQue
             ...parent::getGraphQLServerModuleClassConfiguration(),
             ...[
                 \GraphQLByPoP\GraphQLServer\Module::class => [
-                    \GraphQLByPoP\GraphQLServer\Environment::EXPOSE_GLOBAL_FIELDS_IN_GRAPHQL_SCHEMA => true,
-                    \GraphQLByPoP\GraphQLServer\Environment::EXPOSE_GLOBAL_FIELDS_IN_ROOT_TYPE_ONLY_IN_GRAPHQL_SCHEMA => static::isEnabled(),
+                    \GraphQLByPoP\GraphQLServer\Environment::EXPOSE_GLOBAL_FIELDS_IN_GRAPHQL_SCHEMA => static::isEnabled(),
                 ],
             ]
         ];
